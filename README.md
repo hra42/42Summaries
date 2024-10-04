@@ -48,12 +48,12 @@
    - Plan the overall structure of your main window
    - Decide on a sidebar or tab-based navigation (if needed)
 
-2. [ ] Create a file selection view
+2. [X] Create a file selection view
    - Design a view for users to select audio or video files
    - Include a button or drag-and-drop area for file selection
    - Display the selected file's name and type
 
-3. [ ] Implement a transcription progress view
+3. [X] Implement a transcription progress view
    - Create a view to show transcription progress
    - Include a progress bar or indicator
    - Display status messages (e.g., "Transcribing...", "Completed")
