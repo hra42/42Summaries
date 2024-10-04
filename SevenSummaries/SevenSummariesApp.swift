@@ -11,7 +11,7 @@ import SwiftUI
 struct SevenSummariesApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainWindowView()
         }
     }
 }
