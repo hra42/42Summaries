@@ -44,7 +44,7 @@ SevenSummaries is a macOS application that transcribes audio and video files, th
 ## Current Tasks
 
 ### Swift UI
-1. [ ] Design the main window layout
+1. [x] Design the main window layout
    - Plan the overall structure of your main window
    - Decide on a sidebar or tab-based navigation (if needed)
 
