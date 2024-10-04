@@ -10,22 +10,22 @@
 		255072222CAF5E8D0099CFB4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 255072212CAF5E8D0099CFB4 /* README.md */; };
 		25805B262CAF5A2E005E7456 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25805B252CAF5A2E005E7456 /* AVFoundation.framework */; };
 		25805B282CAF5A3A005E7456 /* Speech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25805B272CAF5A3A005E7456 /* Speech.framework */; };
+		259B0E3B2CAF8F420050F2DD /* 42SummariesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259B0E392CAF8F420050F2DD /* 42SummariesApp.swift */; };
+		259B0E3C2CAF8F420050F2DD /* MainWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259B0E372CAF8F420050F2DD /* MainWindowView.swift */; };
+		259B0E3D2CAF8F420050F2DD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 259B0E302CAF8F420050F2DD /* Preview Assets.xcassets */; };
+		259B0E3E2CAF8F420050F2DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 259B0E362CAF8F420050F2DD /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		255072212CAF5E8D0099CFB4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		25805B072CAF5791005E7456 /* SevenSummaries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SevenSummaries.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		25805B072CAF5791005E7456 /* 42Summaries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 42Summaries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25805B252CAF5A2E005E7456 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		25805B272CAF5A3A005E7456 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
+		259B0E302CAF8F420050F2DD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		259B0E362CAF8F420050F2DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		259B0E372CAF8F420050F2DD /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
+		259B0E392CAF8F420050F2DD /* 42SummariesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 42SummariesApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		25805B092CAF5791005E7456 /* SevenSummaries */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SevenSummaries;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		25805B042CAF5791005E7456 /* Frameworks */ = {
@@ -45,15 +45,15 @@
 			children = (
 				25805B242CAF5A2E005E7456 /* Frameworks */,
 				25805B082CAF5791005E7456 /* Products */,
-				25805B092CAF5791005E7456 /* SevenSummaries */,
 				255072212CAF5E8D0099CFB4 /* README.md */,
+				259B0E3A2CAF8F420050F2DD /* 42Summaries */,
 			);
 			sourceTree = "<group>";
 		};
 		25805B082CAF5791005E7456 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				25805B072CAF5791005E7456 /* SevenSummaries.app */,
+				25805B072CAF5791005E7456 /* 42Summaries.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -67,12 +67,71 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		259B0E2F2CAF8F420050F2DD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		259B0E312CAF8F420050F2DD /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				259B0E302CAF8F420050F2DD /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		259B0E322CAF8F420050F2DD /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		259B0E332CAF8F420050F2DD /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		259B0E342CAF8F420050F2DD /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		259B0E352CAF8F420050F2DD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		259B0E3A2CAF8F420050F2DD /* 42Summaries */ = {
+			isa = PBXGroup;
+			children = (
+				259B0E2F2CAF8F420050F2DD /* Models */,
+				259B0E312CAF8F420050F2DD /* Preview Content */,
+				259B0E322CAF8F420050F2DD /* Services */,
+				259B0E332CAF8F420050F2DD /* Utilities */,
+				259B0E342CAF8F420050F2DD /* ViewModels */,
+				259B0E352CAF8F420050F2DD /* Views */,
+				259B0E362CAF8F420050F2DD /* Assets.xcassets */,
+				259B0E372CAF8F420050F2DD /* MainWindowView.swift */,
+				259B0E392CAF8F420050F2DD /* 42SummariesApp.swift */,
+			);
+			path = 42Summaries;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		25805B062CAF5791005E7456 /* SevenSummaries */ = {
+		25805B062CAF5791005E7456 /* 42Summaries */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 25805B162CAF5792005E7456 /* Build configuration list for PBXNativeTarget "SevenSummaries" */;
+			buildConfigurationList = 25805B162CAF5792005E7456 /* Build configuration list for PBXNativeTarget "42Summaries" */;
 			buildPhases = (
 				25805B032CAF5791005E7456 /* Sources */,
 				25805B042CAF5791005E7456 /* Frameworks */,
@@ -82,14 +141,11 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				25805B092CAF5791005E7456 /* SevenSummaries */,
-			);
-			name = SevenSummaries;
+			name = 42Summaries;
 			packageProductDependencies = (
 			);
 			productName = SevenSummaries;
-			productReference = 25805B072CAF5791005E7456 /* SevenSummaries.app */;
+			productReference = 25805B072CAF5791005E7456 /* 42Summaries.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -107,7 +163,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 25805B022CAF5791005E7456 /* Build configuration list for PBXProject "SevenSummaries" */;
+			buildConfigurationList = 25805B022CAF5791005E7456 /* Build configuration list for PBXProject "42Summaries" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -121,7 +177,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				25805B062CAF5791005E7456 /* SevenSummaries */,
+				25805B062CAF5791005E7456 /* 42Summaries */,
 			);
 		};
 /* End PBXProject section */
@@ -131,6 +187,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				259B0E3D2CAF8F420050F2DD /* Preview Assets.xcassets in Resources */,
+				259B0E3E2CAF8F420050F2DD /* Assets.xcassets in Resources */,
 				255072222CAF5E8D0099CFB4 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -142,6 +200,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				259B0E3B2CAF8F420050F2DD /* 42SummariesApp.swift in Sources */,
+				259B0E3C2CAF8F420050F2DD /* MainWindowView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,19 +332,19 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
-				CODE_SIGN_ENTITLEMENTS = SevenSummaries/SevenSummaries.entitlements;
+				CODE_SIGN_ENTITLEMENTS = 42Summaries/42Summaries.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"SevenSummaries/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"42Summaries/Preview Content\"";
 				DEVELOPMENT_TEAM = 35BFRZZ32B;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = SevenSummaries;
+				INFOPLIST_KEY_CFBundleDisplayName = 42Summaries;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
-				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "SevenSummaries needs access to your Documents folder to read and write audio and video files for transcription and summarization.";
+				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "42Summaries needs access to your Documents folder to read and write audio and video files for transcription and summarization.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -292,7 +352,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 0.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = tech.postrausch.SevenSummaries;
+				PRODUCT_BUNDLE_IDENTIFIER = tech.postrausch.42Summaries;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -305,19 +365,19 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
-				CODE_SIGN_ENTITLEMENTS = SevenSummaries/SevenSummaries.entitlements;
+				CODE_SIGN_ENTITLEMENTS = 42Summaries/42Summaries.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"SevenSummaries/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"42Summaries/Preview Content\"";
 				DEVELOPMENT_TEAM = 35BFRZZ32B;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = SevenSummaries;
+				INFOPLIST_KEY_CFBundleDisplayName = 42Summaries;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
-				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "SevenSummaries needs access to your Documents folder to read and write audio and video files for transcription and summarization.";
+				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "42Summaries needs access to your Documents folder to read and write audio and video files for transcription and summarization.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -325,7 +385,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 0.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = tech.postrausch.SevenSummaries;
+				PRODUCT_BUNDLE_IDENTIFIER = tech.postrausch.42Summaries;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -335,7 +395,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		25805B022CAF5791005E7456 /* Build configuration list for PBXProject "SevenSummaries" */ = {
+		25805B022CAF5791005E7456 /* Build configuration list for PBXProject "42Summaries" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				25805B142CAF5792005E7456 /* Debug */,
@@ -344,7 +404,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		25805B162CAF5792005E7456 /* Build configuration list for PBXNativeTarget "SevenSummaries" */ = {
+		25805B162CAF5792005E7456 /* Build configuration list for PBXNativeTarget "42Summaries" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				25805B172CAF5792005E7456 /* Debug */,

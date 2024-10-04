@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct SevenSummariesApp: App {
+struct _42SummariesApp: App {
     var body: some Scene {
         WindowGroup {
             MainWindowView()
