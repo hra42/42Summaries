@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  SevenSummaries
+//  42Summaries
 //
 //  Created by Henry Rausch on 04.10.24.
 //
@@ -90,7 +90,7 @@ struct MainWindowView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(height: 32)
-                        Text("SevenSummaries")
+                        Text("42Summaries")
                             .font(.title2)
                             .fontWeight(.bold)
                     }
@@ -135,7 +135,7 @@ struct WelcomeView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 128, height: 128)
-            Text("Welcome to SevenSummaries")
+            Text("Welcome to 42Summaries")
                 .font(.title)
             Text("Select an item from the sidebar to get started")
                 .font(.subheadline)

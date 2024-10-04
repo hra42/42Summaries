@@ -1,6 +1,6 @@
-# SevenSummaries
+# 42Summaries
 
-SevenSummaries is a macOS application that transcribes audio and video files, then generates concise summaries using Ollama.
+42Summaries is a macOS application that transcribes audio and video files, then generates concise summaries using Ollama.
 
 ## Features
 
@@ -23,7 +23,7 @@ SevenSummaries is a macOS application that transcribes audio and video files, th
 
 ## Usage
 
-1. Launch SevenSummaries
+1. Launch 42Summaries
 2. Select an audio or video file
 3. Wait for transcription to complete
 4. View the generated summary
@@ -99,5 +99,5 @@ SevenSummaries is a macOS application that transcribes audio and video files, th
     - Implement proper scaling for text and UI elements
 
 14. [ ] Create app icon and launch screen
-    - Design an app icon that represents SevenSummaries
+    - Design an app icon that represents 42Summaries
     - Create a simple, elegant launch screen
