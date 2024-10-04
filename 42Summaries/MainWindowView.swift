@@ -16,6 +16,9 @@ struct MainWindowView: View {
             mainContent
         }
         .navigationTitle("")
+        .onChange(of: navigationManager.selectedNavItem) { _, newValue in
+            print("MainWindowView detected change in selectedNavItem: \(newValue)")
+        }
     }
     
     var mainContent: some View {
