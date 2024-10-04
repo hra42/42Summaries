@@ -10,7 +10,7 @@
 		255072222CAF5E8D0099CFB4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 255072212CAF5E8D0099CFB4 /* README.md */; };
 		25805B262CAF5A2E005E7456 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25805B252CAF5A2E005E7456 /* AVFoundation.framework */; };
 		25805B282CAF5A3A005E7456 /* Speech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25805B272CAF5A3A005E7456 /* Speech.framework */; };
-		259B0E3B2CAF8F420050F2DD /* 42SummariesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259B0E392CAF8F420050F2DD /* 42SummariesApp.swift */; };
+		259B0E3B2CAF8F420050F2DD /* SummariesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259B0E392CAF8F420050F2DD /* SummariesApp.swift */; };
 		259B0E3C2CAF8F420050F2DD /* MainWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259B0E372CAF8F420050F2DD /* MainWindowView.swift */; };
 		259B0E3D2CAF8F420050F2DD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 259B0E302CAF8F420050F2DD /* Preview Assets.xcassets */; };
 		259B0E3E2CAF8F420050F2DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 259B0E362CAF8F420050F2DD /* Assets.xcassets */; };
@@ -18,13 +18,13 @@
 
 /* Begin PBXFileReference section */
 		255072212CAF5E8D0099CFB4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		25805B072CAF5791005E7456 /* 42Summaries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 42Summaries.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		25805B072CAF5791005E7456 /* App42Summaries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App42Summaries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25805B252CAF5A2E005E7456 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		25805B272CAF5A3A005E7456 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
 		259B0E302CAF8F420050F2DD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		259B0E362CAF8F420050F2DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		259B0E372CAF8F420050F2DD /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
-		259B0E392CAF8F420050F2DD /* 42SummariesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 42SummariesApp.swift; sourceTree = "<group>"; };
+		259B0E392CAF8F420050F2DD /* SummariesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummariesApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,7 +53,7 @@
 		25805B082CAF5791005E7456 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				25805B072CAF5791005E7456 /* 42Summaries.app */,
+				25805B072CAF5791005E7456 /* App42Summaries.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -121,7 +121,7 @@
 				259B0E352CAF8F420050F2DD /* Views */,
 				259B0E362CAF8F420050F2DD /* Assets.xcassets */,
 				259B0E372CAF8F420050F2DD /* MainWindowView.swift */,
-				259B0E392CAF8F420050F2DD /* 42SummariesApp.swift */,
+				259B0E392CAF8F420050F2DD /* SummariesApp.swift */,
 			);
 			path = 42Summaries;
 			sourceTree = "<group>";
@@ -129,9 +129,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		25805B062CAF5791005E7456 /* 42Summaries */ = {
+		25805B062CAF5791005E7456 /* App42Summaries */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 25805B162CAF5792005E7456 /* Build configuration list for PBXNativeTarget "42Summaries" */;
+			buildConfigurationList = 25805B162CAF5792005E7456 /* Build configuration list for PBXNativeTarget "App42Summaries" */;
 			buildPhases = (
 				25805B032CAF5791005E7456 /* Sources */,
 				25805B042CAF5791005E7456 /* Frameworks */,
@@ -141,11 +141,11 @@
 			);
 			dependencies = (
 			);
-			name = 42Summaries;
+			name = App42Summaries;
 			packageProductDependencies = (
 			);
 			productName = SevenSummaries;
-			productReference = 25805B072CAF5791005E7456 /* 42Summaries.app */;
+			productReference = 25805B072CAF5791005E7456 /* App42Summaries.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -163,7 +163,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 25805B022CAF5791005E7456 /* Build configuration list for PBXProject "42Summaries" */;
+			buildConfigurationList = 25805B022CAF5791005E7456 /* Build configuration list for PBXProject "App42Summaries" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -177,7 +177,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				25805B062CAF5791005E7456 /* 42Summaries */,
+				25805B062CAF5791005E7456 /* App42Summaries */,
 			);
 		};
 /* End PBXProject section */
@@ -200,7 +200,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				259B0E3B2CAF8F420050F2DD /* 42SummariesApp.swift in Sources */,
+				259B0E3B2CAF8F420050F2DD /* SummariesApp.swift in Sources */,
 				259B0E3C2CAF8F420050F2DD /* MainWindowView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -260,6 +260,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -317,6 +318,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -395,7 +397,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		25805B022CAF5791005E7456 /* Build configuration list for PBXProject "42Summaries" */ = {
+		25805B022CAF5791005E7456 /* Build configuration list for PBXProject "App42Summaries" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				25805B142CAF5792005E7456 /* Debug */,
@@ -404,7 +406,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		25805B162CAF5792005E7456 /* Build configuration list for PBXNativeTarget "42Summaries" */ = {
+		25805B162CAF5792005E7456 /* Build configuration list for PBXNativeTarget "App42Summaries" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				25805B172CAF5792005E7456 /* Debug */,
