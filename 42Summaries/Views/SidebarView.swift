@@ -8,9 +8,10 @@ import SwiftUI
 
 struct SidebarView: View {
     @ObservedObject var navigationManager: NavigationStateManager
+    @State private var localSelection: NavigationItem?
     
     var body: some View {
-        List(NavigationItem.allCases, selection: $navigationManager.selectedNavItem) { item in
+        List(NavigationItem.allCases, selection: $localSelection) { item in
             NavigationLink(value: item) {
                 Label {
                     Text(item.rawValue)
@@ -23,12 +24,18 @@ struct SidebarView: View {
         }
         .listStyle(SidebarListStyle())
         .frame(minWidth: 200)
+        .onChange(of: localSelection) { _, newValue in
+            if let newValue = newValue {
+                print("Local selection changed to: \(newValue)")
+                navigationManager.selectNavItem(newValue)
+            }
+        }
         .onChange(of: navigationManager.selectedNavItem) { _, newValue in
-            navigationManager.selectNavItem(newValue)
+            print("NavigationManager selection changed to: \(newValue)")
+            localSelection = newValue
         }
     }
 }
-
 #Preview {
     SidebarView(navigationManager: NavigationStateManager())
 }
