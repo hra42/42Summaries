@@ -8,6 +8,7 @@ import SwiftUI
 
 struct MainWindowView: View {
     @StateObject private var navigationManager = NavigationStateManager()
+    @EnvironmentObject private var notificationManager: NotificationManager
     
     var body: some View {
         NavigationSplitView {
@@ -58,5 +59,6 @@ struct MainWindowView: View {
 struct MainWindowView_Previews: PreviewProvider {
     static var previews: some View {
         MainWindowView()
+            .environmentObject(NotificationManager())
     }
 }

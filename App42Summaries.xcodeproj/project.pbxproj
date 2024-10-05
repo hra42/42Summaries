@@ -16,6 +16,10 @@
 		2595A2672CAFA9A9001E57FF /* NavigationStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595A2662CAFA9A1001E57FF /* NavigationStateManager.swift */; };
 		2595A2692CB034DD001E57FF /* ExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595A2682CB034D9001E57FF /* ExportManager.swift */; };
 		2595A26B2CB035DC001E57FF /* ExportOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595A26A2CB035D8001E57FF /* ExportOptionsView.swift */; };
+		2595A26D2CB0B73E001E57FF /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595A26C2CB0B73B001E57FF /* ErrorView.swift */; };
+		2595A26F2CB0B762001E57FF /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595A26E2CB0B758001E57FF /* NotificationView.swift */; };
+		2595A2712CB0B774001E57FF /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595A2702CB0B767001E57FF /* ToastView.swift */; };
+		2595A2752CB0B797001E57FF /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595A2742CB0B795001E57FF /* NotificationManager.swift */; };
 		259B0E3B2CAF8F420050F2DD /* SummariesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259B0E392CAF8F420050F2DD /* SummariesApp.swift */; };
 		259B0E3C2CAF8F420050F2DD /* MainWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259B0E372CAF8F420050F2DD /* MainWindowView.swift */; };
 		259B0E3D2CAF8F420050F2DD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 259B0E302CAF8F420050F2DD /* Preview Assets.xcassets */; };
@@ -40,6 +44,10 @@
 		2595A2662CAFA9A1001E57FF /* NavigationStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStateManager.swift; sourceTree = "<group>"; };
 		2595A2682CB034D9001E57FF /* ExportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportManager.swift; sourceTree = "<group>"; };
 		2595A26A2CB035D8001E57FF /* ExportOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportOptionsView.swift; sourceTree = "<group>"; };
+		2595A26C2CB0B73B001E57FF /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		2595A26E2CB0B758001E57FF /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		2595A2702CB0B767001E57FF /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		2595A2742CB0B795001E57FF /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		259B0E302CAF8F420050F2DD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		259B0E362CAF8F420050F2DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		259B0E372CAF8F420050F2DD /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
@@ -121,6 +129,7 @@
 		259B0E332CAF8F420050F2DD /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				2595A2742CB0B795001E57FF /* NotificationManager.swift */,
 				2595A2682CB034D9001E57FF /* ExportManager.swift */,
 				2595A2662CAFA9A1001E57FF /* NavigationStateManager.swift */,
 			);
@@ -137,6 +146,9 @@
 		259B0E352CAF8F420050F2DD /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				2595A2702CB0B767001E57FF /* ToastView.swift */,
+				2595A26E2CB0B758001E57FF /* NotificationView.swift */,
+				2595A26C2CB0B73B001E57FF /* ErrorView.swift */,
 				2595A26A2CB035D8001E57FF /* ExportOptionsView.swift */,
 				25C6903A2CAFA4500062D4E8 /* FileSelectionView.swift */,
 				25C6903C2CAFA5400062D4E8 /* TranscriptionView.swift */,
@@ -241,9 +253,11 @@
 			files = (
 				259B0E3B2CAF8F420050F2DD /* SummariesApp.swift in Sources */,
 				2595A2632CAFA831001E57FF /* TranscriptionStatus.swift in Sources */,
+				2595A26D2CB0B73E001E57FF /* ErrorView.swift in Sources */,
 				25C6903D2CAFA5400062D4E8 /* TranscriptionView.swift in Sources */,
 				25C6903F2CAFA55E0062D4E8 /* SummaryView.swift in Sources */,
 				25C690412CAFA56C0062D4E8 /* SettingsView.swift in Sources */,
+				2595A26F2CB0B762001E57FF /* NotificationView.swift in Sources */,
 				2595A2692CB034DD001E57FF /* ExportManager.swift in Sources */,
 				259B0E3C2CAF8F420050F2DD /* MainWindowView.swift in Sources */,
 				2595A26B2CB035DC001E57FF /* ExportOptionsView.swift in Sources */,
@@ -252,7 +266,9 @@
 				2595A2652CAFA8E9001E57FF /* TranscriptionManager.swift in Sources */,
 				25C690452CAFA5AB0062D4E8 /* NavigationItem.swift in Sources */,
 				2595A2672CAFA9A9001E57FF /* NavigationStateManager.swift in Sources */,
+				2595A2752CB0B797001E57FF /* NotificationManager.swift in Sources */,
 				25C690472CAFA5E70062D4E8 /* SidebarView.swift in Sources */,
+				2595A2712CB0B774001E57FF /* ToastView.swift in Sources */,
 				25C690432CAFA5760062D4E8 /* WelcomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

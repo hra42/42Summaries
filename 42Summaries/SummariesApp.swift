@@ -8,9 +8,12 @@ import SwiftUI
 
 @main
 struct SummariesApp: App {
+    @StateObject private var notificationManager = NotificationManager()
+    
     var body: some Scene {
         WindowGroup {
             MainWindowView()
+                .environmentObject(notificationManager)
         }
     }
 }
