@@ -4,42 +4,39 @@
 //
 //  Created by Henry Rausch on 04.10.24.
 //
-import Foundation
+import SwiftUI
 
-enum TranscriptionStatus: Equatable {
-    case notStarted
-    case preparing
-    case transcribing
-    case completed
-    case error(String)
-    
-    var message: String {
+enum TranscriptionStatus: String {
+    case notStarted = "Not Started"
+    case preparing = "Preparing"
+    case transcribing = "Transcribing"
+    case completed = "Completed"
+}
+
+extension TranscriptionStatus {
+    var icon: String {
         switch self {
         case .notStarted:
-            return "Ready to start transcription"
+            return "circle"
         case .preparing:
-            return "Preparing audio for transcription..."
+            return "gear"
         case .transcribing:
-            return "Transcribing..."
+            return "waveform"
         case .completed:
-            return "Transcription completed!"
-        case .error(let errorMessage):
-            return "Error: \(errorMessage)"
+            return "checkmark.circle"
         }
     }
     
-    static func == (lhs: TranscriptionStatus, rhs: TranscriptionStatus) -> Bool {
-        switch (lhs, rhs) {
-        case (.notStarted, .notStarted),
-             (.preparing, .preparing),
-             (.transcribing, .transcribing),
-             (.completed, .completed):
-            return true
-        case (.error(let lhsError), .error(let rhsError)):
-            return lhsError == rhsError
-        default:
-            return false
+    var color: Color {
+        switch self {
+        case .notStarted:
+            return .secondary
+        case .preparing:
+            return .blue
+        case .transcribing:
+            return .green
+        case .completed:
+            return .purple
         }
     }
 }
-
