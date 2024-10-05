@@ -11,6 +11,7 @@ import UserNotifications
 struct _42Summaries: App {
     @StateObject private var notificationManager = NotificationManager()
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @State private var isLaunchScreenDone = false
     
     init() {
         UNUserNotificationCenter.current().delegate = NotificationHandler.shared
@@ -18,8 +19,21 @@ struct _42Summaries: App {
     
     var body: some Scene {
         WindowGroup {
-            MainWindowView()
-                .environmentObject(notificationManager)
+            ZStack {
+                if isLaunchScreenDone {
+                    MainWindowView()
+                        .environmentObject(notificationManager)
+                } else {
+                    LaunchScreenView()
+                }
+            }
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                    withAnimation {
+                        isLaunchScreenDone = true
+                    }
+                }
+            }
         }
         .commands {
             CommandGroup(replacing: .appInfo) {
@@ -30,6 +44,8 @@ struct _42Summaries: App {
         }
     }
 }
+
+// ... (keep the existing NotificationHandler)
 
 
 class NotificationHandler: NSObject, UNUserNotificationCenterDelegate {
