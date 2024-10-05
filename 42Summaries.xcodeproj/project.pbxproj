@@ -10,6 +10,7 @@
 		255072222CAF5E8D0099CFB4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 255072212CAF5E8D0099CFB4 /* README.md */; };
 		256D31182CB186AF008612AF /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256D31172CB186AD008612AF /* AboutView.swift */; };
 		256D311A2CB18740008612AF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256D31192CB1873D008612AF /* AppDelegate.swift */; };
+		256D311C2CB18AC4008612AF /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256D311B2CB18AC1008612AF /* LaunchScreenView.swift */; };
 		25805B262CAF5A2E005E7456 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25805B252CAF5A2E005E7456 /* AVFoundation.framework */; };
 		25805B282CAF5A3A005E7456 /* Speech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25805B272CAF5A3A005E7456 /* Speech.framework */; };
 		2595A2612CAFA7C1001E57FF /* TranscriptionProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595A2602CAFA7C1001E57FF /* TranscriptionProgressView.swift */; };
@@ -40,6 +41,7 @@
 		256D31162CB18369008612AF /* 42Summaries-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "42Summaries-Info.plist"; sourceTree = SOURCE_ROOT; };
 		256D31172CB186AD008612AF /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		256D31192CB1873D008612AF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		256D311B2CB18AC1008612AF /* LaunchScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenView.swift; sourceTree = "<group>"; };
 		25805B072CAF5791005E7456 /* 42Summaries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 42Summaries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25805B252CAF5A2E005E7456 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		25805B272CAF5A3A005E7456 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
@@ -151,6 +153,7 @@
 		259B0E352CAF8F420050F2DD /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				256D311B2CB18AC1008612AF /* LaunchScreenView.swift */,
 				256D31172CB186AD008612AF /* AboutView.swift */,
 				2595A2702CB0B767001E57FF /* ToastView.swift */,
 				2595A26E2CB0B758001E57FF /* NotificationView.swift */,
@@ -278,6 +281,7 @@
 				2595A2752CB0B797001E57FF /* NotificationManager.swift in Sources */,
 				25C690472CAFA5E70062D4E8 /* SidebarView.swift in Sources */,
 				256D311A2CB18740008612AF /* AppDelegate.swift in Sources */,
+				256D311C2CB18AC4008612AF /* LaunchScreenView.swift in Sources */,
 				2595A2712CB0B774001E57FF /* ToastView.swift in Sources */,
 				25C690432CAFA5760062D4E8 /* WelcomeView.swift in Sources */,
 			);
