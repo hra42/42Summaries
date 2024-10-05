@@ -1,11 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "Logo_42Summaries.png",
       "idiom" : "mac",
       "scale" : "1x"
     },
     {
+      "filename" : "Logo_42Summaries.png",
       "idiom" : "mac",
       "scale" : "2x"
     }

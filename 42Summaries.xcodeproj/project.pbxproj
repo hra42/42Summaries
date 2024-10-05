@@ -35,7 +35,8 @@
 
 /* Begin PBXFileReference section */
 		255072212CAF5E8D0099CFB4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		25805B072CAF5791005E7456 /* App42Summaries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App42Summaries.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		256D31162CB18369008612AF /* -2Summaries-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "-2Summaries-Info.plist"; sourceTree = SOURCE_ROOT; };
+		25805B072CAF5791005E7456 /* 42Summaries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 42Summaries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25805B252CAF5A2E005E7456 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		25805B272CAF5A3A005E7456 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
 		2595A2602CAFA7C1001E57FF /* TranscriptionProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptionProgressView.swift; sourceTree = "<group>"; };
@@ -87,7 +88,7 @@
 		25805B082CAF5791005E7456 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				25805B072CAF5791005E7456 /* App42Summaries.app */,
+				25805B072CAF5791005E7456 /* 42Summaries.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -164,6 +165,7 @@
 		259B0E3A2CAF8F420050F2DD /* 42Summaries */ = {
 			isa = PBXGroup;
 			children = (
+				256D31162CB18369008612AF /* -2Summaries-Info.plist */,
 				259B0E2F2CAF8F420050F2DD /* Models */,
 				259B0E312CAF8F420050F2DD /* Preview Content */,
 				259B0E332CAF8F420050F2DD /* Utilities */,
@@ -180,9 +182,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		25805B062CAF5791005E7456 /* App42Summaries */ = {
+		25805B062CAF5791005E7456 /* 42Summaries */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 25805B162CAF5792005E7456 /* Build configuration list for PBXNativeTarget "App42Summaries" */;
+			buildConfigurationList = 25805B162CAF5792005E7456 /* Build configuration list for PBXNativeTarget "42Summaries" */;
 			buildPhases = (
 				25805B032CAF5791005E7456 /* Sources */,
 				25805B042CAF5791005E7456 /* Frameworks */,
@@ -192,11 +194,11 @@
 			);
 			dependencies = (
 			);
-			name = App42Summaries;
+			name = 42Summaries;
 			packageProductDependencies = (
 			);
 			productName = SevenSummaries;
-			productReference = 25805B072CAF5791005E7456 /* App42Summaries.app */;
+			productReference = 25805B072CAF5791005E7456 /* 42Summaries.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -214,7 +216,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 25805B022CAF5791005E7456 /* Build configuration list for PBXProject "App42Summaries" */;
+			buildConfigurationList = 25805B022CAF5791005E7456 /* Build configuration list for PBXProject "42Summaries" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -228,7 +230,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				25805B062CAF5791005E7456 /* App42Summaries */,
+				25805B062CAF5791005E7456 /* 42Summaries */,
 			);
 		};
 /* End PBXProject section */
@@ -412,6 +414,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "-2Summaries-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = 42Summaries;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "42Summaries needs access to your Documents folder to read and write audio and video files for transcription and summarization.";
@@ -445,6 +448,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "-2Summaries-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = 42Summaries;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "42Summaries needs access to your Documents folder to read and write audio and video files for transcription and summarization.";
@@ -465,7 +469,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		25805B022CAF5791005E7456 /* Build configuration list for PBXProject "App42Summaries" */ = {
+		25805B022CAF5791005E7456 /* Build configuration list for PBXProject "42Summaries" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				25805B142CAF5792005E7456 /* Debug */,
@@ -474,7 +478,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		25805B162CAF5792005E7456 /* Build configuration list for PBXNativeTarget "App42Summaries" */ = {
+		25805B162CAF5792005E7456 /* Build configuration list for PBXNativeTarget "42Summaries" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				25805B172CAF5792005E7456 /* Debug */,
