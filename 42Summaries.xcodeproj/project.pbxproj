@@ -11,6 +11,10 @@
 		256D31182CB186AF008612AF /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256D31172CB186AD008612AF /* AboutView.swift */; };
 		256D311A2CB18740008612AF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256D31192CB1873D008612AF /* AppDelegate.swift */; };
 		256D311C2CB18AC4008612AF /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256D311B2CB18AC1008612AF /* LaunchScreenView.swift */; };
+		256D31202CB19215008612AF /* LICENSE.md in Resources */ = {isa = PBXBuildFile; fileRef = 256D311F2CB19215008612AF /* LICENSE.md */; };
+		256D31222CB192C3008612AF /* SECURITY.md in Resources */ = {isa = PBXBuildFile; fileRef = 256D31212CB192C3008612AF /* SECURITY.md */; };
+		256D31242CB192FF008612AF /* CONTRIBUTING.md in Resources */ = {isa = PBXBuildFile; fileRef = 256D31232CB192FF008612AF /* CONTRIBUTING.md */; };
+		256D31262CB1934B008612AF /* CODE_OF_CONDUCT.md in Resources */ = {isa = PBXBuildFile; fileRef = 256D31252CB1934B008612AF /* CODE_OF_CONDUCT.md */; };
 		25805B262CAF5A2E005E7456 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25805B252CAF5A2E005E7456 /* AVFoundation.framework */; };
 		25805B282CAF5A3A005E7456 /* Speech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25805B272CAF5A3A005E7456 /* Speech.framework */; };
 		2595A2612CAFA7C1001E57FF /* TranscriptionProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595A2602CAFA7C1001E57FF /* TranscriptionProgressView.swift */; };
@@ -42,6 +46,10 @@
 		256D31172CB186AD008612AF /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		256D31192CB1873D008612AF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		256D311B2CB18AC1008612AF /* LaunchScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenView.swift; sourceTree = "<group>"; };
+		256D311F2CB19215008612AF /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
+		256D31212CB192C3008612AF /* SECURITY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = SECURITY.md; sourceTree = "<group>"; };
+		256D31232CB192FF008612AF /* CONTRIBUTING.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = "<group>"; };
+		256D31252CB1934B008612AF /* CODE_OF_CONDUCT.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CODE_OF_CONDUCT.md; sourceTree = "<group>"; };
 		25805B072CAF5791005E7456 /* 42Summaries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 42Summaries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25805B252CAF5A2E005E7456 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		25805B272CAF5A3A005E7456 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
@@ -84,6 +92,10 @@
 		25805AFE2CAF5791005E7456 = {
 			isa = PBXGroup;
 			children = (
+				256D31252CB1934B008612AF /* CODE_OF_CONDUCT.md */,
+				256D31232CB192FF008612AF /* CONTRIBUTING.md */,
+				256D31212CB192C3008612AF /* SECURITY.md */,
+				256D311F2CB19215008612AF /* LICENSE.md */,
 				25805B242CAF5A2E005E7456 /* Frameworks */,
 				25805B082CAF5791005E7456 /* Products */,
 				255072212CAF5E8D0099CFB4 /* README.md */,
@@ -249,7 +261,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				256D31202CB19215008612AF /* LICENSE.md in Resources */,
 				259B0E3D2CAF8F420050F2DD /* Preview Assets.xcassets in Resources */,
+				256D31262CB1934B008612AF /* CODE_OF_CONDUCT.md in Resources */,
+				256D31242CB192FF008612AF /* CONTRIBUTING.md in Resources */,
+				256D31222CB192C3008612AF /* SECURITY.md in Resources */,
 				259B0E3E2CAF8F420050F2DD /* Assets.xcassets in Resources */,
 				255072222CAF5E8D0099CFB4 /* README.md in Resources */,
 			);
