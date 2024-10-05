@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "25805B062CAF5791005E7456"
-               BuildableName = "App42Summaries.app"
-               BlueprintName = "App42Summaries"
-               ReferencedContainer = "container:App42Summaries.xcodeproj">
+               BuildableName = "42Summaries.app"
+               BlueprintName = "42Summaries"
+               ReferencedContainer = "container:42Summaries.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "25805B062CAF5791005E7456"
-            BuildableName = "App42Summaries.app"
-            BlueprintName = "App42Summaries"
-            ReferencedContainer = "container:App42Summaries.xcodeproj">
+            BuildableName = "42Summaries.app"
+            BlueprintName = "42Summaries"
+            ReferencedContainer = "container:42Summaries.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "25805B062CAF5791005E7456"
-            BuildableName = "App42Summaries.app"
-            BlueprintName = "App42Summaries"
-            ReferencedContainer = "container:App42Summaries.xcodeproj">
+            BuildableName = "42Summaries.app"
+            BlueprintName = "42Summaries"
+            ReferencedContainer = "container:42Summaries.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
