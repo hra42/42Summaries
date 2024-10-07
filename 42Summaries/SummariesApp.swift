@@ -10,8 +10,9 @@ import UserNotifications
 @main
 struct _42Summaries: App {
     @StateObject private var notificationManager = NotificationManager()
+    @StateObject private var appState = AppState()
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @State private var isLaunchScreenDone = false
+    @State private var isModelReady = false
     
     init() {
         UNUserNotificationCenter.current().delegate = NotificationHandler.shared
@@ -19,19 +20,16 @@ struct _42Summaries: App {
     
     var body: some Scene {
         WindowGroup {
-            ZStack {
-                if isLaunchScreenDone {
+            Group {
+                if isModelReady {
                     MainWindowView()
                         .environmentObject(notificationManager)
+                        .environmentObject(appState)
                 } else {
-                    LaunchScreenView()
-                }
-            }
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                    withAnimation {
-                        isLaunchScreenDone = true
-                    }
+                    LaunchScreenView(progress: $appState.modelDownloadProgress)
+                        .onAppear {
+                            initializeWhisperKit()
+                        }
                 }
             }
         }
@@ -43,10 +41,22 @@ struct _42Summaries: App {
             }
         }
     }
+    
+    private func initializeWhisperKit() {
+        Task {
+            do {
+                try await appState.initializeWhisperKit { progress in
+                    DispatchQueue.main.async {
+                        appState.modelDownloadProgress = progress
+                    }
+                }
+                isModelReady = true
+            } catch {
+                print("Error initializing WhisperKit: \(error)")
+            }
+        }
+    }
 }
-
-// ... (keep the existing NotificationHandler)
-
 
 class NotificationHandler: NSObject, UNUserNotificationCenterDelegate {
     static let shared = NotificationHandler()
