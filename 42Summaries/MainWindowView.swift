@@ -9,6 +9,7 @@ import SwiftUI
 struct MainWindowView: View {
     @StateObject private var navigationManager = NavigationStateManager()
     @EnvironmentObject private var notificationManager: NotificationManager
+    @EnvironmentObject private var appState: AppState
     
     var body: some View {
         NavigationSplitView {
@@ -29,7 +30,7 @@ struct MainWindowView: View {
                 case .fileSelection:
                     FileSelectionView()
                 case .transcription:
-                    TranscriptionView()
+                    TranscriptionView(transcriptionManager: appState.transcriptionManager)
                 case .summary:
                     SummaryView()
                 case .settings:

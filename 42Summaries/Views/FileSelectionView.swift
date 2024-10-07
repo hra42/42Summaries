@@ -8,11 +8,14 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct FileSelectionView: View {
-    @State private var selectedFile: URL?
+    @EnvironmentObject private var appState: AppState
     @State private var isFilePickerPresented = false
     
     var body: some View {
         VStack(spacing: 20) {
+            Text("File Selection")
+                .font(.largeTitle)
+                .fontWeight(.bold)
             Text("Select an Audio or Video File")
                 .font(.title)
             
@@ -23,9 +26,7 @@ struct FileSelectionView: View {
             }
             .buttonStyle(.bordered)
             
-            FileDragAndDropArea(selectedFile: $selectedFile)
-            
-            if let selectedFile = selectedFile {
+            if let selectedFile = appState.selectedFile {
                 FileInfoView(url: selectedFile)
             }
         }
@@ -38,41 +39,17 @@ struct FileSelectionView: View {
         ) { result in
             switch result {
             case .success(let files):
-                selectedFile = files.first
+                if let url = files.first {
+                    print("FileSelectionView: File selected: \(url.path)")
+                    if url.startAccessingSecurityScopedResource() {
+                        let accessibleURL = url.standardizedFileURL
+                        appState.selectedFile = accessibleURL
+                        appState.transcriptionManager.setSelectedFile(accessibleURL)
+                    }
+                }
             case .failure(let error):
                 print("Error selecting file: \(error.localizedDescription)")
             }
-        }
-    }
-}
-
-struct FileDragAndDropArea: View {
-    @Binding var selectedFile: URL?
-    
-    var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(style: StrokeStyle(lineWidth: 2, dash: [5]))
-                .foregroundColor(.secondary)
-            
-            VStack {
-                Image(systemName: "arrow.down.doc")
-                    .font(.largeTitle)
-                Text("Drag and drop your file here")
-                    .font(.headline)
-            }
-        }
-        .frame(height: 150)
-        .onDrop(of: [.audio, .movie], isTargeted: nil) { providers in
-            guard let provider = providers.first else { return false }
-            
-            provider.loadItem(forTypeIdentifier: UTType.audio.identifier) { item, _ in
-                if let url = item as? URL {
-                    selectedFile = url
-                }
-            }
-            
-            return true
         }
     }
 }
@@ -81,7 +58,7 @@ struct FileInfoView: View {
     let url: URL
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading) {
             Text("Selected File:")
                 .font(.headline)
             Text("Name: \(url.lastPathComponent)")
@@ -95,4 +72,5 @@ struct FileInfoView: View {
 
 #Preview {
     FileSelectionView()
+        .environmentObject(AppState())
 }
