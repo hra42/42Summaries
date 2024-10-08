@@ -15,9 +15,11 @@ class AppState: ObservableObject {
     @Published var transcriptionManager: TranscriptionManager
     @Published var modelDownloadProgress: Float = 0.0
     @Published var whisperKit: WhisperKit?
+    let summaryService: SummaryService
     
     init() {
         self.transcriptionManager = TranscriptionManager()
+        self.summaryService = SummaryService()
     }
 
     func initializeWhisperKit(progressCallback: @escaping (Float) -> Void) async throws {

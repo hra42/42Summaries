@@ -1,9 +1,3 @@
-//
-//  ContentView.swift
-//  42Summaries
-//
-//  Created by Henry Rausch on 04.10.24.
-//
 import SwiftUI
 
 struct MainWindowView: View {
@@ -18,8 +12,8 @@ struct MainWindowView: View {
             mainContent
         }
         .navigationTitle("")
-        .onChange(of: navigationManager.selectedNavItem) { _, newValue in
-            print("MainWindowView detected change in selectedNavItem: \(newValue)")
+        .onChange(of: navigationManager.selectedNavItem) { oldValue, newValue in
+            print("MainWindowView detected change in selectedNavItem from \(oldValue) to \(newValue)")
         }
     }
     
@@ -61,5 +55,6 @@ struct MainWindowView_Previews: PreviewProvider {
     static var previews: some View {
         MainWindowView()
             .environmentObject(NotificationManager())
+            .environmentObject(AppState())
     }
 }

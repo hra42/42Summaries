@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		250E61BA2CB59E33002E48AB /* OllamaKit in Frameworks */ = {isa = PBXBuildFile; productRef = 250E61B92CB59E33002E48AB /* OllamaKit */; };
+		250E61BC2CB5A275002E48AB /* SummaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250E61BB2CB5A272002E48AB /* SummaryService.swift */; };
 		255072222CAF5E8D0099CFB4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 255072212CAF5E8D0099CFB4 /* README.md */; };
 		256D31182CB186AF008612AF /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256D31172CB186AD008612AF /* AboutView.swift */; };
 		256D311A2CB18740008612AF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256D31192CB1873D008612AF /* AppDelegate.swift */; };
@@ -42,6 +44,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		250E61BB2CB5A272002E48AB /* SummaryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryService.swift; sourceTree = "<group>"; };
 		255072212CAF5E8D0099CFB4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		256D31162CB18369008612AF /* 42Summaries-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "42Summaries-Info.plist"; sourceTree = SOURCE_ROOT; };
 		256D31172CB186AD008612AF /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -85,6 +88,7 @@
 			files = (
 				25C0C7702CB2211300294099 /* WhisperKit in Frameworks */,
 				25805B262CAF5A2E005E7456 /* AVFoundation.framework in Frameworks */,
+				250E61BA2CB59E33002E48AB /* OllamaKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,6 +146,7 @@
 		259B0E322CAF8F420050F2DD /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				250E61BB2CB5A272002E48AB /* SummaryService.swift */,
 				25C0C7732CB2C95300294099 /* TranscriptionManager.swift */,
 				25C0C7712CB2C86F00294099 /* TranscriptionService.swift */,
 			);
@@ -151,9 +156,9 @@
 		259B0E332CAF8F420050F2DD /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				2595A2742CB0B795001E57FF /* NotificationManager.swift */,
 				2595A2682CB034D9001E57FF /* ExportManager.swift */,
 				2595A2662CAFA9A1001E57FF /* NavigationStateManager.swift */,
+				2595A2742CB0B795001E57FF /* NotificationManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -221,6 +226,7 @@
 			name = 42Summaries;
 			packageProductDependencies = (
 				25C0C76F2CB2211300294099 /* WhisperKit */,
+				250E61B92CB59E33002E48AB /* OllamaKit */,
 			);
 			productName = SevenSummaries;
 			productReference = 25805B072CAF5791005E7456 /* 42Summaries.app */;
@@ -252,6 +258,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				25C0C76E2CB2211300294099 /* XCRemoteSwiftPackageReference "WhisperKit" */,
+				250E61B82CB59E33002E48AB /* XCRemoteSwiftPackageReference "OllamaKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 25805B082CAF5791005E7456 /* Products */;
@@ -307,6 +314,7 @@
 				256D311A2CB18740008612AF /* AppDelegate.swift in Sources */,
 				256D311C2CB18AC4008612AF /* LaunchScreenView.swift in Sources */,
 				2595A2712CB0B774001E57FF /* ToastView.swift in Sources */,
+				250E61BC2CB5A275002E48AB /* SummaryService.swift in Sources */,
 				25C690432CAFA5760062D4E8 /* WelcomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -530,6 +538,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		250E61B82CB59E33002E48AB /* XCRemoteSwiftPackageReference "OllamaKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kevinhermawan/OllamaKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.5;
+			};
+		};
 		25C0C76E2CB2211300294099 /* XCRemoteSwiftPackageReference "WhisperKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/argmaxinc/WhisperKit";
@@ -541,6 +557,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		250E61B92CB59E33002E48AB /* OllamaKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 250E61B82CB59E33002E48AB /* XCRemoteSwiftPackageReference "OllamaKit" */;
+			productName = OllamaKit;
+		};
 		25C0C76F2CB2211300294099 /* WhisperKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 25C0C76E2CB2211300294099 /* XCRemoteSwiftPackageReference "WhisperKit" */;
