@@ -16,11 +16,13 @@ class TranscriptionService {
                         return AudioProcessor.convertBufferToArray(buffer: audioFileBuffer)
                     }
                 }.value
+                
+                let (language, _) = try await whisperKit.detectLanguage(audioPath: url.path)
 
                 let options = DecodingOptions(
                     verbose: true,
                     task: .transcribe,
-                    language: "en",
+                    language: language,
                     temperature: 0,
                     sampleLength: 224
                 )
