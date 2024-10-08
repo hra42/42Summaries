@@ -1,22 +1,21 @@
-//
-//  SettingsView.swift
-//  App42Summaries
-//
-//  Created by Henry Rausch on 04.10.24.
-//
 import SwiftUI
 import AppKit
+import OllamaKit
 
 struct SettingsView: View {
     @AppStorage("summaryLength") private var summaryLength = SummaryLength.medium
     @AppStorage("enableAutoSave") private var enableAutoSave = true
-    @AppStorage("ollamaModel") private var ollamaModel = "llama2"
+    @AppStorage("ollamaModel") private var ollamaModel = "llama3.2:latest"
     @AppStorage("customPrompt") private var customPrompt = "Summarize the following transcript concisely:"
     @AppStorage("transcriptionConfidence") private var transcriptionConfidence = 0.65
     @AppStorage("exportFontSize") private var exportFontSize: Double = 9.0
     @AppStorage("exportTextAlignment") private var exportTextAlignment = NSTextAlignment.left
     
-    let ollamaModels = ["llama2", "mistral", "mixtral", "phi", "orca-mini"]
+    @State private var availableModels: [String] = []
+    @State private var isLoadingModels = false
+    @State private var modelLoadError: String?
+    
+    private let ollama = OllamaKit(baseURL: URL(string: "http://127.0.0.1:11434")!)
     
     var body: some View {
         ScrollView {
@@ -39,9 +38,16 @@ struct SettingsView: View {
                 }
                 
                 settingsSection("Ollama Settings") {
-                    Picker("Model", selection: $ollamaModel) {
-                        ForEach(ollamaModels, id: \.self) { model in
-                            Text(model.capitalized).tag(model)
+                    if isLoadingModels {
+                        ProgressView("Loading models...")
+                    } else if let error = modelLoadError {
+                        Text("Error loading models: \(error)")
+                            .foregroundColor(.red)
+                    } else {
+                        Picker("Model", selection: $ollamaModel) {
+                            ForEach(availableModels, id: \.self) { model in
+                                Text(model).tag(model)
+                            }
                         }
                     }
                     
@@ -52,6 +58,10 @@ struct SettingsView: View {
                     
                     Button("Reset to Default Prompt") {
                         customPrompt = "Summarize the following transcript concisely:"
+                    }
+                    
+                    Button("Refresh Models") {
+                        loadAvailableModels()
                     }
                 }
                 
@@ -73,6 +83,29 @@ struct SettingsView: View {
         }
         .background(Color(NSColor.windowBackgroundColor))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onAppear {
+            loadAvailableModels()
+        }
+    }
+    
+    private func loadAvailableModels() {
+        isLoadingModels = true
+        modelLoadError = nil
+        
+        Task {
+            do {
+                let modelResponse = try await ollama.models()
+                await MainActor.run {
+                    self.availableModels = modelResponse.models.map { $0.name }
+                    self.isLoadingModels = false
+                }
+            } catch {
+                await MainActor.run {
+                    self.modelLoadError = error.localizedDescription
+                    self.isLoadingModels = false
+                }
+            }
+        }
     }
     
     private func settingsSection<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {

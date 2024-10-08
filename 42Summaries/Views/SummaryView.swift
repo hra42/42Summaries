@@ -1,25 +1,43 @@
-//
-//  SummaryView.swift
-//  App42Summaries
-//
-//  Created by Henry Rausch on 04.10.24.
-//
 import SwiftUI
 import AppKit
 
 class SummaryViewModel: ObservableObject {
-    @Published var summary: String
-    @Published var fontSize: CGFloat
-    @Published var textAlignment: TextAlignment
-    @Published var showFormatting: Bool
-    @Published var showExportOptions: Bool
+    @Published var summary: String = ""
+    @Published var fontSize: CGFloat = 16
+    @Published var textAlignment: TextAlignment = .leading
+    @Published var showFormatting: Bool = false
+    @Published var showExportOptions: Bool = false
+    @Published var isGeneratingSummary: Bool = false
+    @Published var errorMessage: String?
     
-    init(summary: String? = nil) {
-        self.summary = summary ?? "This is a sample summary of the transcribed content. It highlights key points and main ideas from the audio or video file."
-        self.fontSize = 16
-        self.textAlignment = .leading
-        self.showFormatting = false
-        self.showExportOptions = false
+    private let summaryService: SummaryService
+    
+    init(summaryService: SummaryService) {
+        self.summaryService = summaryService
+    }
+    
+    func generateSummary(from transcription: String) {
+        isGeneratingSummary = true
+        errorMessage = nil
+        Task {
+            do {
+                let generatedSummary = try await summaryService.generateSummary(from: transcription)
+                await MainActor.run {
+                    self.summary = generatedSummary
+                    self.isGeneratingSummary = false
+                }
+            } catch let error as SummaryError {
+                await MainActor.run {
+                    self.errorMessage = error.description
+                    self.isGeneratingSummary = false
+                }
+            } catch {
+                await MainActor.run {
+                    self.errorMessage = "Unexpected error: \(error.localizedDescription)"
+                    self.isGeneratingSummary = false
+                }
+            }
+        }
     }
     
     func toggleFormatting() {
@@ -37,7 +55,12 @@ class SummaryViewModel: ObservableObject {
 }
 
 struct SummaryView: View {
-    @StateObject private var viewModel = SummaryViewModel()
+    @StateObject private var viewModel: SummaryViewModel
+    @EnvironmentObject private var appState: AppState
+    
+    init() {
+        _viewModel = StateObject(wrappedValue: SummaryViewModel(summaryService: SummaryService()))
+    }
     
     var body: some View {
         VStack(spacing: 20) {
@@ -45,22 +68,37 @@ struct SummaryView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
             
-            ScrollView {
-                Text(viewModel.summary)
-                    .font(.system(size: viewModel.fontSize))
-                    .multilineTextAlignment(viewModel.textAlignment)
+            if viewModel.isGeneratingSummary {
+                ProgressView("Generating Summary...")
+            } else if let errorMessage = viewModel.errorMessage {
+                Text(errorMessage)
+                    .foregroundColor(.red)
                     .padding()
-                    .frame(maxWidth: .infinity, alignment: viewModel.textAlignment == .center ? .center : (viewModel.textAlignment == .trailing ? .trailing : .leading))
+            } else {
+                ScrollView {
+                    Text(viewModel.summary.isEmpty ? "No summary generated yet." : viewModel.summary)
+                        .font(.system(size: viewModel.fontSize))
+                        .multilineTextAlignment(viewModel.textAlignment)
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: viewModel.textAlignment == .center ? .center : (viewModel.textAlignment == .trailing ? .trailing : .leading))
+                }
+                .background(Color.secondary.opacity(0.1))
+                .cornerRadius(10)
             }
-            .background(Color.secondary.opacity(0.1))
-            .cornerRadius(10)
             
             HStack {
+                Button(action: {
+                    viewModel.generateSummary(from: appState.transcriptionManager.transcriptionResult)
+                }) {
+                    Label("Generate Summary", systemImage: "wand.and.stars")
+                }
+                .disabled(appState.transcriptionManager.transcriptionResult.isEmpty || viewModel.isGeneratingSummary)
+                
+                Spacer()
+                
                 Button(action: viewModel.toggleFormatting) {
                     Label("Format", systemImage: "textformat")
                 }
-                
-                Spacer()
                 
                 Button(action: viewModel.copySummary) {
                     Label("Copy", systemImage: "doc.on.doc")
@@ -98,6 +136,9 @@ struct SummaryView: View {
     }
 }
 
-#Preview {
-    SummaryView()
+struct SummaryView_Previews: PreviewProvider {
+    static var previews: some View {
+        SummaryView()
+            .environmentObject(AppState())
+    }
 }

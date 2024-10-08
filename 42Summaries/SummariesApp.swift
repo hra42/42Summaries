@@ -1,9 +1,3 @@
-//
-//  42SummariesApp.swift
-//  42Summaries
-//
-//  Created by Henry Rausch on 04.10.24.
-//
 import SwiftUI
 import UserNotifications
 
