@@ -4,7 +4,6 @@ import OllamaKit
 enum SummaryError: Error, CustomStringConvertible {
     case ollamaServerNotReachable
     case summaryGenerationFailed(String)
-    case urlError(Int, String)
     
     var description: String {
         switch self {
@@ -12,8 +11,6 @@ enum SummaryError: Error, CustomStringConvertible {
             return "Ollama server is not reachable. Please make sure it's running."
         case .summaryGenerationFailed(let message):
             return "Failed to generate summary: \(message)"
-        case .urlError(let code, let message):
-            return "URL Error (Code: \(code)): \(message)"
         }
     }
 }
@@ -28,8 +25,6 @@ class SummaryService {
     func generateSummary(from transcription: String) async throws -> String {
         let customPrompt = UserDefaults.standard.string(forKey: "customPrompt") ?? "Summarize the following transcript concisely:"
         let ollamaModel = UserDefaults.standard.string(forKey: "ollamaModel") ?? "llama3.2:latest"
-        
-        print("Using Ollama model: \(ollamaModel)")
         
         let prompt = """
         \(customPrompt)
@@ -64,12 +59,10 @@ class SummaryService {
             }
             
             return fullResponse
-        } catch let error as NSError {
-            if error.domain == NSURLErrorDomain {
-                throw SummaryError.urlError(error.code, error.localizedDescription)
-            } else {
-                throw SummaryError.summaryGenerationFailed(error.localizedDescription)
-            }
+        } catch let error as SummaryError {
+            throw error
+        } catch {
+            throw SummaryError.summaryGenerationFailed(error.localizedDescription)
         }
     }
 }

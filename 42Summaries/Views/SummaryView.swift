@@ -8,6 +8,7 @@ class SummaryViewModel: ObservableObject {
     @Published var showFormatting: Bool = false
     @Published var showExportOptions: Bool = false
     @Published var isGeneratingSummary: Bool = false
+    @Published var errorMessage: String?
     
     private let summaryService: SummaryService
     
@@ -17,6 +18,7 @@ class SummaryViewModel: ObservableObject {
     
     func generateSummary(from transcription: String) {
         isGeneratingSummary = true
+        errorMessage = nil
         Task {
             do {
                 let generatedSummary = try await summaryService.generateSummary(from: transcription)
@@ -24,9 +26,14 @@ class SummaryViewModel: ObservableObject {
                     self.summary = generatedSummary
                     self.isGeneratingSummary = false
                 }
+            } catch let error as SummaryError {
+                await MainActor.run {
+                    self.errorMessage = error.description
+                    self.isGeneratingSummary = false
+                }
             } catch {
                 await MainActor.run {
-                    self.summary = "Error generating summary: \(error.localizedDescription)"
+                    self.errorMessage = "Unexpected error: \(error.localizedDescription)"
                     self.isGeneratingSummary = false
                 }
             }
@@ -63,9 +70,13 @@ struct SummaryView: View {
             
             if viewModel.isGeneratingSummary {
                 ProgressView("Generating Summary...")
+            } else if let errorMessage = viewModel.errorMessage {
+                Text(errorMessage)
+                    .foregroundColor(.red)
+                    .padding()
             } else {
                 ScrollView {
-                    Text(viewModel.summary)
+                    Text(viewModel.summary.isEmpty ? "No summary generated yet." : viewModel.summary)
                         .font(.system(size: viewModel.fontSize))
                         .multilineTextAlignment(viewModel.textAlignment)
                         .padding()
