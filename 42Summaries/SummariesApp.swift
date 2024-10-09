@@ -6,7 +6,6 @@ struct _42Summaries: App {
     @StateObject private var notificationManager = NotificationManager()
     @StateObject private var appState = AppState()
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @State private var isModelReady = false
     
     init() {
         UNUserNotificationCenter.current().delegate = NotificationHandler.shared
@@ -15,12 +14,13 @@ struct _42Summaries: App {
     var body: some Scene {
         WindowGroup {
             Group {
-                if isModelReady {
+                if appState.modelState == .loaded {
                     MainWindowView()
                         .environmentObject(notificationManager)
                         .environmentObject(appState)
                 } else {
-                    LaunchScreenView(progress: $appState.modelDownloadProgress)
+                    LaunchScreenView()
+                        .environmentObject(appState)
                         .onAppear {
                             initializeWhisperKit()
                         }
@@ -39,12 +39,7 @@ struct _42Summaries: App {
     private func initializeWhisperKit() {
         Task {
             do {
-                try await appState.initializeWhisperKit { progress in
-                    DispatchQueue.main.async {
-                        appState.modelDownloadProgress = progress
-                    }
-                }
-                isModelReady = true
+                try await appState.initializeWhisperKit()
             } catch {
                 print("Error initializing WhisperKit: \(error)")
             }
