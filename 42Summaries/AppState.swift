@@ -14,6 +14,7 @@ class AppState: ObservableObject {
     }
     @Published var transcriptionManager: TranscriptionManager
     @Published var modelDownloadProgress: Float = 0.0
+    @Published var modelState: ModelState = .unloaded
     @Published var whisperKit: WhisperKit?
     let summaryService: SummaryService
     
@@ -22,7 +23,19 @@ class AppState: ObservableObject {
         self.summaryService = SummaryService()
     }
 
-    func initializeWhisperKit(progressCallback: @escaping (Float) -> Void) async throws {
+    func initializeWhisperKit() async throws {
+        await MainActor.run {
+            self.modelState = .downloading
+        }
+
+        // Download the model first
+        _ = try await WhisperKit.download(variant: "openai_whisper-large-v3", from: "argmaxinc/whisperkit-coreml") { progress in
+            Task { @MainActor in
+                self.modelDownloadProgress = Float(progress.fractionCompleted)
+            }
+        }
+
+        // Initialize WhisperKit with the downloaded model
         let config = WhisperKitConfig(
             model: "openai_whisper-large-v3",
             computeOptions: ModelComputeOptions(
@@ -32,8 +45,7 @@ class AppState: ObservableObject {
             verbose: true,
             logLevel: .debug,
             prewarm: true,
-            load: true,
-            download: true
+            load: true
         )
         
         let newWhisperKit = try await WhisperKit(config)
@@ -41,12 +53,20 @@ class AppState: ObservableObject {
         await MainActor.run {
             self.whisperKit = newWhisperKit
             self.transcriptionManager.whisperKit = self.whisperKit
+            self.modelState = .loaded
+            self.modelDownloadProgress = 1.0
         }
     }
+}
+
+enum ModelState: CustomStringConvertible {
+    case unloaded, downloading, loaded
     
-    private func updateModelDownloadProgress(_ progress: Float) {
-        DispatchQueue.main.async {
-            self.modelDownloadProgress = progress
+    var description: String {
+        switch self {
+        case .unloaded: return "Unloaded"
+        case .downloading: return "Downloading"
+        case .loaded: return "Loaded"
         }
     }
 }

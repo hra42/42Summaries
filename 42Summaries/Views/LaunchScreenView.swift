@@ -1,13 +1,7 @@
-//
-//  LaunchScreenView.swift
-//  42Summaries
-//
-//  Created on 06.10.24.
-//
 import SwiftUI
 
 struct LaunchScreenView: View {
-    @Binding var progress: Float
+    @EnvironmentObject var appState: AppState
     
     var body: some View {
         VStack {
@@ -20,17 +14,17 @@ struct LaunchScreenView: View {
                 .font(.system(size: 36, weight: .bold, design: .rounded))
                 .padding(.top, 20)
             
-            Text("Initializing...")
+            Text(appState.modelState.description)
                 .font(.system(size: 18, weight: .medium, design: .rounded))
                 .foregroundColor(.secondary)
                 .padding(.top, 10)
             
-            ProgressView(value: progress)
+            ProgressView(value: appState.modelDownloadProgress)
                 .progressViewStyle(LinearProgressViewStyle())
                 .frame(width: 200)
                 .padding(.top, 20)
             
-            Text("\(Int(progress * 100))%")
+            Text("\(Int(appState.modelDownloadProgress * 100))%")
                 .font(.caption)
                 .padding(.top, 5)
         }
@@ -42,6 +36,7 @@ struct LaunchScreenView: View {
 
 struct LaunchScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        LaunchScreenView(progress: .constant(0.5))
+        LaunchScreenView()
+            .environmentObject(AppState())
     }
 }
