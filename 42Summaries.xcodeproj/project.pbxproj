@@ -163,13 +163,6 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		259B0E342CAF8F420050F2DD /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
 		259B0E352CAF8F420050F2DD /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -202,7 +195,6 @@
 				259B0E322CAF8F420050F2DD /* Services */,
 				259B0E392CAF8F420050F2DD /* SummariesApp.swift */,
 				259B0E332CAF8F420050F2DD /* Utilities */,
-				259B0E342CAF8F420050F2DD /* ViewModels */,
 				259B0E352CAF8F420050F2DD /* Views */,
 			);
 			path = 42Summaries;

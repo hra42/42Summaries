@@ -20,23 +20,6 @@ struct SettingsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                settingsSection("Transcription Settings") {
-                    Toggle("Enable Auto-Save", isOn: $enableAutoSave)
-                    
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text("Transcription Confidence: \(transcriptionConfidence, specifier: "%.2f")")
-                        Slider(value: $transcriptionConfidence, in: 0.5...1.0, step: 0.05)
-                    }
-                }
-                
-                settingsSection("Summary Settings") {
-                    Picker("Summary Length", selection: $summaryLength) {
-                        ForEach(SummaryLength.allCases, id: \.self) { length in
-                            Text(length.rawValue.capitalized).tag(length)
-                        }
-                    }
-                }
-                
                 settingsSection("Ollama Settings") {
                     if isLoadingModels {
                         ProgressView("Loading models...")
@@ -63,20 +46,6 @@ struct SettingsView: View {
                     Button("Refresh Models") {
                         loadAvailableModels()
                     }
-                }
-                
-                settingsSection("Export Settings") {
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text("Font Size: \(Int(exportFontSize))")
-                        Slider(value: $exportFontSize, in: 8...24, step: 1)
-                    }
-                    
-                    Picker("Text Alignment", selection: $exportTextAlignment) {
-                        Text("Left").tag(NSTextAlignment.left)
-                        Text("Center").tag(NSTextAlignment.center)
-                        Text("Right").tag(NSTextAlignment.right)
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
                 }
             }
             .padding()
