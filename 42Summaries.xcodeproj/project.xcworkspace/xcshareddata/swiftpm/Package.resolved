@@ -1,5 +1,5 @@
 {
-  "originHash" : "d7f67daf51fe7652afa1bad464eb469a1568ed9938b4999d29866b323c6bbcb0",
+  "originHash" : "01b8ab46aba908f9e711254d15a89ad035fe3def4c3c036a0ace75326d796c43",
   "pins" : [
     {
       "identity" : "ollamakit",
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/huggingface/swift-transformers.git",
       "state" : {
-        "revision" : "74b94211bdc741694ed7e700a1104c72e5ba68fe",
-        "version" : "0.1.7"
+        "revision" : "fc6543263e4caed9bf6107466d625cfae9357f08",
+        "version" : "0.1.8"
       }
     },
     {
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/argmaxinc/WhisperKit",
       "state" : {
-        "branch" : "main",
-        "revision" : "c2f1b57266bee2deeeac1d7014e1c05bcd32119a"
+        "revision" : "a8a40c9444ae4e7263bd41e5e60b35a92e2cbba3",
+        "version" : "0.9.0"
       }
     }
   ],

@@ -13,7 +13,6 @@ struct MainWindowView: View {
         }
         .navigationTitle("")
         .onChange(of: navigationManager.selectedNavItem) { oldValue, newValue in
-            print("MainWindowView detected change in selectedNavItem from \(oldValue) to \(newValue)")
         }
     }
     

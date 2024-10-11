@@ -16,15 +16,17 @@ class TranscriptionService {
                         return AudioProcessor.convertBufferToArray(buffer: audioFileBuffer)
                     }
                 }.value
-                
-                let (language, _) = try await whisperKit.detectLanguage(audioPath: url.path)
 
                 let options = DecodingOptions(
-                    verbose: true,
+                    verbose: false,
                     task: .transcribe,
-                    language: language,
                     temperature: 0,
-                    sampleLength: 224
+                    usePrefillCache: true,
+                    detectLanguage: true,
+                    skipSpecialTokens: true,
+                    withoutTimestamps: true,
+                    wordTimestamps: false,
+                    chunkingStrategy: .vad
                 )
 
                 let chunkSize = 30 * WhisperKit.sampleRate // 30 seconds of audio

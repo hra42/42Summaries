@@ -40,7 +40,6 @@ struct FileSelectionView: View {
             switch result {
             case .success(let files):
                 if let url = files.first {
-                    print("FileSelectionView: File selected: \(url.path)")
                     if url.startAccessingSecurityScopedResource() {
                         let accessibleURL = url.standardizedFileURL
                         appState.selectedFile = accessibleURL
@@ -48,7 +47,7 @@ struct FileSelectionView: View {
                     }
                 }
             case .failure(let error):
-                print("Error selecting file: \(error.localizedDescription)")
+                sleep(0)
             }
         }
     }

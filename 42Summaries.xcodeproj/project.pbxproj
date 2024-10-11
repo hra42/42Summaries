@@ -13,7 +13,7 @@
 		256D311A2CB18740008612AF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256D31192CB1873D008612AF /* AppDelegate.swift */; };
 		256D311C2CB18AC4008612AF /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256D311B2CB18AC1008612AF /* LaunchScreenView.swift */; };
 		256D312D2CB217B6008612AF /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256D312C2CB217B2008612AF /* AppState.swift */; };
-		25805B262CAF5A2E005E7456 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25805B252CAF5A2E005E7456 /* AVFoundation.framework */; };
+		2575009B2CB9DF2F00CAD5B9 /* WhisperKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2575009A2CB9DF2F00CAD5B9 /* WhisperKit */; };
 		2595A2632CAFA831001E57FF /* TranscriptionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595A2622CAFA82D001E57FF /* TranscriptionStatus.swift */; };
 		2595A2672CAFA9A9001E57FF /* NavigationStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595A2662CAFA9A1001E57FF /* NavigationStateManager.swift */; };
 		2595A2692CB034DD001E57FF /* ExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595A2682CB034D9001E57FF /* ExportManager.swift */; };
@@ -26,7 +26,6 @@
 		259B0E3C2CAF8F420050F2DD /* MainWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259B0E372CAF8F420050F2DD /* MainWindowView.swift */; };
 		259B0E3D2CAF8F420050F2DD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 259B0E302CAF8F420050F2DD /* Preview Assets.xcassets */; };
 		259B0E3E2CAF8F420050F2DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 259B0E362CAF8F420050F2DD /* Assets.xcassets */; };
-		25C0C7702CB2211300294099 /* WhisperKit in Frameworks */ = {isa = PBXBuildFile; productRef = 25C0C76F2CB2211300294099 /* WhisperKit */; };
 		25C0C7722CB2C86F00294099 /* TranscriptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C0C7712CB2C86F00294099 /* TranscriptionService.swift */; };
 		25C0C7742CB2C95300294099 /* TranscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C0C7732CB2C95300294099 /* TranscriptionManager.swift */; };
 		25C6903B2CAFA4500062D4E8 /* FileSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C6903A2CAFA4500062D4E8 /* FileSelectionView.swift */; };
@@ -50,8 +49,6 @@
 		256D31252CB1934B008612AF /* CODE_OF_CONDUCT.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CODE_OF_CONDUCT.md; sourceTree = "<group>"; };
 		256D312C2CB217B2008612AF /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		25805B072CAF5791005E7456 /* 42Summaries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 42Summaries.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		25805B252CAF5A2E005E7456 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		25805B272CAF5A3A005E7456 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
 		2595A2622CAFA82D001E57FF /* TranscriptionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptionStatus.swift; sourceTree = "<group>"; };
 		2595A2662CAFA9A1001E57FF /* NavigationStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStateManager.swift; sourceTree = "<group>"; };
 		2595A2682CB034D9001E57FF /* ExportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportManager.swift; sourceTree = "<group>"; };
@@ -80,8 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25C0C7702CB2211300294099 /* WhisperKit in Frameworks */,
-				25805B262CAF5A2E005E7456 /* AVFoundation.framework in Frameworks */,
+				2575009B2CB9DF2F00CAD5B9 /* WhisperKit in Frameworks */,
 				250E61BA2CB59E33002E48AB /* OllamaKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -114,8 +110,6 @@
 		25805B242CAF5A2E005E7456 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				25805B272CAF5A3A005E7456 /* Speech.framework */,
-				25805B252CAF5A2E005E7456 /* AVFoundation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -210,8 +204,8 @@
 			);
 			name = 42Summaries;
 			packageProductDependencies = (
-				25C0C76F2CB2211300294099 /* WhisperKit */,
 				250E61B92CB59E33002E48AB /* OllamaKit */,
+				2575009A2CB9DF2F00CAD5B9 /* WhisperKit */,
 			);
 			productName = SevenSummaries;
 			productReference = 25805B072CAF5791005E7456 /* 42Summaries.app */;
@@ -242,8 +236,8 @@
 			mainGroup = 25805AFE2CAF5791005E7456;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				25C0C76E2CB2211300294099 /* XCRemoteSwiftPackageReference "WhisperKit" */,
 				250E61B82CB59E33002E48AB /* XCRemoteSwiftPackageReference "OllamaKit" */,
+				257500992CB9DF2F00CAD5B9 /* XCRemoteSwiftPackageReference "WhisperKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 25805B082CAF5791005E7456 /* Products */;
@@ -526,12 +520,12 @@
 				minimumVersion = 5.0.5;
 			};
 		};
-		25C0C76E2CB2211300294099 /* XCRemoteSwiftPackageReference "WhisperKit" */ = {
+		257500992CB9DF2F00CAD5B9 /* XCRemoteSwiftPackageReference "WhisperKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/argmaxinc/WhisperKit";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = exactVersion;
+				version = 0.9.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -542,9 +536,9 @@
 			package = 250E61B82CB59E33002E48AB /* XCRemoteSwiftPackageReference "OllamaKit" */;
 			productName = OllamaKit;
 		};
-		25C0C76F2CB2211300294099 /* WhisperKit */ = {
+		2575009A2CB9DF2F00CAD5B9 /* WhisperKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 25C0C76E2CB2211300294099 /* XCRemoteSwiftPackageReference "WhisperKit" */;
+			package = 257500992CB9DF2F00CAD5B9 /* XCRemoteSwiftPackageReference "WhisperKit" */;
 			productName = WhisperKit;
 		};
 /* End XCSwiftPackageProductDependency section */

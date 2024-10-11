@@ -18,7 +18,6 @@ class ExportManager {
     
     static func exportAsTXT(content: String, fileName: String) {
         guard let data = content.data(using: .utf8) else {
-            print("Failed to convert content to data")
             return
         }
         saveFile(data: data, fileName: fileName, fileType: "txt")
@@ -68,9 +67,7 @@ class ExportManager {
                 guard let url = savePanel.url else { return }
                 do {
                     try data.write(to: url)
-                    print("File saved successfully")
                 } catch {
-                    print("Error saving file: \(error.localizedDescription)")
                 }
             }
         }

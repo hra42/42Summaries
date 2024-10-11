@@ -11,12 +11,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var aboutWindow: NSWindow?
     
     func applicationDidFinishLaunching(_ notification: Notification) {
-        print("AppDelegate: applicationDidFinishLaunching")
         setupAboutMenuItem()
     }
     
     func setupAboutMenuItem() {
-        print("AppDelegate: setupAboutMenuItem")
         
         // Remove existing About menu item if it exists
         if let appMenu = NSApp.mainMenu?.items.first?.submenu {
@@ -33,13 +31,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.mainMenu?.items.first?.submenu?.insertItem(aboutMenuItem, at: 0)
         NSApp.mainMenu?.items.first?.submenu?.insertItem(NSMenuItem.separator(), at: 1)
         
-        print("AppDelegate: About menu item added successfully")
     }
     
     @objc func showAboutView() {
-        print("AppDelegate: showAboutView called")
         if aboutWindow == nil {
-            print("AppDelegate: Creating new about window")
             let aboutView = AboutView()
             let hostingController = NSHostingController(rootView: aboutView)
             
@@ -53,6 +48,5 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         aboutWindow?.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
-        print("AppDelegate: About window should be visible now")
     }
 }

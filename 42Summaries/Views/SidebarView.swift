@@ -26,12 +26,10 @@ struct SidebarView: View {
         .frame(minWidth: 200)
         .onChange(of: localSelection) { _, newValue in
             if let newValue = newValue {
-                print("Local selection changed to: \(newValue)")
                 navigationManager.selectNavItem(newValue)
             }
         }
         .onChange(of: navigationManager.selectedNavItem) { _, newValue in
-            print("NavigationManager selection changed to: \(newValue)")
             localSelection = newValue
         }
     }

@@ -21,10 +21,8 @@ class NotificationManager: ObservableObject {
                 case .notDetermined:
                     self.requestAuthorization()
                 case .denied:
-                    print("Notification permission denied")
                     self.isNotificationPermissionGranted = false
                 case .authorized, .provisional, .ephemeral:
-                    print("Notification permission granted")
                     self.isNotificationPermissionGranted = true
                 @unknown default:
                     break
@@ -37,10 +35,8 @@ class NotificationManager: ObservableObject {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             DispatchQueue.main.async {
                 if granted {
-                    print("Notification permission granted")
                     self.isNotificationPermissionGranted = true
                 } else if let error = error {
-                    print("Error requesting notification permission: \(error.localizedDescription)")
                     self.isNotificationPermissionGranted = false
                 }
             }
@@ -59,11 +55,9 @@ class NotificationManager: ObservableObject {
             
             UNUserNotificationCenter.current().add(request) { error in
                 if let error = error {
-                    print("Error showing notification: \(error.localizedDescription)")
                 }
             }
         } else {
-            print("Cannot show notification: Permission not granted")
             requestAuthorization()
         }
     }

@@ -45,13 +45,11 @@ class SummaryService {
                 throw SummaryError.ollamaServerNotReachable
             }
             
-            print("Generating summary with model: \(ollamaModel)")
             let responseStream: AsyncThrowingStream<OKGenerateResponse, Error> = ollama.generate(data: requestData)
             
             var fullResponse = ""
             for try await partialResponse in responseStream {
                 fullResponse += partialResponse.response
-                print("Received partial response: \(partialResponse.response)")
             }
             
             if fullResponse.isEmpty {

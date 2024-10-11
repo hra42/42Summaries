@@ -5,7 +5,6 @@ class AppState: ObservableObject {
     @Published var selectedFile: URL? {
         didSet {
             DispatchQueue.main.async {
-                print("AppState: Selected file changed to \(self.selectedFile?.path ?? "nil")")
                 if let url = self.selectedFile {
                     self.transcriptionManager.setSelectedFile(url)
                 }
@@ -42,10 +41,12 @@ class AppState: ObservableObject {
                 audioEncoderCompute: .cpuAndGPU,
                 textDecoderCompute: .cpuAndGPU
             ),
-            verbose: true,
-            logLevel: .debug,
+            verbose: false,
+            logLevel: .none,
             prewarm: true,
-            load: true
+            load: true,
+            download: true,
+            useBackgroundDownloadSession: true
         )
         
         let newWhisperKit = try await WhisperKit(config)

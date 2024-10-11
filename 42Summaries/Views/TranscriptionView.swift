@@ -104,7 +104,6 @@ struct TranscriptionView: View {
         if notificationManager.isNotificationPermissionGranted {
             notificationManager.showNotification(title: title, body: body)
         } else {
-            print("Cannot show notification: Permission not granted")
             notificationManager.requestAuthorization()
         }
     }

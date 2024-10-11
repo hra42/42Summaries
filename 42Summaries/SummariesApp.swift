@@ -41,7 +41,6 @@ struct _42Summaries: App {
             do {
                 try await appState.initializeWhisperKit()
             } catch {
-                print("Error initializing WhisperKit: \(error)")
             }
         }
     }

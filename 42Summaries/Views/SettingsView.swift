@@ -3,13 +3,8 @@ import AppKit
 import OllamaKit
 
 struct SettingsView: View {
-    @AppStorage("summaryLength") private var summaryLength = SummaryLength.medium
-    @AppStorage("enableAutoSave") private var enableAutoSave = true
     @AppStorage("ollamaModel") private var ollamaModel = "llama3.2:latest"
     @AppStorage("customPrompt") private var customPrompt = "Summarize the following transcript concisely:"
-    @AppStorage("transcriptionConfidence") private var transcriptionConfidence = 0.65
-    @AppStorage("exportFontSize") private var exportFontSize: Double = 9.0
-    @AppStorage("exportTextAlignment") private var exportTextAlignment = NSTextAlignment.left
     
     @State private var availableModels: [String] = []
     @State private var isLoadingModels = false
@@ -91,10 +86,6 @@ struct SettingsView: View {
                 .stroke(Color.secondary.opacity(0.2), lineWidth: 1)
         )
     }
-}
-
-enum SummaryLength: String, CaseIterable {
-    case short, medium, long
 }
 
 struct SettingsView_Previews: PreviewProvider {
