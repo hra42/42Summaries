@@ -23,7 +23,16 @@ class SummaryService {
     }
     
     func generateSummary(from transcription: String) async throws -> String {
-        let customPrompt = UserDefaults.standard.string(forKey: "customPrompt") ?? "Summarize the following transcript concisely:"
+        let defaultPrompt = """
+        Summarize the following transcript concisely:
+        - Focus on the main ideas and key points
+        - Maintain the original tone and context
+        - Include any important quotes or statistics
+        - Limit the summary to 3-5 sentences
+        - Exclude any redundant or unnecessary information
+        """
+
+        let customPrompt = UserDefaults.standard.string(forKey: "customPrompt") ?? defaultPrompt
         let ollamaModel = UserDefaults.standard.string(forKey: "ollamaModel") ?? "llama3.2:latest"
         
         let prompt = """
