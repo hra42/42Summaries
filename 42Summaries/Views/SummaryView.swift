@@ -2,7 +2,6 @@ import SwiftUI
 import AppKit
 
 class SummaryViewModel: ObservableObject {
-    @Published var summary: String = ""
     @Published var fontSize: CGFloat = 16
     @Published var textAlignment: TextAlignment = .leading
     @Published var showFormatting: Bool = false
@@ -16,14 +15,14 @@ class SummaryViewModel: ObservableObject {
         self.summaryService = summaryService
     }
     
-    func generateSummary(from transcription: String) {
+    func generateSummary(from transcription: String, appState: AppState) {
         isGeneratingSummary = true
         errorMessage = nil
         Task {
             do {
                 let generatedSummary = try await summaryService.generateSummary(from: transcription)
                 await MainActor.run {
-                    self.summary = generatedSummary
+                    appState.summary = generatedSummary
                     self.isGeneratingSummary = false
                 }
             } catch let error as SummaryError {
@@ -48,7 +47,7 @@ class SummaryViewModel: ObservableObject {
         showExportOptions.toggle()
     }
     
-    func copySummary() {
+    func copySummary(summary: String) {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(summary, forType: .string)
     }
@@ -76,7 +75,7 @@ struct SummaryView: View {
                     .padding()
             } else {
                 ScrollView {
-                    Text(viewModel.summary.isEmpty ? "No summary generated yet." : viewModel.summary)
+                    Text(appState.summary.isEmpty ? "No summary generated yet." : appState.summary)
                         .font(.system(size: viewModel.fontSize))
                         .multilineTextAlignment(viewModel.textAlignment)
                         .padding()
@@ -88,7 +87,7 @@ struct SummaryView: View {
             
             HStack {
                 Button(action: {
-                    viewModel.generateSummary(from: appState.transcriptionManager.transcriptionResult)
+                    viewModel.generateSummary(from: appState.transcriptionManager.transcriptionResult, appState: appState)
                 }) {
                     Label("Generate Summary", systemImage: "wand.and.stars")
                 }
@@ -100,7 +99,7 @@ struct SummaryView: View {
                     Label("Format", systemImage: "textformat")
                 }
                 
-                Button(action: viewModel.copySummary) {
+                Button(action: { viewModel.copySummary(summary: appState.summary) }) {
                     Label("Copy", systemImage: "doc.on.doc")
                 }
                 

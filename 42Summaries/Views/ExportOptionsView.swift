@@ -2,39 +2,30 @@ import SwiftUI
 
 struct ExportOptionsView: View {
     @ObservedObject var viewModel: SummaryViewModel
-    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var appState: AppState
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         VStack(spacing: 20) {
             Text("Export Options")
-                .font(.headline)
+                .font(.title)
+                .fontWeight(.bold)
             
-            Button(action: {
-                ExportManager.exportAsPDF(content: viewModel.summary,
-                                          fontSize: viewModel.fontSize,
-                                          alignment: viewModel.textAlignment.toNSTextAlignment(),
-                                          fileName: "Transcription")
-                dismiss()
-            }) {
-                Label("Export as PDF", systemImage: "doc.fill")
+            Button("Export as PDF") {
+                ExportManager.exportAsPDF(content: appState.summary, fontSize: viewModel.fontSize, alignment: viewModel.textAlignment.toNSTextAlignment(), fileName: "Summary")
+                presentationMode.wrappedValue.dismiss()
             }
-            .buttonStyle(.bordered)
             
-            Button(action: {
-                ExportManager.exportAsTXT(content: viewModel.summary, fileName: "Transcription")
-                dismiss()
-            }) {
-                Label("Export as TXT", systemImage: "doc.text.fill")
+            Button("Export as TXT") {
+                ExportManager.exportAsTXT(content: appState.summary, fileName: "Summary")
+                presentationMode.wrappedValue.dismiss()
             }
-            .buttonStyle(.bordered)
             
-            Button("Cancel", role: .cancel) {
-                dismiss()
+            Button("Cancel") {
+                presentationMode.wrappedValue.dismiss()
             }
-            .keyboardShortcut(.cancelAction)
         }
         .padding()
-        .frame(width: 250, height: 200)
     }
 }
 
