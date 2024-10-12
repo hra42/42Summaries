@@ -3,8 +3,10 @@ import AppKit
 import OllamaKit
 
 struct SettingsView: View {
+    @EnvironmentObject var appState: AppState
     @AppStorage("ollamaModel") private var ollamaModel = "llama3.2:latest"
     @AppStorage("customPrompt") private var customPrompt = "Summarize the following transcript concisely:"
+    @AppStorage("powerMode") private var powerMode = "fast"
     
     @State private var availableModels: [String] = []
     @State private var isLoadingModels = false
@@ -15,6 +17,16 @@ struct SettingsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
+                settingsSection("Transcription Settings") {
+                    Picker("Power Mode", selection: Binding(
+                        get: { self.appState.powerMode },
+                        set: { self.appState.updatePowerMode($0) }
+                    )) {
+                        ForEach(["fast", "energy efficient"], id: \.self) { mode in
+                            Text(mode).tag(mode)
+                        }
+                    }
+                }
                 settingsSection("Ollama Settings") {
                     if isLoadingModels {
                         ProgressView("Loading models...")
