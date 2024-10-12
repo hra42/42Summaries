@@ -67,13 +67,7 @@ struct SummaryView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
             
-            if viewModel.isGeneratingSummary {
-                ProgressView("Generating Summary...")
-            } else if let errorMessage = viewModel.errorMessage {
-                Text(errorMessage)
-                    .foregroundColor(.red)
-                    .padding()
-            } else {
+            ZStack {
                 ScrollView {
                     Text(appState.summary.isEmpty ? "No summary generated yet." : appState.summary)
                         .font(.system(size: viewModel.fontSize))
@@ -83,7 +77,22 @@ struct SummaryView: View {
                 }
                 .background(Color.secondary.opacity(0.1))
                 .cornerRadius(10)
+                
+                if viewModel.isGeneratingSummary {
+                    ProgressView("Generating Summary...")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(Color.secondary.opacity(0.5))
+                }
+                
+                if let errorMessage = viewModel.errorMessage {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                        .padding()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(Color.secondary.opacity(0.5))
+                }
             }
+            .frame(height: 300)
             
             HStack {
                 Button(action: {
