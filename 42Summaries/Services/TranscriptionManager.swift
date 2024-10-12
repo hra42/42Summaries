@@ -12,6 +12,14 @@ class TranscriptionManager: ObservableObject {
     var whisperKit: WhisperKit?
     private var transcribeTask: Task<Void, Never>?
     
+    // Add a reference to NotificationManager
+    private let notificationManager: NotificationManager
+    
+    // Update the initializer to include NotificationManager
+    init(notificationManager: NotificationManager) {
+        self.notificationManager = notificationManager
+    }
+    
     func setSelectedFile(_ url: URL) {
         DispatchQueue.main.async {
             self.selectedFileURL = url
@@ -54,10 +62,14 @@ class TranscriptionManager: ObservableObject {
                             self.transcriptionResult = self.processTranscription(transcription)
                             self.status = .completed
                             self.progress = 1.0
+                            // Show notification when transcription is completed
+                            self.notificationManager.showNotification(title: "Transcription Completed", body: "Your audio file has been successfully transcribed.")
                         case .failure(let error):
                             self.errorMessage = error.localizedDescription
                             self.status = .notStarted
                             self.progress = 0.0
+                            // Show notification for transcription failure
+                            self.notificationManager.showNotification(title: "Transcription Failed", body: "An error occurred during transcription.")
                         }
                     }
                 }
