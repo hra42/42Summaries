@@ -1,8 +1,12 @@
+// ExportOptionsView.swift
+
 import SwiftUI
 
 struct ExportOptionsView: View {
-    @ObservedObject var viewModel: SummaryViewModel
-    @EnvironmentObject private var appState: AppState
+    let content: String
+    let fileName: String
+    @Binding var fontSize: CGFloat
+    @Binding var textAlignment: TextAlignment
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
@@ -12,12 +16,12 @@ struct ExportOptionsView: View {
                 .fontWeight(.bold)
             
             Button("Export as PDF") {
-                ExportManager.exportAsPDF(content: appState.summary, fontSize: viewModel.fontSize, alignment: viewModel.textAlignment.toNSTextAlignment(), fileName: "Summary")
+                ExportManager.exportAsPDF(content: content, fontSize: fontSize, alignment: textAlignment.toNSTextAlignment(), fileName: fileName)
                 presentationMode.wrappedValue.dismiss()
             }
             
             Button("Export as TXT") {
-                ExportManager.exportAsTXT(content: appState.summary, fileName: "Summary")
+                ExportManager.exportAsTXT(content: content, fileName: fileName)
                 presentationMode.wrappedValue.dismiss()
             }
             
