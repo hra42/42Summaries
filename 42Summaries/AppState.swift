@@ -15,34 +15,53 @@ class AppState: ObservableObject {
     @Published var modelDownloadProgress: Float = 0.0
     @Published var modelState: ModelState = .unloaded
     @Published var whisperKit: WhisperKit?
+    @Published var powerMode: String {
+        didSet {
+            if oldValue != powerMode {
+                Task {
+                    await reinitializeWhisperKit()
+                }
+            }
+        }
+    }
+    @Published var errorMessage: String?
     let summaryService: SummaryService
     
     init() {
         self.transcriptionManager = TranscriptionManager()
         self.summaryService = SummaryService()
+        self.powerMode = UserDefaults.standard.string(forKey: "powerMode") ?? "fast"
     }
 
-    func initializeWhisperKit() async throws {
+    func initializeWhisperKit() async {
         await MainActor.run {
             self.modelState = .downloading
+            self.errorMessage = nil
         }
 
-        // Download the model first
-        _ = try await WhisperKit.download(variant: "openai_whisper-large-v3", from: "argmaxinc/whisperkit-coreml") { progress in
-            Task { @MainActor in
-                self.modelDownloadProgress = Float(progress.fractionCompleted)
+        do {
+            // Download the model first
+            _ = try await WhisperKit.download(variant: "openai_whisper-large-v3", from: "argmaxinc/whisperkit-coreml") { progress in
+                Task { @MainActor in
+                    self.modelDownloadProgress = Float(progress.fractionCompleted)
+                }
             }
-        }
 
-        // Initialize WhisperKit with the downloaded model
+            try await configureWhisperKit()
+        } catch {
+            await handleError(error)
+        }
+    }
+
+    private func configureWhisperKit() async throws {
         let config = WhisperKitConfig(
             model: "openai_whisper-large-v3",
             computeOptions: ModelComputeOptions(
                 audioEncoderCompute: .cpuAndGPU,
-                textDecoderCompute: .cpuAndGPU
+                textDecoderCompute: powerMode == "fast" ? .cpuAndGPU : .cpuAndNeuralEngine
             ),
-            verbose: false,
-            logLevel: .none,
+            verbose: true,
+            logLevel: .debug,
             prewarm: true,
             load: true,
             download: true,
@@ -58,16 +77,45 @@ class AppState: ObservableObject {
             self.modelDownloadProgress = 1.0
         }
     }
+
+    func reinitializeWhisperKit() async {
+        await MainActor.run {
+            self.modelState = .reconfiguring
+            self.errorMessage = nil
+        }
+
+        do {
+            try await configureWhisperKit()
+        } catch {
+            await handleError(error)
+        }
+    }
+
+    private func handleError(_ error: Error) async {
+        let errorMessage = "Error: \(error.localizedDescription)"
+        print(errorMessage)
+        await MainActor.run {
+            self.modelState = .error
+            self.errorMessage = errorMessage
+        }
+    }
+
+    func updatePowerMode(_ newMode: String) {
+        UserDefaults.standard.set(newMode, forKey: "powerMode")
+        self.powerMode = newMode
+    }
 }
 
 enum ModelState: CustomStringConvertible {
-    case unloaded, downloading, loaded
+    case unloaded, downloading, loaded, reconfiguring, error
     
     var description: String {
         switch self {
         case .unloaded: return "Unloaded"
         case .downloading: return "Downloading"
         case .loaded: return "Loaded"
+        case .reconfiguring: return "Reconfiguring"
+        case .error: return "Error"
         }
     }
 }
