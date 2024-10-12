@@ -25,12 +25,24 @@ class AppState: ObservableObject {
         }
     }
     @Published var errorMessage: String?
+    @Published var transcription: String = "" {
+        didSet {
+            saveTranscription()
+        }
+    }
+    @Published var summary: String = "" {
+        didSet {
+            saveSummary()
+        }
+    }
     let summaryService: SummaryService
     
     init() {
         self.transcriptionManager = TranscriptionManager()
         self.summaryService = SummaryService()
         self.powerMode = UserDefaults.standard.string(forKey: "powerMode") ?? "fast"
+        self.transcription = UserDefaults.standard.string(forKey: "savedTranscription") ?? ""
+        self.summary = UserDefaults.standard.string(forKey: "savedSummary") ?? ""
     }
 
     func initializeWhisperKit() async {
@@ -103,6 +115,14 @@ class AppState: ObservableObject {
     func updatePowerMode(_ newMode: String) {
         UserDefaults.standard.set(newMode, forKey: "powerMode")
         self.powerMode = newMode
+    }
+
+    private func saveTranscription() {
+        UserDefaults.standard.set(transcription, forKey: "savedTranscription")
+    }
+
+    private func saveSummary() {
+        UserDefaults.standard.set(summary, forKey: "savedSummary")
     }
 }
 
