@@ -5,7 +5,8 @@ struct TranscriptionView: View {
     @EnvironmentObject private var notificationManager: NotificationManager
     @ObservedObject private var transcriptionManager: TranscriptionManager
     @State private var showingExportOptions = false
-    @State private var summaryViewModel: SummaryViewModel?
+    @State private var fontSize: CGFloat = 12
+    @State private var textAlignment: TextAlignment = .leading
     
     init(transcriptionManager: TranscriptionManager) {
         self.transcriptionManager = transcriptionManager
@@ -32,9 +33,12 @@ struct TranscriptionView: View {
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .sheet(isPresented: $showingExportOptions) {
-            if let viewModel = summaryViewModel {
-                ExportOptionsView(viewModel: viewModel)
-            }
+            ExportOptionsView(
+                content: transcriptionManager.transcriptionResult,
+                fileName: "Transcription",
+                fontSize: $fontSize,
+                textAlignment: $textAlignment
+            )
         }
     }
     

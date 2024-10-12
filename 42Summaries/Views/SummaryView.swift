@@ -139,7 +139,12 @@ struct SummaryView: View {
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .sheet(isPresented: $viewModel.showExportOptions) {
-            ExportOptionsView(viewModel: viewModel)
+            ExportOptionsView(
+                content: appState.summary,
+                fileName: "Summary",
+                fontSize: $viewModel.fontSize,
+                textAlignment: $viewModel.textAlignment
+            )
         }
     }
 }
