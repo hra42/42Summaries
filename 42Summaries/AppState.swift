@@ -36,9 +36,11 @@ class AppState: ObservableObject {
         }
     }
     let summaryService: SummaryService
+    let notificationManager: NotificationManager
     
     init() {
-        self.transcriptionManager = TranscriptionManager()
+        self.notificationManager = NotificationManager()
+        self.transcriptionManager = TranscriptionManager(notificationManager: self.notificationManager)
         self.summaryService = SummaryService()
         self.powerMode = UserDefaults.standard.string(forKey: "powerMode") ?? "fast"
         self.transcription = UserDefaults.standard.string(forKey: "savedTranscription") ?? ""
