@@ -10,13 +10,12 @@ class SummaryViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     private let summaryService: SummaryService
-    private let appState: AppState
-
+    var appState: AppState
+    
     init(summaryService: SummaryService, appState: AppState) {
         self.summaryService = summaryService
         self.appState = appState
     }
-
     func generateSummary(from transcription: String) {
         isGeneratingSummary = true
         errorMessage = nil
@@ -60,8 +59,8 @@ struct SummaryView: View {
     @EnvironmentObject private var appState: AppState
     
     init() {
-        let appState = AppState()
-        _viewModel = StateObject(wrappedValue: SummaryViewModel(summaryService: appState.summaryService, appState: appState))
+        // Use the @EnvironmentObject appState to create the viewModel
+        _viewModel = StateObject(wrappedValue: SummaryViewModel(summaryService: AppState().summaryService, appState: AppState()))
     }
     
     var body: some View {
@@ -149,8 +148,13 @@ struct SummaryView: View {
                 textAlignment: $viewModel.textAlignment
             )
         }
+        .onAppear {
+            // Update the viewModel's appState reference when the view appears
+            viewModel.appState = self.appState
+        }
     }
 }
+
 
 struct SummaryView_Previews: PreviewProvider {
     static var previews: some View {
