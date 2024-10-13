@@ -10,19 +10,21 @@ class SummaryViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     private let summaryService: SummaryService
-    
-    init(summaryService: SummaryService) {
+    private let appState: AppState
+
+    init(summaryService: SummaryService, appState: AppState) {
         self.summaryService = summaryService
+        self.appState = appState
     }
-    
-    func generateSummary(from transcription: String, appState: AppState) {
+
+    func generateSummary(from transcription: String) {
         isGeneratingSummary = true
         errorMessage = nil
         Task {
             do {
                 let generatedSummary = try await summaryService.generateSummary(from: transcription)
                 await MainActor.run {
-                    appState.summary = generatedSummary
+                    self.appState.summary = generatedSummary
                     self.isGeneratingSummary = false
                 }
             } catch let error as SummaryError {
@@ -58,7 +60,8 @@ struct SummaryView: View {
     @EnvironmentObject private var appState: AppState
     
     init() {
-        _viewModel = StateObject(wrappedValue: SummaryViewModel(summaryService: SummaryService()))
+        let appState = AppState()
+        _viewModel = StateObject(wrappedValue: SummaryViewModel(summaryService: appState.summaryService, appState: appState))
     }
     
     var body: some View {
@@ -96,7 +99,7 @@ struct SummaryView: View {
             
             HStack {
                 Button(action: {
-                    viewModel.generateSummary(from: appState.transcriptionManager.transcriptionResult, appState: appState)
+                    viewModel.generateSummary(from: appState.transcriptionManager.transcriptionResult)
                 }) {
                     Label("Generate Summary", systemImage: "wand.and.stars")
                 }

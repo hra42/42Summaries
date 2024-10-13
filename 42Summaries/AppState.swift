@@ -12,6 +12,7 @@ class AppState: ObservableObject {
         }
     }
     @Published var transcriptionManager: TranscriptionManager
+    @Published var summaryService: SummaryService!
     @Published var modelDownloadProgress: Float = 0.0
     @Published var modelState: ModelState = .unloaded
     @Published var whisperKit: WhisperKit?
@@ -35,16 +36,41 @@ class AppState: ObservableObject {
             saveSummary()
         }
     }
-    let summaryService: SummaryService
     let notificationManager: NotificationManager
+    
+    @Published var llmProvider: LLMProvider = .ollama {
+        didSet {
+            UserDefaults.standard.set(llmProvider.rawValue, forKey: "llmProvider")
+            self.summaryService = SummaryService(appState: self)
+        }
+    }
+    @Published var anthropicApiKey: String = "" {
+        didSet {
+            UserDefaults.standard.set(anthropicApiKey, forKey: "anthropicApiKey")
+            if llmProvider == .anthropic {
+                self.summaryService = SummaryService(appState: self)
+            }
+        }
+    }
+    @Published var openAIApiKey: String = "" {
+        didSet {
+            UserDefaults.standard.set(openAIApiKey, forKey: "openAIApiKey")
+            if llmProvider == .openAI {
+                self.summaryService = SummaryService(appState: self)
+            }
+        }
+    }
     
     init() {
         self.notificationManager = NotificationManager()
         self.transcriptionManager = TranscriptionManager(notificationManager: self.notificationManager)
-        self.summaryService = SummaryService()
         self.powerMode = UserDefaults.standard.string(forKey: "powerMode") ?? "fast"
         self.transcription = UserDefaults.standard.string(forKey: "savedTranscription") ?? ""
         self.summary = UserDefaults.standard.string(forKey: "savedSummary") ?? ""
+        self.llmProvider = LLMProvider(rawValue: UserDefaults.standard.string(forKey: "llmProvider") ?? "ollama") ?? .ollama
+        self.anthropicApiKey = UserDefaults.standard.string(forKey: "anthropicApiKey") ?? ""
+        self.openAIApiKey = UserDefaults.standard.string(forKey: "openAIApiKey") ?? ""
+        self.summaryService = SummaryService(appState: self)
     }
 
     func initializeWhisperKit() async {
@@ -92,6 +118,12 @@ class AppState: ObservableObject {
         }
     }
 
+    func updateLLMProvider(_ newProvider: LLMProvider) {
+        func updateLLMProvider(_ newProvider: LLMProvider) {
+            self.llmProvider = newProvider
+        }
+    }
+    
     func reinitializeWhisperKit() async {
         await MainActor.run {
             self.modelState = .reconfiguring
@@ -141,3 +173,110 @@ enum ModelState: CustomStringConvertible {
         }
     }
 }
+<<<<<<< Updated upstream
+=======
+
+// Add this struct definition outside of the function
+struct FileInfo {
+    let sourceName: String
+    let destinationName: String
+    
+    init(_ name: String) {
+        self.sourceName = name
+        self.destinationName = name
+    }
+    
+    init(source: String, destination: String) {
+        self.sourceName = source
+        self.destinationName = destination
+    }
+}
+
+func copyModelFilesIfNeeded() {
+    let fileManager = FileManager.default
+    guard let containerURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: "tech.postrausch.42Summaries") else {
+        print("Failed to get container URL")
+        return
+    }
+    
+    let targetFolders = [
+        containerURL.appendingPathComponent("Documents/huggingface/models/argmaxinc/whisperkit-coreml/openai_whisper-large-v3"),
+        containerURL.appendingPathComponent("Documents/huggingface/models/openai/whisper-large-v3")
+    ]
+    
+    // Files for the first folder (WhisperKit models)
+    let whisperKitFiles: [FileInfo] = [
+        FileInfo("AudioEncoder.mlmodelc"),
+        FileInfo("config.json"),
+        FileInfo("generation_config.json"),
+        FileInfo("MelSpectrogram.mlmodelc"),
+        FileInfo("TextDecoder.mlmodelc")
+    ]
+    
+    // Files for the second folder
+    let additionalFiles: [FileInfo] = [
+        FileInfo(source: "config2.json", destination: "config.json"),
+        FileInfo("tokenizer.json"),
+        FileInfo("tokenizer_config.json")
+    ]
+    
+    for (index, targetFolder) in targetFolders.enumerated() {
+        // Create the target folder if it doesn't exist
+        do {
+            try fileManager.createDirectory(at: targetFolder, withIntermediateDirectories: true, attributes: nil)
+            print("Created target folder successfully: \(targetFolder.path)")
+        } catch {
+            print("Failed to create target folder: \(error)")
+            continue
+        }
+        
+        let filesToCopy = index == 0 ? whisperKitFiles : additionalFiles
+        
+        for fileInfo in filesToCopy {
+            let destinationURL = targetFolder.appendingPathComponent(fileInfo.destinationName)
+            
+            // Check if the file already exists in the target location
+            if fileManager.fileExists(atPath: destinationURL.path) {
+                print("\(fileInfo.destinationName) already exists in the target location")
+                continue
+            }
+            
+            // Get the source URL from the app bundle
+            guard let sourceURL = Bundle.main.url(forResource: fileInfo.sourceName, withExtension: nil) else {
+                print("Failed to find source file in bundle: \(fileInfo.sourceName)")
+                continue
+            }
+            
+            do {
+                if fileInfo.sourceName.hasSuffix(".mlmodelc") {
+                    // For .mlmodelc directories, we need to copy the entire directory
+                    try fileManager.copyItem(at: sourceURL, to: destinationURL)
+                } else {
+                    // For regular files, we can just copy the file
+                    try fileManager.copyItem(at: sourceURL, to: destinationURL)
+                }
+                print("Copied \(fileInfo.sourceName) successfully to \(targetFolder.lastPathComponent) as \(fileInfo.destinationName)")
+            } catch {
+                print("Failed to copy \(fileInfo.sourceName): \(error)")
+            }
+        }
+        
+        // Print the contents of the target folder
+        print("Contents of target folder \(targetFolder.lastPathComponent):")
+        do {
+            let contents = try fileManager.contentsOfDirectory(at: targetFolder, includingPropertiesForKeys: nil, options: [])
+            for item in contents {
+                print(" - \(item.lastPathComponent)")
+            }
+        } catch {
+            print("Failed to list contents of target folder: \(error)")
+        }
+    }
+}
+
+enum LLMProvider: String, CaseIterable {
+    case ollama
+    case anthropic
+    case openAI
+}
+>>>>>>> Stashed changes

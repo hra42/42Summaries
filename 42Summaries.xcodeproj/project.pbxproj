@@ -14,6 +14,12 @@
 		256D311C2CB18AC4008612AF /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256D311B2CB18AC1008612AF /* LaunchScreenView.swift */; };
 		256D312D2CB217B6008612AF /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256D312C2CB217B2008612AF /* AppState.swift */; };
 		2575009B2CB9DF2F00CAD5B9 /* WhisperKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2575009A2CB9DF2F00CAD5B9 /* WhisperKit */; };
+		257500BF2CBC5F6E00CAD5B9 /* LLMChatOpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = 257500BE2CBC5F6E00CAD5B9 /* LLMChatOpenAI */; };
+		257500C22CBC5FA700CAD5B9 /* LLMChatAnthropic in Frameworks */ = {isa = PBXBuildFile; productRef = 257500C12CBC5FA700CAD5B9 /* LLMChatAnthropic */; };
+		257500C42CBC627600CAD5B9 /* LLMService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257500C32CBC627100CAD5B9 /* LLMService.swift */; };
+		257500C62CBC628C00CAD5B9 /* OllamaSummaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257500C52CBC628A00CAD5B9 /* OllamaSummaryService.swift */; };
+		257500C82CBC62C200CAD5B9 /* AnthropicSummaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257500C72CBC62AD00CAD5B9 /* AnthropicSummaryService.swift */; };
+		257500CA2CBC62D800CAD5B9 /* OpenAISummaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257500C92CBC62D700CAD5B9 /* OpenAISummaryService.swift */; };
 		2595A2632CAFA831001E57FF /* TranscriptionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595A2622CAFA82D001E57FF /* TranscriptionStatus.swift */; };
 		2595A2672CAFA9A9001E57FF /* NavigationStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595A2662CAFA9A1001E57FF /* NavigationStateManager.swift */; };
 		2595A2692CB034DD001E57FF /* ExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2595A2682CB034D9001E57FF /* ExportManager.swift */; };
@@ -48,6 +54,10 @@
 		256D31232CB192FF008612AF /* CONTRIBUTING.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = "<group>"; };
 		256D31252CB1934B008612AF /* CODE_OF_CONDUCT.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CODE_OF_CONDUCT.md; sourceTree = "<group>"; };
 		256D312C2CB217B2008612AF /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		257500C32CBC627100CAD5B9 /* LLMService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLMService.swift; sourceTree = "<group>"; };
+		257500C52CBC628A00CAD5B9 /* OllamaSummaryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OllamaSummaryService.swift; sourceTree = "<group>"; };
+		257500C72CBC62AD00CAD5B9 /* AnthropicSummaryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnthropicSummaryService.swift; sourceTree = "<group>"; };
+		257500C92CBC62D700CAD5B9 /* OpenAISummaryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAISummaryService.swift; sourceTree = "<group>"; };
 		25805B072CAF5791005E7456 /* 42Summaries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 42Summaries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2595A2622CAFA82D001E57FF /* TranscriptionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptionStatus.swift; sourceTree = "<group>"; };
 		2595A2662CAFA9A1001E57FF /* NavigationStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStateManager.swift; sourceTree = "<group>"; };
@@ -78,7 +88,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				2575009B2CB9DF2F00CAD5B9 /* WhisperKit in Frameworks */,
+				257500C22CBC5FA700CAD5B9 /* LLMChatAnthropic in Frameworks */,
 				250E61BA2CB59E33002E48AB /* OllamaKit in Frameworks */,
+				257500BF2CBC5F6E00CAD5B9 /* LLMChatOpenAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,6 +146,10 @@
 		259B0E322CAF8F420050F2DD /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				257500C92CBC62D700CAD5B9 /* OpenAISummaryService.swift */,
+				257500C72CBC62AD00CAD5B9 /* AnthropicSummaryService.swift */,
+				257500C52CBC628A00CAD5B9 /* OllamaSummaryService.swift */,
+				257500C32CBC627100CAD5B9 /* LLMService.swift */,
 				250E61BB2CB5A272002E48AB /* SummaryService.swift */,
 				25C0C7732CB2C95300294099 /* TranscriptionManager.swift */,
 				25C0C7712CB2C86F00294099 /* TranscriptionService.swift */,
@@ -206,6 +222,8 @@
 			packageProductDependencies = (
 				250E61B92CB59E33002E48AB /* OllamaKit */,
 				2575009A2CB9DF2F00CAD5B9 /* WhisperKit */,
+				257500BE2CBC5F6E00CAD5B9 /* LLMChatOpenAI */,
+				257500C12CBC5FA700CAD5B9 /* LLMChatAnthropic */,
 			);
 			productName = SevenSummaries;
 			productReference = 25805B072CAF5791005E7456 /* 42Summaries.app */;
@@ -238,6 +256,8 @@
 			packageReferences = (
 				250E61B82CB59E33002E48AB /* XCRemoteSwiftPackageReference "OllamaKit" */,
 				257500992CB9DF2F00CAD5B9 /* XCRemoteSwiftPackageReference "WhisperKit" */,
+				257500BD2CBC5F6E00CAD5B9 /* XCRemoteSwiftPackageReference "swift-llm-chat-openai" */,
+				257500C02CBC5FA700CAD5B9 /* XCRemoteSwiftPackageReference "swift-llm-chat-anthropic" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 25805B082CAF5791005E7456 /* Products */;
@@ -268,19 +288,23 @@
 			files = (
 				259B0E3B2CAF8F420050F2DD /* SummariesApp.swift in Sources */,
 				2595A2632CAFA831001E57FF /* TranscriptionStatus.swift in Sources */,
+				257500CA2CBC62D800CAD5B9 /* OpenAISummaryService.swift in Sources */,
 				2595A26D2CB0B73E001E57FF /* ErrorView.swift in Sources */,
+				257500C42CBC627600CAD5B9 /* LLMService.swift in Sources */,
 				256D312D2CB217B6008612AF /* AppState.swift in Sources */,
 				25C6903D2CAFA5400062D4E8 /* TranscriptionView.swift in Sources */,
 				256D31182CB186AF008612AF /* AboutView.swift in Sources */,
 				25C6903F2CAFA55E0062D4E8 /* SummaryView.swift in Sources */,
 				25C690412CAFA56C0062D4E8 /* SettingsView.swift in Sources */,
 				2595A26F2CB0B762001E57FF /* NotificationView.swift in Sources */,
+				257500C62CBC628C00CAD5B9 /* OllamaSummaryService.swift in Sources */,
 				2595A2692CB034DD001E57FF /* ExportManager.swift in Sources */,
 				259B0E3C2CAF8F420050F2DD /* MainWindowView.swift in Sources */,
 				2595A26B2CB035DC001E57FF /* ExportOptionsView.swift in Sources */,
 				25C6903B2CAFA4500062D4E8 /* FileSelectionView.swift in Sources */,
 				25C690452CAFA5AB0062D4E8 /* NavigationItem.swift in Sources */,
 				2595A2672CAFA9A9001E57FF /* NavigationStateManager.swift in Sources */,
+				257500C82CBC62C200CAD5B9 /* AnthropicSummaryService.swift in Sources */,
 				25C0C7742CB2C95300294099 /* TranscriptionManager.swift in Sources */,
 				2595A2752CB0B797001E57FF /* NotificationManager.swift in Sources */,
 				25C690472CAFA5E70062D4E8 /* SidebarView.swift in Sources */,
@@ -528,6 +552,22 @@
 				version = 0.9.0;
 			};
 		};
+		257500BD2CBC5F6E00CAD5B9 /* XCRemoteSwiftPackageReference "swift-llm-chat-openai" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kevinhermawan/swift-llm-chat-openai.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.2;
+			};
+		};
+		257500C02CBC5FA700CAD5B9 /* XCRemoteSwiftPackageReference "swift-llm-chat-anthropic" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kevinhermawan/swift-llm-chat-anthropic";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -540,6 +580,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 257500992CB9DF2F00CAD5B9 /* XCRemoteSwiftPackageReference "WhisperKit" */;
 			productName = WhisperKit;
+		};
+		257500BE2CBC5F6E00CAD5B9 /* LLMChatOpenAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 257500BD2CBC5F6E00CAD5B9 /* XCRemoteSwiftPackageReference "swift-llm-chat-openai" */;
+			productName = LLMChatOpenAI;
+		};
+		257500C12CBC5FA700CAD5B9 /* LLMChatAnthropic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 257500C02CBC5FA700CAD5B9 /* XCRemoteSwiftPackageReference "swift-llm-chat-anthropic" */;
+			productName = LLMChatAnthropic;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
