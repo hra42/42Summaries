@@ -6,7 +6,7 @@ import LLMChatAnthropic
 
 struct SettingsView: View {
     @EnvironmentObject var appState: AppState
-    @AppStorage("customPrompt") private var customPrompt = "Summarize the following transcript concisely:"
+    @AppStorage("customPrompt") private var customPrompt = SummaryService.defaultPrompt
     @AppStorage("powerMode") private var powerMode = "fast"
     
     @State private var availableModels: [String] = []
@@ -71,7 +71,7 @@ struct SettingsView: View {
                         .border(Color.secondary.opacity(0.2), width: 1)
                     
                     Button("Reset to Default Prompt") {
-                        customPrompt = "Summarize the following transcript concisely:"
+                        customPrompt = SummaryService.defaultPrompt
                     }
                 }
             }

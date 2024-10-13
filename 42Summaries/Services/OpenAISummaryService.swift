@@ -29,3 +29,4 @@ class OpenAISummaryService: LLMService {
         }
     }
 }
+
