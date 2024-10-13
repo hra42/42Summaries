@@ -1,9 +1,3 @@
-//
-//  NotificationManager.swift
-//  App42Summaries
-//
-//  Created by Henry Rausch on 05.10.24.
-//
 import Foundation
 import UserNotifications
 

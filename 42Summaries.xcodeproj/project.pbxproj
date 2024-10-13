@@ -72,6 +72,14 @@
 		25C690462CAFA5E70062D4E8 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		2575009C2CBBFDBF00CAD5B9 /* embeded_models */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = embeded_models;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		25805B042CAF5791005E7456 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -173,6 +181,7 @@
 		259B0E3A2CAF8F420050F2DD /* 42Summaries */ = {
 			isa = PBXGroup;
 			children = (
+				2575009C2CBBFDBF00CAD5B9 /* embeded_models */,
 				256D31192CB1873D008612AF /* AppDelegate.swift */,
 				256D312C2CB217B2008612AF /* AppState.swift */,
 				259B0E362CAF8F420050F2DD /* Assets.xcassets */,
@@ -201,6 +210,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				2575009C2CBBFDBF00CAD5B9 /* embeded_models */,
 			);
 			name = 42Summaries;
 			packageProductDependencies = (
