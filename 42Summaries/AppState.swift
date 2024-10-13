@@ -12,6 +12,7 @@ class AppState: ObservableObject {
         }
     }
     @Published var transcriptionManager: TranscriptionManager
+    @Published var summaryService: SummaryService!
     @Published var modelDownloadProgress: Float = 0.0
     @Published var modelState: ModelState = .unloaded
     @Published var whisperKit: WhisperKit?
@@ -35,17 +36,42 @@ class AppState: ObservableObject {
             saveSummary()
         }
     }
-    let summaryService: SummaryService
     let notificationManager: NotificationManager
+    
+    @Published var llmProvider: LLMProvider = .ollama {
+        didSet {
+            UserDefaults.standard.set(llmProvider.rawValue, forKey: "llmProvider")
+            self.summaryService = SummaryService(appState: self)
+        }
+    }
+    @Published var anthropicApiKey: String = "" {
+        didSet {
+            UserDefaults.standard.set(anthropicApiKey, forKey: "anthropicApiKey")
+            if llmProvider == .anthropic {
+                self.summaryService = SummaryService(appState: self)
+            }
+        }
+    }
+    @Published var openAIApiKey: String = "" {
+        didSet {
+            UserDefaults.standard.set(openAIApiKey, forKey: "openAIApiKey")
+            if llmProvider == .openAI {
+                self.summaryService = SummaryService(appState: self)
+            }
+        }
+    }
     
     init() {
         copyModelFilesIfNeeded()
         self.notificationManager = NotificationManager()
         self.transcriptionManager = TranscriptionManager(notificationManager: self.notificationManager)
-        self.summaryService = SummaryService()
         self.powerMode = UserDefaults.standard.string(forKey: "powerMode") ?? "fast"
         self.transcription = UserDefaults.standard.string(forKey: "savedTranscription") ?? ""
         self.summary = UserDefaults.standard.string(forKey: "savedSummary") ?? ""
+        self.llmProvider = LLMProvider(rawValue: UserDefaults.standard.string(forKey: "llmProvider") ?? "ollama") ?? .ollama
+        self.anthropicApiKey = UserDefaults.standard.string(forKey: "anthropicApiKey") ?? ""
+        self.openAIApiKey = UserDefaults.standard.string(forKey: "openAIApiKey") ?? ""
+        self.summaryService = SummaryService(appState: self)
     }
 
     func initializeWhisperKit() async {
@@ -89,6 +115,12 @@ class AppState: ObservableObject {
         }
     }
 
+    func updateLLMProvider(_ newProvider: LLMProvider) {
+        func updateLLMProvider(_ newProvider: LLMProvider) {
+            self.llmProvider = newProvider
+        }
+    }
+    
     func reinitializeWhisperKit() async {
         await MainActor.run {
             self.modelState = .reconfiguring
@@ -237,3 +269,8 @@ func copyModelFilesIfNeeded() {
     }
 }
 
+enum LLMProvider: String, CaseIterable {
+    case ollama
+    case anthropic
+    case openAI
+}
