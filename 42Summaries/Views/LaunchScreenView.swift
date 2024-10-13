@@ -14,29 +14,23 @@ struct LaunchScreenView: View {
                 .font(.system(size: 36, weight: .bold, design: .rounded))
                 .padding(.top, 20)
             
-            Text(appState.modelState.description)
+            Text("Initializing...")
                 .font(.system(size: 18, weight: .medium, design: .rounded))
                 .foregroundColor(.secondary)
                 .padding(.top, 10)
             
-            ProgressView(value: appState.modelDownloadProgress)
-                .progressViewStyle(LinearProgressViewStyle())
-                .frame(width: 200)
+            ProgressView()
+                .progressViewStyle(CircularProgressViewStyle())
+                .scaleEffect(1.5)
                 .padding(.top, 20)
             
-            Text("\(Int(appState.modelDownloadProgress * 100))%")
+            Text(appState.modelState.description)
                 .font(.caption)
-                .padding(.top, 5)
+                .foregroundColor(.secondary)
+                .padding(.top, 10)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(NSColor.windowBackgroundColor))
         .edgesIgnoringSafeArea(.all)
-    }
-}
-
-struct LaunchScreenView_Previews: PreviewProvider {
-    static var previews: some View {
-        LaunchScreenView()
-            .environmentObject(AppState())
     }
 }

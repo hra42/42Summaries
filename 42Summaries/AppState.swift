@@ -62,6 +62,7 @@ class AppState: ObservableObject {
     }
     
     init() {
+        copyModelFilesIfNeeded()
         self.notificationManager = NotificationManager()
         self.transcriptionManager = TranscriptionManager(notificationManager: self.notificationManager)
         self.powerMode = UserDefaults.standard.string(forKey: "powerMode") ?? "fast"
@@ -75,18 +76,11 @@ class AppState: ObservableObject {
 
     func initializeWhisperKit() async {
         await MainActor.run {
-            self.modelState = .downloading
+            self.modelState = .loading
             self.errorMessage = nil
         }
 
         do {
-            // Download the model first
-            _ = try await WhisperKit.download(variant: "openai_whisper-large-v3", from: "argmaxinc/whisperkit-coreml") { progress in
-                Task { @MainActor in
-                    self.modelDownloadProgress = Float(progress.fractionCompleted)
-                }
-            }
-
             try await configureWhisperKit()
         } catch {
             await handleError(error)
@@ -94,8 +88,12 @@ class AppState: ObservableObject {
     }
 
     private func configureWhisperKit() async throws {
+        let modelPath = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "tech.postrausch.42Summaries")!
+            .appendingPathComponent("Documents/huggingface/models/argmaxinc/whisperkit-coreml/openai_whisper-large-v3")
+        
         let config = WhisperKitConfig(
             model: "openai_whisper-large-v3",
+            modelFolder: modelPath.path(),
             computeOptions: ModelComputeOptions(
                 audioEncoderCompute: .cpuAndGPU,
                 textDecoderCompute: powerMode == "fast" ? .cpuAndGPU : .cpuAndNeuralEngine
@@ -104,8 +102,7 @@ class AppState: ObservableObject {
             logLevel: .debug,
             prewarm: true,
             load: true,
-            download: true,
-            useBackgroundDownloadSession: true
+            download: false
         )
         
         let newWhisperKit = try await WhisperKit(config)
@@ -161,20 +158,18 @@ class AppState: ObservableObject {
 }
 
 enum ModelState: CustomStringConvertible {
-    case unloaded, downloading, loaded, reconfiguring, error
+    case unloaded, loading, loaded, reconfiguring, error
     
     var description: String {
         switch self {
         case .unloaded: return "Unloaded"
-        case .downloading: return "Downloading"
+        case .loading: return "Loading"
         case .loaded: return "Loaded"
         case .reconfiguring: return "Reconfiguring"
         case .error: return "Error"
         }
     }
 }
-<<<<<<< Updated upstream
-=======
 
 // Add this struct definition outside of the function
 struct FileInfo {
@@ -279,4 +274,3 @@ enum LLMProvider: String, CaseIterable {
     case anthropic
     case openAI
 }
->>>>>>> Stashed changes

@@ -2,3 +2,5 @@
 *.json
 *.mil
 *.bin
+config.json
+tokenizer.json
