@@ -5,6 +5,9 @@
 ## Testflight
 [![Join Beta](https://img.shields.io/badge/Join-TestFlight_Beta-orange.svg)](https://testflight.apple.com/join/yP2NuC4V)
 
+## AppStore
+[![Download on the App Store](https://img.shields.io/badge/Download%20on%20the-App%20Store-blue?style=flat-square&logo=apple&logoColor=white)](https://apps.apple.com/de/app/42summaries/id6736508972?l=en-GB&mt=12)
+
 ## Project Structure
 
 - 42Summaries
