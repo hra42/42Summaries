@@ -3,15 +3,6 @@ import Foundation
 class SummaryService {
     private var llmService: LLMService
     
-    static let defaultPrompt = """
-    Summarize the following transcript concisely:
-    - Focus on the main ideas and key points
-    - Maintain the original tone and context
-    - Include any important quotes or statistics
-    - Limit the summary to 3-5 sentences
-    - Exclude any redundant or unnecessary information
-    """
-    
     init(appState: AppState) {
         switch appState.llmProvider {
         case .ollama:
@@ -23,10 +14,8 @@ class SummaryService {
         }
     }
     
-    func generateSummary(from transcription: String) async throws -> String {
-        let customPrompt = UserDefaults.standard.string(forKey: "customPrompt") ?? SummaryService.defaultPrompt
-        
-        return try await llmService.generateSummary(systemPrompt: customPrompt, userPrompt: transcription)
+    func generateSummary(from transcription: String, using prompt: String) async throws -> String {
+        return try await llmService.generateSummary(systemPrompt: prompt, userPrompt: transcription)
     }
 }
 
