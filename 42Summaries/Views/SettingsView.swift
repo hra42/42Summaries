@@ -6,15 +6,42 @@ import LLMChatAnthropic
 
 struct SettingsView: View {
     @EnvironmentObject var appState: AppState
-    @AppStorage("customPrompt") private var customPrompt = SummaryService.defaultPrompt
+    @AppStorage("selectedPromptId") private var selectedPromptId: String = ""
+    @AppStorage("prompts") private var storedPrompts: Data = try! JSONEncoder().encode(defaultPrompts)
     @AppStorage("powerMode") private var powerMode = "fast"
     
+    @State private var prompts: [Prompt] = []
+    @State private var editedPromptName = ""
+    @State private var editedPromptContent = ""
     @State private var availableModels: [String] = []
     @State private var isLoadingModels = false
     @State private var modelLoadError: String?
     @State private var selectedModel: String = ""
-    
+    @State private var showingResetAlert = false
+    @State private var showingDeleteAlert = false
     private let ollama = OllamaKit(baseURL: URL(string: "http://127.0.0.1:11434")!)
+    
+    static let defaultPrompts: [Prompt] = [
+        Prompt(id: UUID(), name: "Default", content: """
+        Summarize the following transcript concisely:
+        - Only answer in the language of the transcript
+        - Focus on the main ideas and key points
+        - Maintain the original tone and context
+        - Include any important quotes or statistics
+        - Limit the summary to 3-5 sentences
+        - Exclude any redundant or unnecessary information
+        - Keep Line Breaks to a minimum
+        """),
+        Prompt(id: UUID(), name: "Bullet Points", content: """
+        Create a bullet-point summary of the main points in the transcript:
+        - Only answer in the language of the transcript
+        - Extract key ideas and concepts
+        - Use concise language
+        - Maintain the original order of information
+        - Limit to 5-7 bullet points
+        - Keep Line Breaks to a minimum
+        """),
+    ]
     
     var body: some View {
         ScrollView {
@@ -63,15 +90,59 @@ struct SettingsView: View {
                         loadAvailableModels()
                     }
                 }
-
-                settingsSection("Custom Prompt") {
-                    Text("Custom Prompt")
-                    TextEditor(text: $customPrompt)
-                        .frame(height: 100)
+                
+                settingsSection("Prompt Library") {
+                    Picker("Select Prompt", selection: $selectedPromptId) {
+                        ForEach(prompts) { prompt in
+                            Text(prompt.name).tag(prompt.id.uuidString)
+                        }
+                    }
+                    .onChange(of: selectedPromptId) { _, newValue in
+                        if let selectedPrompt = prompts.first(where: { $0.id.uuidString == newValue }) {
+                            editedPromptName = selectedPrompt.name
+                            editedPromptContent = selectedPrompt.content
+                        }
+                    }
+                    
+                    TextField("Prompt Name", text: $editedPromptName)
+                    
+                    TextEditor(text: $editedPromptContent)
+                        .frame(height: 150)
                         .border(Color.secondary.opacity(0.2), width: 1)
                     
-                    Button("Reset to Default Prompt") {
-                        customPrompt = SummaryService.defaultPrompt
+                    HStack {
+                        Button("Save Changes") {
+                            savePrompt()
+                        }
+                        
+                        Button("Delete") {
+                            showingDeleteAlert.toggle()
+                        }
+                        .disabled(prompts.count <= 1)
+                        .alert("Delte Prompts", isPresented: $showingDeleteAlert) {
+                            Button("Cancel", role: .cancel) { }
+                            Button("Delete", role: .destructive) {
+                                deletePrompt()
+                            }
+                        } message: {
+                            Text("This will delete the selected prompt. Are you sure?")
+                        }
+                        
+                        Button("Add New Prompt") {
+                            addNewPrompt()
+                        }
+                        
+                        Button("Reset to Defaults") {
+                            showingResetAlert.toggle()
+                        }
+                        .alert("Reset Prompts", isPresented: $showingResetAlert) {
+                            Button("Cancel", role: .cancel) { }
+                            Button("Reset", role: .destructive) {
+                                resetToDefaultPrompts()
+                            }
+                        } message: {
+                            Text("This will reset the prompts to their default values. Your custom prompts will be kept. Are you sure?")
+                        }
                     }
                 }
             }
@@ -80,9 +151,75 @@ struct SettingsView: View {
         .background(Color(NSColor.windowBackgroundColor))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
+            loadPrompts()
             loadAvailableModels()
         }
     }
+
+    private func loadPrompts() {
+         do {
+             prompts = try JSONDecoder().decode([Prompt].self, from: storedPrompts)
+             if selectedPromptId.isEmpty && !prompts.isEmpty {
+                 selectedPromptId = prompts[0].id.uuidString
+             }
+             if let selectedPrompt = prompts.first(where: { $0.id.uuidString == selectedPromptId }) {
+                 editedPromptName = selectedPrompt.name
+                 editedPromptContent = selectedPrompt.content
+             }
+         } catch {
+             print("Error loading prompts: \(error)")
+             resetToDefaultPrompts()
+         }
+     }
+     
+     private func savePrompt() {
+         if let index = prompts.firstIndex(where: { $0.id.uuidString == selectedPromptId }) {
+             prompts[index].name = editedPromptName
+             prompts[index].content = editedPromptContent
+             savePromptsToStorage()
+         }
+     }
+     
+     private func deletePrompt() {
+         prompts.removeAll { $0.id.uuidString == selectedPromptId }
+         if prompts.isEmpty {
+             resetToDefaultPrompts()
+         } else {
+             selectedPromptId = prompts[0].id.uuidString
+             editedPromptName = prompts[0].name
+             editedPromptContent = prompts[0].content
+             savePromptsToStorage()
+         }
+     }
+     
+     private func addNewPrompt() {
+         let newPrompt = Prompt(id: UUID(), name: "New Prompt", content: "Enter your prompt here...")
+         prompts.append(newPrompt)
+         selectedPromptId = newPrompt.id.uuidString
+         editedPromptName = newPrompt.name
+         editedPromptContent = newPrompt.content
+         savePromptsToStorage()
+     }
+     
+     private func resetToDefaultPrompts() {
+         let customPrompts = prompts.filter { prompt in
+             !Self.defaultPrompts.contains { $0.name == prompt.name }
+         }
+         prompts = Self.defaultPrompts + customPrompts
+         selectedPromptId = prompts[0].id.uuidString
+         editedPromptName = prompts[0].name
+         editedPromptContent = prompts[0].content
+         savePromptsToStorage()
+     }
+     
+     private func savePromptsToStorage() {
+         do {
+             storedPrompts = try JSONEncoder().encode(prompts)
+         } catch {
+             print("Error saving prompts: \(error)")
+         }
+     }
+
     
     private func loadAvailableModels() {
         isLoadingModels = true

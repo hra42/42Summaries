@@ -16,12 +16,22 @@ class SummaryViewModel: ObservableObject {
         self.summaryService = summaryService
         self.appState = appState
     }
+    
     func generateSummary(from transcription: String) {
         isGeneratingSummary = true
         errorMessage = nil
         Task {
             do {
-                let generatedSummary = try await summaryService.generateSummary(from: transcription)
+                // Fetch the selected prompt from AppStorage
+                let storedPrompts = UserDefaults.standard.data(forKey: "prompts") ?? Data()
+                let prompts = try JSONDecoder().decode([Prompt].self, from: storedPrompts)
+                let selectedPromptId = UserDefaults.standard.string(forKey: "selectedPromptId") ?? ""
+                
+                guard let selectedPrompt = prompts.first(where: { $0.id.uuidString == selectedPromptId }) else {
+                    throw SummaryError.summaryGenerationFailed("No prompt selected")
+                }
+                
+                let generatedSummary = try await summaryService.generateSummary(from: transcription, using: selectedPrompt.content)
                 await MainActor.run {
                     self.appState.summary = generatedSummary
                     self.isGeneratingSummary = false
@@ -39,6 +49,7 @@ class SummaryViewModel: ObservableObject {
             }
         }
     }
+
     
     func toggleFormatting() {
         showFormatting.toggle()
