@@ -22,15 +22,36 @@ class SummaryViewModel: ObservableObject {
         errorMessage = nil
         Task {
             do {
-                // Fetch the selected prompt from AppStorage
-                let storedPrompts = UserDefaults.standard.data(forKey: "prompts") ?? Data()
-                let prompts = try JSONDecoder().decode([Prompt].self, from: storedPrompts)
-                let selectedPromptId = UserDefaults.standard.string(forKey: "selectedPromptId") ?? ""
+                let storedPrompts = UserDefaults.standard.data(forKey: "prompts")
+                let prompts: [Prompt]
                 
-                guard let selectedPrompt = prompts.first(where: { $0.id.uuidString == selectedPromptId }) else {
-                    throw SummaryError.summaryGenerationFailed("No prompt selected")
+                if let storedPrompts = storedPrompts, !storedPrompts.isEmpty {
+                    do {
+                        prompts = try JSONDecoder().decode([Prompt].self, from: storedPrompts)
+                    } catch {
+                        print("Error decoding prompts in SummaryViewModel: \(error)")
+                        prompts = SettingsView.defaultPrompts
+                        // Save default prompts to fix the corrupted data
+                        UserDefaults.standard.set(try? JSONEncoder().encode(prompts), forKey: "prompts")
+                    }
+                } else {
+                    print("No stored prompts found, using defaults")
+                    prompts = SettingsView.defaultPrompts
+                    // Save default prompts
+                    UserDefaults.standard.set(try? JSONEncoder().encode(prompts), forKey: "prompts")
                 }
-                
+
+                let selectedPromptId = UserDefaults.standard.string(forKey: "selectedPromptId") ?? ""
+                let selectedPrompt: Prompt
+                if let prompt = prompts.first(where: { $0.id.uuidString == selectedPromptId }) {
+                    selectedPrompt = prompt
+                } else {
+                    print("No matching prompt found for ID: \(selectedPromptId), using first prompt")
+                    selectedPrompt = prompts[0]
+                    // Save the first prompt as selected
+                    UserDefaults.standard.set(selectedPrompt.id.uuidString, forKey: "selectedPromptId")
+                }
+
                 let generatedSummary = try await summaryService.generateSummary(from: transcription, using: selectedPrompt.content)
                 await MainActor.run {
                     self.appState.summary = generatedSummary
@@ -49,7 +70,6 @@ class SummaryViewModel: ObservableObject {
             }
         }
     }
-
     
     func toggleFormatting() {
         showFormatting.toggle()
@@ -163,13 +183,5 @@ struct SummaryView: View {
             // Update the viewModel's appState reference when the view appears
             viewModel.appState = self.appState
         }
-    }
-}
-
-
-struct SummaryView_Previews: PreviewProvider {
-    static var previews: some View {
-        SummaryView()
-            .environmentObject(AppState())
     }
 }
