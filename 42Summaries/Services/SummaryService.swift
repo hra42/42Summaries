@@ -6,11 +6,11 @@ class SummaryService {
     init(appState: AppState) {
         switch appState.llmProvider {
         case .ollama:
-            self.llmService = OllamaSummaryService()
+            self.llmService = OllamaSummaryService(model: appState.selectedModel)
         case .anthropic:
-            self.llmService = AnthropicSummaryService(apiKey: appState.anthropicApiKey)
+            self.llmService = AnthropicSummaryService(apiKey: appState.anthropicApiKey, model: appState.selectedModel)
         case .openAI:
-            self.llmService = OpenAISummaryService(apiKey: appState.openAIApiKey)
+            self.llmService = OpenAISummaryService(apiKey: appState.openAIApiKey, model: appState.selectedModel)
         }
     }
     

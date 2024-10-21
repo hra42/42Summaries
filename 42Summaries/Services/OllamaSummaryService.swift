@@ -4,14 +4,14 @@ import OllamaKit
 
 class OllamaSummaryService: LLMService {
     private let ollama: OllamaKit
+    private let model: String
     
-    init() {
+    init(model: String) {
         self.ollama = OllamaKit(baseURL: URL(string: "http://127.0.0.1:11434")!)
+        self.model = model
     }
     
     func generateSummary(systemPrompt: String, userPrompt: String) async throws -> String {
-        let ollamaModel = UserDefaults.standard.string(forKey: "ollamaModel") ?? "llama3.2:latest"
-        
         let fullPrompt = """
         \(systemPrompt)
         
@@ -21,7 +21,7 @@ class OllamaSummaryService: LLMService {
         """
         
         let requestData = OKGenerateRequestData(
-            model: ollamaModel,
+            model: model,
             prompt: fullPrompt
         )
         
@@ -50,3 +50,4 @@ class OllamaSummaryService: LLMService {
         }
     }
 }
+

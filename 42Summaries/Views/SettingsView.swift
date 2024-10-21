@@ -9,6 +9,7 @@ struct SettingsView: View {
     @AppStorage("selectedPromptId") private var selectedPromptId: String = ""
     @AppStorage("prompts") private var storedPrompts: Data = try! JSONEncoder().encode(defaultPrompts)
     @AppStorage("powerMode") private var powerMode = "fast"
+    @AppStorage("selectedModel") private var selectedModel: String = ""
     
     @State private var prompts: [Prompt] = []
     @State private var editedPromptName = ""
@@ -16,7 +17,6 @@ struct SettingsView: View {
     @State private var availableModels: [String] = []
     @State private var isLoadingModels = false
     @State private var modelLoadError: String?
-    @State private var selectedModel: String = ""
     @State private var showingResetAlert = false
     @State private var showingDeleteAlert = false
     private let ollama = OllamaKit(baseURL: URL(string: "http://127.0.0.1:11434")!)
@@ -83,6 +83,10 @@ struct SettingsView: View {
                             ForEach(availableModels, id: \.self) { model in
                                 Text(model).tag(model)
                             }
+                        }
+                        .disabled(availableModels.isEmpty)
+                        .onChange(of: selectedModel) { oldValue, newValue in
+                            UserDefaults.standard.set(newValue, forKey: "selectedModel")
                         }
                     }
                     
@@ -153,25 +157,37 @@ struct SettingsView: View {
         .onAppear {
             loadPrompts()
             loadAvailableModels()
+            if selectedModel.isEmpty {
+                selectedModel = UserDefaults.standard.string(forKey: "selectedModel") ?? ""
+            }
         }
     }
 
     private func loadPrompts() {
-         do {
-             prompts = try JSONDecoder().decode([Prompt].self, from: storedPrompts)
-             if selectedPromptId.isEmpty && !prompts.isEmpty {
-                 selectedPromptId = prompts[0].id.uuidString
-             }
-             if let selectedPrompt = prompts.first(where: { $0.id.uuidString == selectedPromptId }) {
-                 editedPromptName = selectedPrompt.name
-                 editedPromptContent = selectedPrompt.content
-             }
-         } catch {
-             print("Error loading prompts: \(error)")
-             resetToDefaultPrompts()
-         }
-     }
-     
+        do {
+            prompts = try JSONDecoder().decode([Prompt].self, from: storedPrompts)
+        } catch {
+            print("Error loading prompts: \(error)")
+            prompts = Self.defaultPrompts
+        }
+        
+        if prompts.isEmpty {
+            prompts = Self.defaultPrompts
+        }
+        
+        if selectedPromptId.isEmpty || !prompts.contains(where: { $0.id.uuidString == selectedPromptId }) {
+            selectedPromptId = prompts[0].id.uuidString
+        }
+        
+        if let selectedPrompt = prompts.first(where: { $0.id.uuidString == selectedPromptId }) {
+            editedPromptName = selectedPrompt.name
+            editedPromptContent = selectedPrompt.content
+        } else {
+            editedPromptName = prompts[0].name
+            editedPromptContent = prompts[0].content
+        }
+    }
+
      private func savePrompt() {
          if let index = prompts.firstIndex(where: { $0.id.uuidString == selectedPromptId }) {
              prompts[index].name = editedPromptName
@@ -212,15 +228,16 @@ struct SettingsView: View {
          savePromptsToStorage()
      }
      
-     private func savePromptsToStorage() {
-         do {
-             storedPrompts = try JSONEncoder().encode(prompts)
-         } catch {
-             print("Error saving prompts: \(error)")
-         }
-     }
+    private func savePromptsToStorage() {
+        do {
+            let encoder = JSONEncoder()
+            storedPrompts = try encoder.encode(prompts)
+            UserDefaults.standard.set(selectedPromptId, forKey: "selectedPromptId")
+        } catch {
+            print("Error saving prompts: \(error)")
+        }
+    }
 
-    
     private func loadAvailableModels() {
         isLoadingModels = true
         modelLoadError = nil
@@ -244,7 +261,6 @@ struct SettingsView: View {
                             .sorted()
                     }
                 case .anthropic:
-                    // Anthropic doesn't have a models endpoint, so we'll use a predefined list
                     await MainActor.run {
                         self.availableModels = ["claude-3-5-sonnet-20240620", "claude-3-opus-20240229", "claude-3-haiku-20240307"]
                     }
@@ -252,8 +268,8 @@ struct SettingsView: View {
                 
                 await MainActor.run {
                     self.isLoadingModels = false
-                    if !self.availableModels.isEmpty {
-                        self.selectedModel = self.availableModels[0]
+                    if self.selectedModel.isEmpty || !self.availableModels.contains(self.selectedModel) {
+                        self.selectedModel = self.availableModels.first ?? ""
                     }
                 }
             } catch {
@@ -264,7 +280,7 @@ struct SettingsView: View {
             }
         }
     }
-    
+
     private func settingsSection<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(title)
