@@ -41,14 +41,14 @@ class AppState: ObservableObject {
     @Published var llmProvider: LLMProvider = .ollama {
         didSet {
             UserDefaults.standard.set(llmProvider.rawValue, forKey: "llmProvider")
-            self.summaryService = SummaryService(appState: self)
+            updateSummaryService()
         }
     }
     @Published var anthropicApiKey: String = "" {
         didSet {
             UserDefaults.standard.set(anthropicApiKey, forKey: "anthropicApiKey")
             if llmProvider == .anthropic {
-                self.summaryService = SummaryService(appState: self)
+                updateSummaryService()
             }
         }
     }
@@ -56,11 +56,18 @@ class AppState: ObservableObject {
         didSet {
             UserDefaults.standard.set(openAIApiKey, forKey: "openAIApiKey")
             if llmProvider == .openAI {
-                self.summaryService = SummaryService(appState: self)
+                updateSummaryService()
             }
         }
     }
     
+    @Published var selectedModel: String = "" {
+        didSet {
+            UserDefaults.standard.set(selectedModel, forKey: "selectedModel")
+            updateSummaryService()
+        }
+    }
+
     init() {
         copyModelFilesIfNeeded()
         self.notificationManager = NotificationManager()
@@ -71,6 +78,16 @@ class AppState: ObservableObject {
         self.llmProvider = LLMProvider(rawValue: UserDefaults.standard.string(forKey: "llmProvider") ?? "ollama") ?? .ollama
         self.anthropicApiKey = UserDefaults.standard.string(forKey: "anthropicApiKey") ?? ""
         self.openAIApiKey = UserDefaults.standard.string(forKey: "openAIApiKey") ?? ""
+        self.selectedModel = UserDefaults.standard.string(forKey: "selectedModel") ?? ""
+        
+        setupSummaryService()
+    }
+    
+    private func setupSummaryService() {
+        self.summaryService = SummaryService(appState: self)
+    }
+
+    private func updateSummaryService() {
         self.summaryService = SummaryService(appState: self)
     }
 
@@ -89,17 +106,17 @@ class AppState: ObservableObject {
 
     private func configureWhisperKit() async throws {
         let modelPath = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "tech.postrausch.42Summaries")!
-            .appendingPathComponent("Documents/huggingface/models/argmaxinc/whisperkit-coreml/openai_whisper-large-v3")
+            .appendingPathComponent("Documents/huggingface/models/argmaxinc/whisperkit-coreml/openai_whisper-large-v3-v20240930_547MB")
         
         let config = WhisperKitConfig(
-            model: "openai_whisper-large-v3",
-            modelFolder: modelPath.path(),
+            model: "openai_whisper-large-v3-v20240930_547MB",
+            modelFolder: modelPath.path,
             computeOptions: ModelComputeOptions(
                 audioEncoderCompute: .cpuAndGPU,
                 textDecoderCompute: powerMode == "fast" ? .cpuAndGPU : .cpuAndNeuralEngine
             ),
-            verbose: true,
-            logLevel: .debug,
+            verbose: false,
+            logLevel: .none,
             prewarm: true,
             load: true,
             download: false
@@ -116,9 +133,7 @@ class AppState: ObservableObject {
     }
 
     func updateLLMProvider(_ newProvider: LLMProvider) {
-        func updateLLMProvider(_ newProvider: LLMProvider) {
-            self.llmProvider = newProvider
-        }
+        self.llmProvider = newProvider
     }
     
     func reinitializeWhisperKit() async {
@@ -171,7 +186,6 @@ enum ModelState: CustomStringConvertible {
     }
 }
 
-// Add this struct definition outside of the function
 struct FileInfo {
     let sourceName: String
     let destinationName: String
@@ -195,11 +209,10 @@ func copyModelFilesIfNeeded() {
     }
     
     let targetFolders = [
-        containerURL.appendingPathComponent("Documents/huggingface/models/argmaxinc/whisperkit-coreml/openai_whisper-large-v3"),
+        containerURL.appendingPathComponent("Documents/huggingface/models/argmaxinc/whisperkit-coreml/openai_whisper-large-v3-v20240930_547MB"),
         containerURL.appendingPathComponent("Documents/huggingface/models/openai/whisper-large-v3")
     ]
     
-    // Files for the first folder (WhisperKit models)
     let whisperKitFiles: [FileInfo] = [
         FileInfo("AudioEncoder.mlmodelc"),
         FileInfo("config.json"),
@@ -208,7 +221,6 @@ func copyModelFilesIfNeeded() {
         FileInfo("TextDecoder.mlmodelc")
     ]
     
-    // Files for the second folder
     let additionalFiles: [FileInfo] = [
         FileInfo(source: "config2.json", destination: "config.json"),
         FileInfo("tokenizer.json"),
@@ -216,7 +228,6 @@ func copyModelFilesIfNeeded() {
     ]
     
     for (index, targetFolder) in targetFolders.enumerated() {
-        // Create the target folder if it doesn't exist
         do {
             try fileManager.createDirectory(at: targetFolder, withIntermediateDirectories: true, attributes: nil)
             print("Created target folder successfully: \(targetFolder.path)")
@@ -230,13 +241,11 @@ func copyModelFilesIfNeeded() {
         for fileInfo in filesToCopy {
             let destinationURL = targetFolder.appendingPathComponent(fileInfo.destinationName)
             
-            // Check if the file already exists in the target location
             if fileManager.fileExists(atPath: destinationURL.path) {
                 print("\(fileInfo.destinationName) already exists in the target location")
                 continue
             }
             
-            // Get the source URL from the app bundle
             guard let sourceURL = Bundle.main.url(forResource: fileInfo.sourceName, withExtension: nil) else {
                 print("Failed to find source file in bundle: \(fileInfo.sourceName)")
                 continue
@@ -244,10 +253,8 @@ func copyModelFilesIfNeeded() {
             
             do {
                 if fileInfo.sourceName.hasSuffix(".mlmodelc") {
-                    // For .mlmodelc directories, we need to copy the entire directory
                     try fileManager.copyItem(at: sourceURL, to: destinationURL)
                 } else {
-                    // For regular files, we can just copy the file
                     try fileManager.copyItem(at: sourceURL, to: destinationURL)
                 }
                 print("Copied \(fileInfo.sourceName) successfully to \(targetFolder.lastPathComponent) as \(fileInfo.destinationName)")
@@ -256,7 +263,6 @@ func copyModelFilesIfNeeded() {
             }
         }
         
-        // Print the contents of the target folder
         print("Contents of target folder \(targetFolder.lastPathComponent):")
         do {
             let contents = try fileManager.contentsOfDirectory(at: targetFolder, includingPropertiesForKeys: nil, options: [])
