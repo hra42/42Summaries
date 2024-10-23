@@ -262,7 +262,7 @@ struct SettingsView: View {
                     }
                 case .anthropic:
                     await MainActor.run {
-                        self.availableModels = ["claude-3-5-sonnet-20240620", "claude-3-opus-20240229", "claude-3-haiku-20240307"]
+                        self.availableModels = ["claude-3-5-sonnet-latest", "claude-3-opus-latest", "claude-3-haiku-20240307"]
                     }
                 }
                 
