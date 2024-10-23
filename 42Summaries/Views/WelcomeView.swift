@@ -15,14 +15,17 @@ struct WelcomeView: View {
                 .frame(width: 128, height: 128)
             Text("Welcome to 42Summaries")
                 .font(.title)
-            Text("Select an item from the sidebar to get started")
-                .font(.subheadline)
+            Text("Please follow the getting started guide to get started")
+                .font(.caption)
+                .foregroundColor(.secondary)
+            Text("https://42summaries.com/#get-started")
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .underline()
+            Text("If you followed the guide please click on select file to get started with trasforming your content")
+                .font(.caption)
                 .foregroundColor(.secondary)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
-}
-
-#Preview {
-    WelcomeView()
 }
