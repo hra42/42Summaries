@@ -4,9 +4,11 @@ import LLMChatAnthropic
 
 class AnthropicSummaryService: LLMService {
     private let apiKey: String
+    private let model: String
     
-    init(apiKey: String) {
+    init(apiKey: String, model: String) {
         self.apiKey = apiKey
+        self.model = model
     }
     
     func generateSummary(systemPrompt: String, userPrompt: String) async throws -> String {
@@ -22,7 +24,7 @@ class AnthropicSummaryService: LLMService {
         ]
         
         do {
-            let completion = try await anthropic.send(model: "claude-3-5-sonnet-20240620", messages: messages)
+            let completion = try await anthropic.send(model: model, messages: messages)
             return completion.content.first?.text ?? ""
         } catch {
             throw SummaryError.summaryGenerationFailed(error.localizedDescription)
