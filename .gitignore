@@ -5,3 +5,4 @@
 config.json
 tokenizer.json
 Build/
+*.xcuserstate
