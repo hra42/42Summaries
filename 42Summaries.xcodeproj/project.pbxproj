@@ -41,6 +41,7 @@
 		25C690432CAFA5760062D4E8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C690422CAFA5760062D4E8 /* WelcomeView.swift */; };
 		25C690452CAFA5AB0062D4E8 /* NavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C690442CAFA5AB0062D4E8 /* NavigationItem.swift */; };
 		25C690472CAFA5E70062D4E8 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C690462CAFA5E70062D4E8 /* SidebarView.swift */; };
+		25DC96BB2CCD492C0057A4BB /* AIModelRetriever in Frameworks */ = {isa = PBXBuildFile; productRef = 25DC96BA2CCD492C0057A4BB /* AIModelRetriever */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -99,6 +100,7 @@
 				257500C22CBC5FA700CAD5B9 /* LLMChatAnthropic in Frameworks */,
 				250E61BA2CB59E33002E48AB /* OllamaKit in Frameworks */,
 				257500BF2CBC5F6E00CAD5B9 /* LLMChatOpenAI in Frameworks */,
+				25DC96BB2CCD492C0057A4BB /* AIModelRetriever in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,6 +230,7 @@
 				2575009A2CB9DF2F00CAD5B9 /* WhisperKit */,
 				257500BE2CBC5F6E00CAD5B9 /* LLMChatOpenAI */,
 				257500C12CBC5FA700CAD5B9 /* LLMChatAnthropic */,
+				25DC96BA2CCD492C0057A4BB /* AIModelRetriever */,
 			);
 			productName = SevenSummaries;
 			productReference = 25805B072CAF5791005E7456 /* 42Summaries.app */;
@@ -262,6 +265,7 @@
 				257500992CB9DF2F00CAD5B9 /* XCRemoteSwiftPackageReference "WhisperKit" */,
 				257500BD2CBC5F6E00CAD5B9 /* XCRemoteSwiftPackageReference "swift-llm-chat-openai" */,
 				257500C02CBC5FA700CAD5B9 /* XCRemoteSwiftPackageReference "swift-llm-chat-anthropic" */,
+				25DC96B92CCD492C0057A4BB /* XCRemoteSwiftPackageReference "swift-ai-model-retriever" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 25805B082CAF5791005E7456 /* Products */;
@@ -572,6 +576,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		25DC96B92CCD492C0057A4BB /* XCRemoteSwiftPackageReference "swift-ai-model-retriever" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kevinhermawan/swift-ai-model-retriever";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -594,6 +606,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 257500C02CBC5FA700CAD5B9 /* XCRemoteSwiftPackageReference "swift-llm-chat-anthropic" */;
 			productName = LLMChatAnthropic;
+		};
+		25DC96BA2CCD492C0057A4BB /* AIModelRetriever */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 25DC96B92CCD492C0057A4BB /* XCRemoteSwiftPackageReference "swift-ai-model-retriever" */;
+			productName = AIModelRetriever;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
