@@ -1,5 +1,5 @@
 {
-  "originHash" : "191b629feda49a27ca2db998771cf58d51a2b9970c0294ca888ca58614b9d5e2",
+  "originHash" : "b79e8e891d14d561790bc97e8740a1663831bad4242e0c766702303551b71d84",
   "pins" : [
     {
       "identity" : "ollamakit",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "f947524e08fa8b0ddb875834a81ed7b4cf9ea23a",
         "version" : "5.0.5"
+      }
+    },
+    {
+      "identity" : "swift-ai-model-retriever",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kevinhermawan/swift-ai-model-retriever",
+      "state" : {
+        "revision" : "585de8246341cf0b715357ecfd57c20aea52545c",
+        "version" : "1.0.2"
       }
     },
     {

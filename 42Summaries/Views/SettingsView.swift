@@ -3,6 +3,7 @@ import AppKit
 import OllamaKit
 import LLMChatOpenAI
 import LLMChatAnthropic
+import AIModelRetriever
 
 struct SettingsView: View {
     @EnvironmentObject var appState: AppState
@@ -243,26 +244,32 @@ struct SettingsView: View {
         modelLoadError = nil
         availableModels = []
         
+        let modelRetriever = AIModelRetriever()
+        
         Task {
             do {
                 switch appState.llmProvider {
                 case .ollama:
-                    let modelResponse = try await ollama.models()
+                    let models = try await modelRetriever.ollama()
                     await MainActor.run {
-                        self.availableModels = modelResponse.models.map { $0.name }
+                        self.availableModels = models.map { $0.name }
                     }
+                    
                 case .openAI:
-                    let openAI = LLMChatOpenAI(apiKey: appState.openAIApiKey)
-                    let models = try await openAI.models()
+                    let models = try await modelRetriever.openAI(apiKey: appState.openAIApiKey)
                     await MainActor.run {
-                        self.availableModels = models.data
-                            .map { $0.id }
+                        self.availableModels = models
+                            .map { $0.name }
                             .filter { $0.lowercased().starts(with: "gpt") || $0.lowercased().starts(with: "chatgpt") }
                             .sorted()
                     }
+                    
                 case .anthropic:
-                    await MainActor.run {
-                        self.availableModels = ["claude-3-5-sonnet-latest", "claude-3-opus-latest", "claude-3-haiku-20240307"]
+                    do {
+                        let models = modelRetriever.anthropic()
+                        await MainActor.run {
+                            self.availableModels = models.map { $0.id }
+                        }
                     }
                 }
                 
@@ -280,6 +287,7 @@ struct SettingsView: View {
             }
         }
     }
+
 
     private func settingsSection<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 10) {
