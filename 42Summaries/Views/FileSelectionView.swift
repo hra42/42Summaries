@@ -46,7 +46,7 @@ struct FileSelectionView: View {
                         appState.transcriptionManager.setSelectedFile(accessibleURL)
                     }
                 }
-            case .failure(let error):
+            case .failure(_):
                 sleep(0)
             }
         }

@@ -30,13 +30,13 @@ class SummaryViewModel: ObservableObject {
                         prompts = try JSONDecoder().decode([Prompt].self, from: storedPrompts)
                     } catch {
                         print("Error decoding prompts in SummaryViewModel: \(error)")
-                        prompts = SettingsView.defaultPrompts
+                        prompts = await SettingsView.defaultPrompts
                         // Save default prompts to fix the corrupted data
                         UserDefaults.standard.set(try? JSONEncoder().encode(prompts), forKey: "prompts")
                     }
                 } else {
                     print("No stored prompts found, using defaults")
-                    prompts = SettingsView.defaultPrompts
+                    prompts = await SettingsView.defaultPrompts
                     // Save default prompts
                     UserDefaults.standard.set(try? JSONEncoder().encode(prompts), forKey: "prompts")
                 }

@@ -30,7 +30,7 @@ class NotificationManager: ObservableObject {
             DispatchQueue.main.async {
                 if granted {
                     self.isNotificationPermissionGranted = true
-                } else if let error = error {
+                } else if error != nil {
                     self.isNotificationPermissionGranted = false
                 }
             }
@@ -48,7 +48,7 @@ class NotificationManager: ObservableObject {
             let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
             
             UNUserNotificationCenter.current().add(request) { error in
-                if let error = error {
+                if error != nil {
                 }
             }
         } else {

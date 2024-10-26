@@ -39,9 +39,8 @@ struct _42Summaries: App {
     private func initializeWhisperKit() {
         Task {
             do {
-                try await appState.initializeWhisperKit()
-            } catch {
-            }
+                await appState.initializeWhisperKit()
+            } 
         }
     }
 }
