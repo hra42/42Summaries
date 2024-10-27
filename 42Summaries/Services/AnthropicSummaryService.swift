@@ -16,7 +16,10 @@ class AnthropicSummaryService: LLMService {
             throw SummaryError.invalidAPIKey
         }
         
-        let anthropic = LLMChatAnthropic(apiKey: apiKey, customHeaders: ["anthropic-beta": "prompt-caching-2024-07-31"])
+        let anthropic = LLMChatAnthropic(
+            apiKey: apiKey,
+            headers: ["anthropic-beta": "prompt-caching-2024-07-31"]
+        )
         
         let messages = [
             ChatMessage(role: .system, content: systemPrompt),
