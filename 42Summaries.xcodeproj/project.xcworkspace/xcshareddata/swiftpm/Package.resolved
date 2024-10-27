@@ -1,6 +1,15 @@
 {
-  "originHash" : "b79e8e891d14d561790bc97e8740a1663831bad4242e0c766702303551b71d84",
+  "originHash" : "abbe3fd56d8148eed5c6b499b2b4d8608e4f60ceb73c8b194b01f4a4cddb18c0",
   "pins" : [
+    {
+      "identity" : "networkimage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/gonzalezreal/NetworkImage",
+      "state" : {
+        "revision" : "2849f5323265386e200484b0d0f896e73c3411b9",
+        "version" : "6.0.1"
+      }
+    },
     {
       "identity" : "ollamakit",
       "kind" : "remoteSourceControl",
@@ -29,6 +38,15 @@
       }
     },
     {
+      "identity" : "swift-cmark",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-cmark",
+      "state" : {
+        "revision" : "3ccff77b2dc5b96b77db3da0d68d28068593fa53",
+        "version" : "0.5.0"
+      }
+    },
+    {
       "identity" : "swift-json-schema",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kevinhermawan/swift-json-schema.git",
@@ -42,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kevinhermawan/swift-llm-chat-anthropic",
       "state" : {
-        "revision" : "d18262962edf7d8e55782b7b637db9162f59664a",
-        "version" : "1.0.0"
+        "revision" : "8c2479aa80f3398a795bd70bafb416de54d314ca",
+        "version" : "1.1.0"
       }
     },
     {
@@ -51,8 +69,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kevinhermawan/swift-llm-chat-openai.git",
       "state" : {
-        "revision" : "10d75d74106bb5495a51140b683c06b7195e2357",
-        "version" : "1.0.2"
+        "revision" : "b001a11cbbace1be95a63c0605c7571c64fce4a7",
+        "version" : "1.1.2"
+      }
+    },
+    {
+      "identity" : "swift-markdown-ui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/gonzalezreal/swift-markdown-ui",
+      "state" : {
+        "revision" : "5f613358148239d0292c0cef674a3c2314737f9e",
+        "version" : "2.4.1"
       }
     },
     {
