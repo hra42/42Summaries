@@ -8,6 +8,9 @@ struct TranscriptionView: View {
     @State private var fontSize: CGFloat = 12
     @State private var textAlignment: TextAlignment = .leading
     
+    @AppStorage("selectedPromptId") private var selectedPromptId: String = ""
+    @AppStorage("prompts") private var storedPrompts: Data = try! JSONEncoder().encode(SettingsView.defaultPrompts)
+    
     init(transcriptionManager: TranscriptionManager) {
         self.transcriptionManager = transcriptionManager
     }
@@ -36,9 +39,21 @@ struct TranscriptionView: View {
             ExportOptionsView(
                 content: transcriptionManager.transcriptionResult,
                 fileName: "Transcription",
+                selectedPrompt: getSelectedPrompt(),
+                source: .transcription,
                 fontSize: $fontSize,
                 textAlignment: $textAlignment
             )
+        }
+    }
+    
+    private func getSelectedPrompt() -> String? {
+        do {
+            let prompts = try JSONDecoder().decode([Prompt].self, from: storedPrompts)
+            return prompts.first(where: { $0.id.uuidString == selectedPromptId })?.content
+        } catch {
+            print("Error loading prompt: \(error)")
+            return nil
         }
     }
     
@@ -102,6 +117,25 @@ struct TranscriptionView: View {
                 }
             }
         }
+    }
+    
+    private func exportToChatGPT() {
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        
+        var exportContent = ""
+        if let prompt = getSelectedPrompt() {
+            exportContent += prompt + "\n\n"
+        }
+        exportContent += transcriptionManager.transcriptionResult
+        
+        pasteboard.setString(exportContent, forType: .string)
+        
+        if let url = URL(string: "https://chat.openai.com") {
+            NSWorkspace.shared.open(url)
+        }
+        
+        showNotification(title: "ChatGPT Export", body: "Transcription with prompt copied. Ready to paste into ChatGPT.")
     }
     
     private func showNotification(title: String, body: String) {

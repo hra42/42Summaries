@@ -19,6 +19,19 @@ class SummaryViewModel: ObservableObject {
         self.appState = appState
     }
     
+    func getSelectedPrompt() -> String? {
+        if let storedPrompts = UserDefaults.standard.data(forKey: "prompts") {
+            do {
+                let prompts = try JSONDecoder().decode([Prompt].self, from: storedPrompts)
+                let selectedPromptId = UserDefaults.standard.string(forKey: "selectedPromptId") ?? ""
+                return prompts.first(where: { $0.id.uuidString == selectedPromptId })?.content
+            } catch {
+                print("Error decoding prompts: \(error)")
+            }
+        }
+        return nil
+    }
+    
     func generateSummary(from transcription: String) {
         isGeneratingSummary = true
         errorMessage = nil
@@ -233,6 +246,8 @@ struct SummaryView: View {
             ExportOptionsView(
                 content: appState.summary,
                 fileName: "Summary",
+                selectedPrompt: viewModel.getSelectedPrompt(),
+                source: .summary,
                 fontSize: $viewModel.fontSize,
                 textAlignment: $viewModel.textAlignment
             )
