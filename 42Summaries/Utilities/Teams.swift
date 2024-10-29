@@ -105,8 +105,8 @@ class TeamsAPIClient {
             self.spacing = spacing
         }
     }
-
-    func sendMessage(channelId: String, teamId: String, content: String) async throws {
+    
+    func sendFormattedMessage(channelId: String, teamId: String, content: String) async throws {
         let endpoint = "\(baseURL)/teams/\(teamId)/channels/\(channelId)/messages"
         
         guard let url = URL(string: endpoint) else {
@@ -118,160 +118,125 @@ class TeamsAPIClient {
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let lines = content.components(separatedBy: "\n")
-        let title = lines[0].trimmingCharacters(in: .whitespaces)
-            .replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression)
+        // Parse content into lines
+        let lines = content.components(separatedBy: .newlines)
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
         
-        var bodyElements: [[String: Any]] = [
+        // Create the adaptive card structure
+        var cardBody: [[String: Any]] = [
+            // Header with logo and app name
             [
-                "type": "Container",
-                "bleed": true,
-                "items": [
+                "type": "ColumnSet",
+                "columns": [
                     [
-                        "type": "Table",
-                        "showGridLines": false,
-                        "columns": [
-                            ["width": 1],
-                            ["width": 4]
-                        ],
-                        "rows": [
+                        "type": "Column",
+                        "items": [
                             [
-                                "type": "TableRow",
-                                "cells": [
-                                    [
-                                        "type": "TableCell",
-                                        "items": [
-                                            [
-                                                "type": "Image",
-                                                "url": "https://public-files.postrausch.tech/Logo_new.png",
-                                                "size": "Large"
-                                            ]
-                                        ]
-                                    ],
-                                    [
-                                        "type": "TableCell",
-                                        "items": [
-                                            [
-                                                "type": "TextBlock",
-                                                "text": "42Summaries",
-                                                "wrap": true,
-                                                "size": "Large",
-                                                "weight": "Bolder"
-                                            ]
-                                        ],
-                                        "verticalContentAlignment": "Center",
-                                        "spacing": "None"
-                                    ]
-                                ],
-                                "style": "accent"
+                                "type": "Image",
+                                "url": "https://42summaries.com/logo_new.png",
+                                "size": "large"
                             ]
-                        ]
+                        ],
+                        "verticalContentAlignment": "Center"
+                    ],
+                    [
+                        "type": "Column",
+                        "width": "stretch",
+                        "items": [
+                            [
+                                "type": "TextBlock",
+                                "text": "Summaries",
+                                "size": "Large",
+                                "weight": "Bolder",
+                                "color": "Default"
+                            ]
+                        ],
+                        "verticalContentAlignment": "Center"
                     ]
                 ],
-                "minHeight": "0px",
-                "backgroundImage": [
-                    "url": "["
-                ]
-            ],
-            [
-                "type": "TextBlock",
-                "text": title,
-                "wrap": true,
+                "spacing": "None",
                 "style": "default"
             ]
         ]
         
-        for line in lines.dropFirst() {
-            let cleanLine = line.trimmingCharacters(in: .whitespaces)
-                .replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression)
+        var isFirstContentLine = true
+        
+        // Process all lines
+        for line in lines {
+            let trimmedLine = line.trimmingCharacters(in: .whitespaces)
             
-            if cleanLine.hasPrefix("* ") {
-                let text = cleanLine.dropFirst(2)
-                bodyElements.append([
-                    "type": "ColumnSet",
-                    "columns": [
-                        [
-                            "type": "Column",
-                            "width": "auto",
-                            "items": [
-                                [
-                                    "type": "TextBlock",
-                                    "text": "•",
-                                    "size": "Large",
-                                    "weight": "Bolder",
-                                    "horizontalAlignment": "Center"
-                                ]
-                            ]
-                        ],
-                        [
-                            "type": "Column",
-                            "width": "stretch",
-                            "items": [
-                                [
-                                    "type": "TextBlock",
-                                    "text": text,
-                                    "wrap": true
-                                ]
-                            ],
-                            "verticalContentAlignment": "Center"
-                        ]
-                    ]
-                ])
-            } else if cleanLine.hasPrefix("  - ") {
-                let text = cleanLine.dropFirst(4)
-                bodyElements.append([
-                    "type": "ColumnSet",
-                    "columns": [
-                        [
-                            "type": "Column",
-                            "width": "auto",
-                            "items": [
-                                [
-                                    "type": "TextBlock",
-                                    "text": "‣",
-                                    "size": "Large",
-                                    "weight": "Bolder",
-                                    "horizontalAlignment": "Right"
-                                ]
-                            ]
-                        ],
-                        [
-                            "type": "Column",
-                            "width": "stretch",
-                            "items": [
-                                [
-                                    "type": "TextBlock",
-                                    "text": text,
-                                    "wrap": true,
-                                    "isSubtle": true
-                                ]
-                            ],
-                            "verticalContentAlignment": "Center"
-                        ]
-                    ],
-                    "spacing": "Small"
-                ])
-            } else if !cleanLine.isEmpty {
-                bodyElements.append([
+            // Skip the title line if it's "Summaries"
+            if trimmedLine == "Summaries" {
+                continue
+            }
+            
+            if isFirstContentLine {
+                isFirstContentLine = false
+                cardBody.append([
                     "type": "TextBlock",
-                    "text": cleanLine,
+                    "text": trimmedLine,
                     "wrap": true,
-                    "style": "default"
+                    "size": "Medium",
+                    "weight": "Bolder",
+                    "spacing": "Medium"
                 ])
+            } else {
+                // Handle bullet points and other content
+                if trimmedLine.hasPrefix("* ") {
+                    // Main bullet points
+                    let content = String(trimmedLine.dropFirst(2))
+                    cardBody.append([
+                        "type": "TextBlock",
+                        "text": "• \(content)",
+                        "wrap": true,
+                        "spacing": "Small"
+                    ])
+                } else if trimmedLine.hasPrefix("  - ") {
+                    // Sub-bullet points
+                    let content = trimmedLine.replacingOccurrences(of: "  - ", with: "")
+                    cardBody.append([
+                        "type": "TextBlock",
+                        "text": "  ‣ \(content)",
+                        "wrap": true,
+                        "spacing": "Small",
+                        "isSubtle": true
+                    ])
+                } else {
+                    // Handle lines that start with bullet points but without the "* " prefix
+                    if trimmedLine.hasPrefix("•") {
+                        let content = trimmedLine.replacingOccurrences(of: "•", with: "").trimmingCharacters(in: .whitespaces)
+                        cardBody.append([
+                            "type": "TextBlock",
+                            "text": "• \(content)",
+                            "wrap": true,
+                            "spacing": "Small"
+                        ])
+                    } else {
+                        // Regular text
+                        cardBody.append([
+                            "type": "TextBlock",
+                            "text": trimmedLine,
+                            "wrap": true,
+                            "spacing": "Small"
+                        ])
+                    }
+                }
             }
         }
         
+        // Create the complete adaptive card
         let adaptiveCard: [String: Any] = [
             "type": "AdaptiveCard",
             "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
             "version": "1.5",
-            "body": bodyElements
+            "body": cardBody
         ]
         
-        let cardData = try JSONSerialization.data(withJSONObject: adaptiveCard)
-        let cardString = String(data: cardData, encoding: .utf8)!
-        
+        // Generate unique message ID and create the final message structure
         let messageId = UUID().uuidString
+        let adaptiveCardData = try JSONSerialization.data(withJSONObject: adaptiveCard)
+        let adaptiveCardString = String(data: adaptiveCardData, encoding: .utf8)!
         
         let message: [String: Any] = [
             "body": [
@@ -283,15 +248,12 @@ class TeamsAPIClient {
                     "id": messageId,
                     "contentType": "application/vnd.microsoft.card.adaptive",
                     "contentUrl": nil,
-                    "content": cardString
+                    "content": adaptiveCardString
                 ]
             ]
         ]
         
-        let data = try JSONSerialization.data(withJSONObject: message)
-        request.httpBody = data
-        
-        print("Request body: \(String(data: data, encoding: .utf8) ?? "")")
+        request.httpBody = try JSONSerialization.data(withJSONObject: message)
         
         let (responseData, response) = try await URLSession.shared.data(for: request)
         

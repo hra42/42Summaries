@@ -1,5 +1,4 @@
 import SwiftUI
-import ZMarkupParser
 
 struct ExportOptionsView: View {
     enum ExportSource {
@@ -82,7 +81,7 @@ struct ExportOptionsView: View {
             Text("""
                  The content has been copied to your clipboard.
                  After clicking Continue:\n
-
+                 
                  1. ChatGPT will open in your browser
                  2. Wait for the page to load
                  3. Click in the chat input field
@@ -99,7 +98,7 @@ struct ExportOptionsView: View {
             Text("""
                 The content has been copied to your clipboard.
                 After clicking Continue:\n
-
+                
                 1. Claude will open in your browser
                 2. Wait for the page to load
                 3. Click in the chat input field
@@ -116,7 +115,7 @@ struct ExportOptionsView: View {
             Text("""
                 The content has been copied to your clipboard.
                 After clicking Continue:\n
-
+                
                 1. Perplexity will open in your browser
                 2. Wait for the page to load
                 3. Click in the chat input field
@@ -246,7 +245,7 @@ struct ExportOptionsView: View {
             }
         }
     }
-
+    
     private func loadChannels(for team: Team) async {
         await MainActor.run {
             isLoadingChannels = true
@@ -273,7 +272,7 @@ struct ExportOptionsView: View {
             isLoadingChannels = false
         }
     }
-
+    
     private func exportToTeams() {
         guard let team = selectedTeam,
               let channel = selectedChannel else {
@@ -287,33 +286,10 @@ struct ExportOptionsView: View {
                     tenantId: teamsTenantId
                 )
                 
-                let lines = content.components(separatedBy: "\n")
-                var htmlParts: [String] = []
-                
-                let htmlString = """
-                <div style='font-family: -apple-system; font-size: 14px; line-height: 1.5;'>
-                    <p style='margin-bottom: 12px;'>\(lines[0])</p>
-                    <div style='margin: 0; padding: 0;'>
-                """
-                
-                for line in lines.dropFirst() {
-                    if line.hasPrefix("* ") {
-                        let content = line.replacingOccurrences(of: "* ", with: "")
-                        htmlParts.append("<div style='margin: 0 0 8px 0;'>• \(content)</div>")
-                    } else if line.hasPrefix("  - ") {
-                        let content = line.replacingOccurrences(of: "  - ", with: "")
-                        htmlParts.append("<div style='margin: 0 0 8px 20px;'>‣ \(content)</div>")
-                    } else if !line.isEmpty {
-                        htmlParts.append("<div style='margin: 0 0 8px 0;'>\(line)</div>")
-                    }
-                }
-                
-                let finalHtml = htmlString + htmlParts.joined(separator: "\n") + "</div></div>"
-                
-                try await client.sendMessage(
+                try await client.sendFormattedMessage(
                     channelId: channel.id,
                     teamId: team.id,
-                    content: finalHtml
+                    content: content
                 )
                 
                 await MainActor.run {
@@ -334,7 +310,8 @@ struct ExportOptionsView: View {
                 }
             }
         }
-    }}
+    }
+}
 
 struct TeamsSelectionView: View {
     let content: String

@@ -1,5 +1,5 @@
 {
-  "originHash" : "3a8ec10007a9062f6921c471f5298a0b86e0ca49aa865d8b2fcd3c494d7d746a",
+  "originHash" : "9d2132cdbe0c7e93ad92a8bb4e989116dcc20760c396c3d0d591c0a9aae1a9c4",
   "pins" : [
     {
       "identity" : "microsoft-authentication-library-for-objc",
@@ -107,24 +107,6 @@
       "state" : {
         "revision" : "a8a40c9444ae4e7263bd41e5e60b35a92e2cbba3",
         "version" : "0.9.0"
-      }
-    },
-    {
-      "identity" : "zmarkupparser",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ZhgChgLi/ZMarkupParser.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "8c84e10c873ef7781b9c89a295f47870033feede"
-      }
-    },
-    {
-      "identity" : "znstextattachment",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ZhgChgLi/ZNSTextAttachment",
-      "state" : {
-        "revision" : "8c6c34e82eb31ad373b209cb88c2a2aff76c6cdf",
-        "version" : "1.1.9"
       }
     }
   ],
