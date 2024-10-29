@@ -25,6 +25,17 @@ class AppState: ObservableObject {
             }
         }
     }
+    @Published var teamsClientId: String = "" {
+        didSet {
+            UserDefaults.standard.set(teamsClientId, forKey: "teamsClientId")
+        }
+    }
+    
+    @Published var teamsTenantId: String = "" {
+        didSet {
+            UserDefaults.standard.set(teamsTenantId, forKey: "teamsTenantId")
+        }
+    }
     @Published var errorMessage: String?
     @Published var transcription: String = "" {
         didSet {
@@ -79,6 +90,8 @@ class AppState: ObservableObject {
         self.anthropicApiKey = UserDefaults.standard.string(forKey: "anthropicApiKey") ?? ""
         self.openAIApiKey = UserDefaults.standard.string(forKey: "openAIApiKey") ?? ""
         self.selectedModel = UserDefaults.standard.string(forKey: "selectedModel") ?? ""
+        self.teamsClientId = UserDefaults.standard.string(forKey: "teamsClientId") ?? ""
+        self.teamsTenantId = UserDefaults.standard.string(forKey: "teamsTenantId") ?? ""
         
         setupSummaryService()
     }

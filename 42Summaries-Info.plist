@@ -10,5 +10,21 @@
 	<string></string>
 	<key>NSUserNotificationUsageDescription</key>
 	<string>We need to send you notifications about transcription status and other important events.</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>msauth.tech.postrausch.42Summaries</string>
+            </array>
+            <key>CFBundleURLName</key>
+            <string>tech.postrausch.42Summaries</string>
+        </dict>
+    </array>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>msauthv2</string>
+        <string>msauthv3</string>
+    </array>
 </dict>
 </plist>
