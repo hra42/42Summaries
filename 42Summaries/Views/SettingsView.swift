@@ -11,6 +11,8 @@ struct SettingsView: View {
     @AppStorage("prompts") private var storedPrompts: Data = try! JSONEncoder().encode(defaultPrompts)
     @AppStorage("powerMode") private var powerMode = "fast"
     @AppStorage("selectedModel") private var selectedModel: String = ""
+    @AppStorage("teamsClientId") private var teamsClientId = ""
+    @AppStorage("teamsTenantId") private var teamsTenantId = ""
     
     @State private var prompts: [Prompt] = []
     @State private var editedPromptName = ""
@@ -20,6 +22,7 @@ struct SettingsView: View {
     @State private var modelLoadError: String?
     @State private var showingResetAlert = false
     @State private var showingDeleteAlert = false
+    
     private let ollama = OllamaKit(baseURL: URL(string: "http://127.0.0.1:11434")!)
     
     static let defaultPrompts: [Prompt] = [
@@ -94,6 +97,23 @@ struct SettingsView: View {
                     Button("Refresh Models") {
                         loadAvailableModels()
                     }
+                }
+                
+                settingsSection("Microsoft Teams Settings") {
+                    TextField("Client ID", text: $appState.teamsClientId)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    
+                    TextField("Tenant ID", text: $appState.teamsTenantId)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    
+                    Link("Register your application in Azure Portal",
+                         destination: URL(string: "https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade")!)
+                        .font(.caption)
+                        .foregroundColor(.blue)
+                    
+                    Text("Required for exporting summaries to Teams")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
                 }
                 
                 settingsSection("Prompt Library") {

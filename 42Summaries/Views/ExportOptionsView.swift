@@ -1,4 +1,5 @@
 import SwiftUI
+import ZMarkupParser
 
 struct ExportOptionsView: View {
     enum ExportSource {
@@ -9,7 +10,7 @@ struct ExportOptionsView: View {
     let content: String
     let fileName: String
     let selectedPrompt: String?
-    let source: ExportSource // New parameter
+    let source: ExportSource
     @Binding var fontSize: CGFloat
     @Binding var textAlignment: TextAlignment
     @Environment(\.presentationMode) var presentationMode
@@ -17,6 +18,17 @@ struct ExportOptionsView: View {
     @State private var showingChatGPTInstructions = false
     @State private var showingClaudeAIInstructions = false
     @State private var showingPerplexityInstructions: Bool = false
+    @State private var showingTeamsSelection = false
+    @AppStorage("teamsClientId") private var teamsClientId = ""
+    @AppStorage("teamsTenantId") private var teamsTenantId = ""
+    
+    @State private var teams: [Team] = []
+    @State private var channels: [Channel] = []
+    @State private var selectedTeam: Team?
+    @State private var selectedChannel: Channel?
+    @State private var isLoadingTeams = false
+    @State private var isLoadingChannels = false
+    @State private var teamsError: String?
     
     var body: some View {
         VStack(spacing: 20) {
@@ -28,17 +40,20 @@ struct ExportOptionsView: View {
                 Button("Export to ChatGPT") {
                     showingChatGPTInstructions = true
                 }
-            }
-            
-            if source == .transcription {
+                
                 Button("Export to Claude") {
                     showingClaudeAIInstructions = true
                 }
-            }
-            
-            if source == .transcription {
+                
                 Button("Export to Perplexity") {
                     showingPerplexityInstructions = true
+                }
+            }
+            
+            if source == .summary {
+                Button("Export to Teams") {
+                    loadTeams()
+                    showingTeamsSelection = true
                 }
             }
             
@@ -67,6 +82,7 @@ struct ExportOptionsView: View {
             Text("""
                  The content has been copied to your clipboard.
                  After clicking Continue:\n
+
                  1. ChatGPT will open in your browser
                  2. Wait for the page to load
                  3. Click in the chat input field
@@ -83,21 +99,24 @@ struct ExportOptionsView: View {
             Text("""
                 The content has been copied to your clipboard.
                 After clicking Continue:\n
+
                 1. Claude will open in your browser
                 2. Wait for the page to load
                 3. Click in the chat input field
                 4. Press Cmd+V to paste
                 """)
-            }
+        }
         .alert("Export to Perplexity", isPresented: $showingPerplexityInstructions) {
             Button("Continue") {
                 exportToPPLX()
-                presentationMode.wrappedValue.dismiss() }
+                presentationMode.wrappedValue.dismiss()
+            }
             Button("Cancel", role: .cancel) { }
         } message: {
-                Text("""
+            Text("""
                 The content has been copied to your clipboard.
                 After clicking Continue:\n
+
                 1. Perplexity will open in your browser
                 2. Wait for the page to load
                 3. Click in the chat input field
@@ -105,15 +124,32 @@ struct ExportOptionsView: View {
                 5. Deactivate Pro Mode
                 6. Press Cmd+V to paste
                 """)
-            }
         }
+        .sheet(isPresented: $showingTeamsSelection) {
+            TeamsSelectionView(
+                content: content,
+                teams: teams,
+                channels: channels,
+                selectedTeam: $selectedTeam,
+                selectedChannel: $selectedChannel,
+                isLoadingTeams: isLoadingTeams,
+                isLoadingChannels: isLoadingChannels,
+                error: teamsError,
+                onTeamSelected: { team in
+                    Task {
+                        await loadChannels(for: team)
+                    }
+                },
+                onExport: exportToTeams
+            )
+        }
+    }
     
     private func exportToChatGPT() {
         let providerURL = "https://chat.openai.com"
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
         
-        // Format the content with the prompt if available
         var exportContent = ""
         if let prompt = selectedPrompt {
             exportContent += prompt + "\n\n"
@@ -137,7 +173,6 @@ struct ExportOptionsView: View {
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
         
-        // Format the content with the prompt if available
         var exportContent = ""
         if let prompt = selectedPrompt {
             exportContent += prompt + "\n\n"
@@ -161,7 +196,6 @@ struct ExportOptionsView: View {
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
         
-        // Format the content with the prompt if available
         var exportContent = ""
         if let prompt = selectedPrompt {
             exportContent += prompt + "\n\n"
@@ -178,6 +212,183 @@ struct ExportOptionsView: View {
             title: "Content Copied",
             body: "Perplexity is opening. Press Cmd+V to paste when ready."
         )
+    }
+    
+    private func loadTeams() {
+        guard !teamsClientId.isEmpty && !teamsTenantId.isEmpty else {
+            teamsError = "Please configure Teams Client ID and Tenant ID in Settings"
+            return
+        }
+        
+        isLoadingTeams = true
+        teamsError = nil
+        
+        Task {
+            do {
+                let client = try await TeamsAuthManager.shared.getTeamsClient(
+                    clientId: teamsClientId,
+                    tenantId: teamsTenantId
+                )
+                teams = try await client.getTeams()
+                
+                if let team = teams.first {
+                    selectedTeam = team
+                    await loadChannels(for: team)
+                }
+            } catch {
+                await MainActor.run {
+                    teamsError = error.localizedDescription
+                }
+            }
+            
+            await MainActor.run {
+                isLoadingTeams = false
+            }
+        }
+    }
+
+    private func loadChannels(for team: Team) async {
+        await MainActor.run {
+            isLoadingChannels = true
+            teamsError = nil
+        }
+        
+        do {
+            let client = try await TeamsAuthManager.shared.getTeamsClient(
+                clientId: teamsClientId,
+                tenantId: teamsTenantId
+            )
+            channels = try await client.getChannels(teamId: team.id)
+            
+            if let channel = channels.first {
+                selectedChannel = channel
+            }
+        } catch {
+            await MainActor.run {
+                teamsError = error.localizedDescription
+            }
+        }
+        
+        await MainActor.run {
+            isLoadingChannels = false
+        }
+    }
+
+    private func exportToTeams() {
+        guard let team = selectedTeam,
+              let channel = selectedChannel else {
+            return
+        }
+        
+        Task {
+            do {
+                let client = try await TeamsAuthManager.shared.getTeamsClient(
+                    clientId: teamsClientId,
+                    tenantId: teamsTenantId
+                )
+                
+                let lines = content.components(separatedBy: "\n")
+                var htmlParts: [String] = []
+                
+                let htmlString = """
+                <div style='font-family: -apple-system; font-size: 14px; line-height: 1.5;'>
+                    <p style='margin-bottom: 12px;'>\(lines[0])</p>
+                    <div style='margin: 0; padding: 0;'>
+                """
+                
+                for line in lines.dropFirst() {
+                    if line.hasPrefix("* ") {
+                        let content = line.replacingOccurrences(of: "* ", with: "")
+                        htmlParts.append("<div style='margin: 0 0 8px 0;'>• \(content)</div>")
+                    } else if line.hasPrefix("  - ") {
+                        let content = line.replacingOccurrences(of: "  - ", with: "")
+                        htmlParts.append("<div style='margin: 0 0 8px 20px;'>‣ \(content)</div>")
+                    } else if !line.isEmpty {
+                        htmlParts.append("<div style='margin: 0 0 8px 0;'>\(line)</div>")
+                    }
+                }
+                
+                let finalHtml = htmlString + htmlParts.joined(separator: "\n") + "</div></div>"
+                
+                try await client.sendMessage(
+                    channelId: channel.id,
+                    teamId: team.id,
+                    content: finalHtml
+                )
+                
+                await MainActor.run {
+                    notificationManager.showNotification(
+                        title: "Success",
+                        body: "Content exported to Teams"
+                    )
+                    showingTeamsSelection = false
+                    presentationMode.wrappedValue.dismiss()
+                }
+            } catch {
+                await MainActor.run {
+                    teamsError = error.localizedDescription
+                    notificationManager.showNotification(
+                        title: "Error",
+                        body: "Failed to export to Teams: \(error.localizedDescription)"
+                    )
+                }
+            }
+        }
+    }}
+
+struct TeamsSelectionView: View {
+    let content: String
+    let teams: [Team]
+    let channels: [Channel]
+    @Binding var selectedTeam: Team?
+    @Binding var selectedChannel: Channel?
+    let isLoadingTeams: Bool
+    let isLoadingChannels: Bool
+    let error: String?
+    let onTeamSelected: (Team) -> Void
+    let onExport: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Export to Teams")
+                .font(.title2)
+                .fontWeight(.bold)
+            
+            if isLoadingTeams {
+                ProgressView("Loading teams...")
+            } else if isLoadingChannels {
+                ProgressView("Loading channels...")
+            } else if let error = error {
+                Text("Error: \(error)")
+                    .foregroundColor(.red)
+            } else {
+                Picker("Select Team", selection: $selectedTeam) {
+                    ForEach(teams) { team in
+                        Text(team.displayName).tag(Optional(team))
+                    }
+                }
+                .onChange(of: selectedTeam) { _, newTeam in
+                    if let team = newTeam {
+                        onTeamSelected(team)
+                    }
+                }
+                
+                if !channels.isEmpty {
+                    Picker("Select Channel", selection: $selectedChannel) {
+                        ForEach(channels) { channel in
+                            Text(channel.displayName).tag(Optional(channel))
+                        }
+                    }
+                }
+                
+                Button("Export") {
+                    onExport()
+                }
+                .disabled(selectedTeam == nil || selectedChannel == nil)
+            }
+        }
+        .padding()
+        .frame(width: 400, height: 300)
     }
 }
 

@@ -43,6 +43,9 @@
 		25C690472CAFA5E70062D4E8 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C690462CAFA5E70062D4E8 /* SidebarView.swift */; };
 		25DC96BB2CCD492C0057A4BB /* AIModelRetriever in Frameworks */ = {isa = PBXBuildFile; productRef = 25DC96BA2CCD492C0057A4BB /* AIModelRetriever */; };
 		25DC96FE2CCDBDEC0057A4BB /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 25DC96FD2CCDBDEC0057A4BB /* MarkdownUI */; };
+		25DC97242CD02CB60057A4BB /* ZMarkupParser in Frameworks */ = {isa = PBXBuildFile; productRef = 25DC97232CD02CB60057A4BB /* ZMarkupParser */; };
+		25DC97262CD0448A0057A4BB /* Teams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25DC97252CD044880057A4BB /* Teams.swift */; };
+		25DC97292CD0464D0057A4BB /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = 25DC97282CD0464D0057A4BB /* MSAL */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +85,7 @@
 		25C690422CAFA5760062D4E8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		25C690442CAFA5AB0062D4E8 /* NavigationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationItem.swift; sourceTree = "<group>"; };
 		25C690462CAFA5E70062D4E8 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		25DC97252CD044880057A4BB /* Teams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Teams.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -98,6 +102,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2575009B2CB9DF2F00CAD5B9 /* WhisperKit in Frameworks */,
+				25DC97292CD0464D0057A4BB /* MSAL in Frameworks */,
+				25DC97242CD02CB60057A4BB /* ZMarkupParser in Frameworks */,
 				257500C22CBC5FA700CAD5B9 /* LLMChatAnthropic in Frameworks */,
 				250E61BA2CB59E33002E48AB /* OllamaKit in Frameworks */,
 				25DC96FE2CCDBDEC0057A4BB /* MarkdownUI in Frameworks */,
@@ -165,6 +171,7 @@
 		259B0E332CAF8F420050F2DD /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				25DC97252CD044880057A4BB /* Teams.swift */,
 				2595A2682CB034D9001E57FF /* ExportManager.swift */,
 				2595A2662CAFA9A1001E57FF /* NavigationStateManager.swift */,
 				2595A2742CB0B795001E57FF /* NotificationManager.swift */,
@@ -234,6 +241,8 @@
 				257500C12CBC5FA700CAD5B9 /* LLMChatAnthropic */,
 				25DC96BA2CCD492C0057A4BB /* AIModelRetriever */,
 				25DC96FD2CCDBDEC0057A4BB /* MarkdownUI */,
+				25DC97232CD02CB60057A4BB /* ZMarkupParser */,
+				25DC97282CD0464D0057A4BB /* MSAL */,
 			);
 			productName = SevenSummaries;
 			productReference = 25805B072CAF5791005E7456 /* 42Summaries.app */;
@@ -270,6 +279,8 @@
 				257500C02CBC5FA700CAD5B9 /* XCRemoteSwiftPackageReference "swift-llm-chat-anthropic" */,
 				25DC96B92CCD492C0057A4BB /* XCRemoteSwiftPackageReference "swift-ai-model-retriever" */,
 				25DC96FC2CCDBDEC0057A4BB /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
+				25DC97222CD02CB60057A4BB /* XCRemoteSwiftPackageReference "ZMarkupParser" */,
+				25DC97272CD0464D0057A4BB /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 25805B082CAF5791005E7456 /* Products */;
@@ -303,6 +314,7 @@
 				2595A26D2CB0B73E001E57FF /* ErrorView.swift in Sources */,
 				257500C42CBC627600CAD5B9 /* LLMService.swift in Sources */,
 				256D312D2CB217B6008612AF /* AppState.swift in Sources */,
+				25DC97262CD0448A0057A4BB /* Teams.swift in Sources */,
 				25C6903D2CAFA5400062D4E8 /* TranscriptionView.swift in Sources */,
 				256D31182CB186AF008612AF /* AboutView.swift in Sources */,
 				25C6903F2CAFA55E0062D4E8 /* SummaryView.swift in Sources */,
@@ -596,6 +608,22 @@
 				minimumVersion = 2.4.1;
 			};
 		};
+		25DC97222CD02CB60057A4BB /* XCRemoteSwiftPackageReference "ZMarkupParser" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ZhgChgLi/ZMarkupParser.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		25DC97272CD0464D0057A4BB /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AzureAD/microsoft-authentication-library-for-objc";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -628,6 +656,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 25DC96FC2CCDBDEC0057A4BB /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
 			productName = MarkdownUI;
+		};
+		25DC97232CD02CB60057A4BB /* ZMarkupParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 25DC97222CD02CB60057A4BB /* XCRemoteSwiftPackageReference "ZMarkupParser" */;
+			productName = ZMarkupParser;
+		};
+		25DC97282CD0464D0057A4BB /* MSAL */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 25DC97272CD0464D0057A4BB /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */;
+			productName = MSAL;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
