@@ -140,8 +140,8 @@ class TranscriptionManager: ObservableObject {
     }
     
     private func isVideoFile(_ url: URL) async throws -> Bool {
-        let asset = AVAsset(url: url)
-        let tracks = asset.tracks(withMediaType: .video)
+        let asset = AVURLAsset(url: url)
+        let tracks = try await asset.loadTracks(withMediaType: .video)
         return !tracks.isEmpty
     }
     
