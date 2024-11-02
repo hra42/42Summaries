@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		250E61BA2CB59E33002E48AB /* OllamaKit in Frameworks */ = {isa = PBXBuildFile; productRef = 250E61B92CB59E33002E48AB /* OllamaKit */; };
 		250E61BC2CB5A275002E48AB /* SummaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250E61BB2CB5A272002E48AB /* SummaryService.swift */; };
+		253A004F2CD6D32B00C86C17 /* AudioExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253A004E2CD6D32800C86C17 /* AudioExtractor.swift */; };
+		253A00522CD6D36600C86C17 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 253A00512CD6D36600C86C17 /* AVFoundation.framework */; };
 		256D31182CB186AF008612AF /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256D31172CB186AD008612AF /* AboutView.swift */; };
 		256D311A2CB18740008612AF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256D31192CB1873D008612AF /* AppDelegate.swift */; };
 		256D311C2CB18AC4008612AF /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256D311B2CB18AC1008612AF /* LaunchScreenView.swift */; };
@@ -49,6 +51,8 @@
 
 /* Begin PBXFileReference section */
 		250E61BB2CB5A272002E48AB /* SummaryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryService.swift; sourceTree = "<group>"; };
+		253A004E2CD6D32800C86C17 /* AudioExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioExtractor.swift; sourceTree = "<group>"; };
+		253A00512CD6D36600C86C17 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		255072212CAF5E8D0099CFB4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		256D31172CB186AD008612AF /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		256D31192CB1873D008612AF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -100,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				253A00522CD6D36600C86C17 /* AVFoundation.framework in Frameworks */,
 				2575009B2CB9DF2F00CAD5B9 /* WhisperKit in Frameworks */,
 				25DC97292CD0464D0057A4BB /* MSAL in Frameworks */,
 				257500C22CBC5FA700CAD5B9 /* LLMChatAnthropic in Frameworks */,
@@ -113,6 +118,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		253A00502CD6D36600C86C17 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				253A00512CD6D36600C86C17 /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		25805AFE2CAF5791005E7456 = {
 			isa = PBXGroup;
 			children = (
@@ -123,6 +136,7 @@
 				25805B082CAF5791005E7456 /* Products */,
 				255072212CAF5E8D0099CFB4 /* README.md */,
 				256D31212CB192C3008612AF /* SECURITY.md */,
+				253A00502CD6D36600C86C17 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -161,6 +175,7 @@
 		259B0E332CAF8F420050F2DD /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				253A004E2CD6D32800C86C17 /* AudioExtractor.swift */,
 				25DC97252CD044880057A4BB /* Teams.swift */,
 				2595A2682CB034D9001E57FF /* ExportManager.swift */,
 				2595A2662CAFA9A1001E57FF /* NavigationStateManager.swift */,
@@ -305,6 +320,7 @@
 				25DC97262CD0448A0057A4BB /* Teams.swift in Sources */,
 				25C6903D2CAFA5400062D4E8 /* TranscriptionView.swift in Sources */,
 				256D31182CB186AF008612AF /* AboutView.swift in Sources */,
+				253A004F2CD6D32B00C86C17 /* AudioExtractor.swift in Sources */,
 				25C6903F2CAFA55E0062D4E8 /* SummaryView.swift in Sources */,
 				25C690412CAFA56C0062D4E8 /* SettingsView.swift in Sources */,
 				2595A26F2CB0B762001E57FF /* NotificationView.swift in Sources */,
