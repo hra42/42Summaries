@@ -20,6 +20,7 @@
   - OpenAI
   - Anthropic Claude
 - Power mode settings for transcription (fast vs. energy efficient)
+- Videos will be converted to audio files for transcription
 - Export capabilities:
   - PDF export
   - TXT export
