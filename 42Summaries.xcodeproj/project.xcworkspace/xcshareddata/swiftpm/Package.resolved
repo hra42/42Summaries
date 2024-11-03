@@ -1,6 +1,24 @@
 {
-  "originHash" : "191b629feda49a27ca2db998771cf58d51a2b9970c0294ca888ca58614b9d5e2",
+  "originHash" : "9d2132cdbe0c7e93ad92a8bb4e989116dcc20760c396c3d0d591c0a9aae1a9c4",
   "pins" : [
+    {
+      "identity" : "microsoft-authentication-library-for-objc",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AzureAD/microsoft-authentication-library-for-objc",
+      "state" : {
+        "revision" : "b0ef73fa18ec203ac08dcaa1367c4e6af5334a9a",
+        "version" : "1.6.1"
+      }
+    },
+    {
+      "identity" : "networkimage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/gonzalezreal/NetworkImage",
+      "state" : {
+        "revision" : "2849f5323265386e200484b0d0f896e73c3411b9",
+        "version" : "6.0.1"
+      }
+    },
     {
       "identity" : "ollamakit",
       "kind" : "remoteSourceControl",
@@ -11,12 +29,30 @@
       }
     },
     {
+      "identity" : "swift-ai-model-retriever",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kevinhermawan/swift-ai-model-retriever",
+      "state" : {
+        "revision" : "585de8246341cf0b715357ecfd57c20aea52545c",
+        "version" : "1.0.2"
+      }
+    },
+    {
       "identity" : "swift-argument-parser",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser.git",
       "state" : {
         "revision" : "c8ed701b513cf5177118a175d85fbbbcd707ab41",
         "version" : "1.3.0"
+      }
+    },
+    {
+      "identity" : "swift-cmark",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-cmark",
+      "state" : {
+        "revision" : "3ccff77b2dc5b96b77db3da0d68d28068593fa53",
+        "version" : "0.5.0"
       }
     },
     {
@@ -33,8 +69,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kevinhermawan/swift-llm-chat-anthropic",
       "state" : {
-        "revision" : "d18262962edf7d8e55782b7b637db9162f59664a",
-        "version" : "1.0.0"
+        "revision" : "8c2479aa80f3398a795bd70bafb416de54d314ca",
+        "version" : "1.1.0"
       }
     },
     {
@@ -42,8 +78,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kevinhermawan/swift-llm-chat-openai.git",
       "state" : {
-        "revision" : "10d75d74106bb5495a51140b683c06b7195e2357",
-        "version" : "1.0.2"
+        "revision" : "b001a11cbbace1be95a63c0605c7571c64fce4a7",
+        "version" : "1.1.2"
+      }
+    },
+    {
+      "identity" : "swift-markdown-ui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/gonzalezreal/swift-markdown-ui",
+      "state" : {
+        "revision" : "5f613358148239d0292c0cef674a3c2314737f9e",
+        "version" : "2.4.1"
       }
     },
     {

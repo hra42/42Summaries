@@ -1,5 +1,6 @@
 import SwiftUI
 import AppKit
+import MarkdownUI
 
 class SummaryViewModel: ObservableObject {
     @Published var fontSize: CGFloat = 16
@@ -8,6 +9,7 @@ class SummaryViewModel: ObservableObject {
     @Published var showExportOptions: Bool = false
     @Published var isGeneratingSummary: Bool = false
     @Published var errorMessage: String?
+    @Published var editableSummary: String = ""
     
     private let summaryService: SummaryService
     var appState: AppState
@@ -15,6 +17,19 @@ class SummaryViewModel: ObservableObject {
     init(summaryService: SummaryService, appState: AppState) {
         self.summaryService = summaryService
         self.appState = appState
+    }
+    
+    func getSelectedPrompt() -> String? {
+        if let storedPrompts = UserDefaults.standard.data(forKey: "prompts") {
+            do {
+                let prompts = try JSONDecoder().decode([Prompt].self, from: storedPrompts)
+                let selectedPromptId = UserDefaults.standard.string(forKey: "selectedPromptId") ?? ""
+                return prompts.first(where: { $0.id.uuidString == selectedPromptId })?.content
+            } catch {
+                print("Error decoding prompts: \(error)")
+            }
+        }
+        return nil
     }
     
     func generateSummary(from transcription: String) {
@@ -30,13 +45,13 @@ class SummaryViewModel: ObservableObject {
                         prompts = try JSONDecoder().decode([Prompt].self, from: storedPrompts)
                     } catch {
                         print("Error decoding prompts in SummaryViewModel: \(error)")
-                        prompts = SettingsView.defaultPrompts
+                        prompts = await SettingsView.defaultPrompts
                         // Save default prompts to fix the corrupted data
                         UserDefaults.standard.set(try? JSONEncoder().encode(prompts), forKey: "prompts")
                     }
                 } else {
                     print("No stored prompts found, using defaults")
-                    prompts = SettingsView.defaultPrompts
+                    prompts = await SettingsView.defaultPrompts
                     // Save default prompts
                     UserDefaults.standard.set(try? JSONEncoder().encode(prompts), forKey: "prompts")
                 }
@@ -52,7 +67,10 @@ class SummaryViewModel: ObservableObject {
                     UserDefaults.standard.set(selectedPrompt.id.uuidString, forKey: "selectedPromptId")
                 }
 
-                let generatedSummary = try await summaryService.generateSummary(from: transcription, using: selectedPrompt.content)
+                // Modify the prompt to request markdown formatting
+                let markdownPrompt = selectedPrompt.content + "\nPlease format the response using Markdown syntax."
+                
+                let generatedSummary = try await summaryService.generateSummary(from: transcription, using: markdownPrompt)
                 await MainActor.run {
                     self.appState.summary = generatedSummary
                     self.isGeneratingSummary = false
@@ -85,6 +103,39 @@ class SummaryViewModel: ObservableObject {
     }
 }
 
+struct MarkdownEditor: View {
+    @Binding var text: String
+    let fontSize: CGFloat
+    let textAlignment: TextAlignment
+    
+    private var darkTheme: Theme {
+        Theme()
+            .text {
+                FontSize(fontSize)
+                ForegroundColor(.white)
+            }
+            .code {
+                FontSize(fontSize)
+                ForegroundColor(.white)
+                BackgroundColor(.black.opacity(0.2))
+            }
+    }
+    
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 10) {
+                Markdown(text)
+                    .markdownTheme(darkTheme)
+                    .textSelection(.enabled)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+            }
+        }
+        .background(Color(NSColor.windowBackgroundColor).opacity(0.1))
+        .cornerRadius(10)
+    }
+}
+
 struct SummaryView: View {
     @StateObject private var viewModel: SummaryViewModel
     @EnvironmentObject private var appState: AppState
@@ -101,15 +152,43 @@ struct SummaryView: View {
                 .fontWeight(.bold)
             
             ZStack {
-                ScrollView {
-                    Text(appState.summary.isEmpty ? "No summary generated yet." : appState.summary)
-                        .font(.system(size: viewModel.fontSize))
-                        .multilineTextAlignment(viewModel.textAlignment)
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: viewModel.textAlignment == .center ? .center : (viewModel.textAlignment == .trailing ? .trailing : .leading))
+                MarkdownEditor(
+                    text: Binding(
+                        get: { appState.summary.isEmpty ? "No summary generated yet." : appState.summary },
+                        set: { appState.summary = $0 }
+                    ),
+                    fontSize: viewModel.fontSize,
+                    textAlignment: viewModel.textAlignment
+                )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                
+                if viewModel.isGeneratingSummary {
+                    ProgressView("Generating Summary...")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(Color.secondary.opacity(0.5))
                 }
-                .background(Color.secondary.opacity(0.1))
-                .cornerRadius(10)
+                
+                if let errorMessage = viewModel.errorMessage {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                        .padding()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(Color.secondary.opacity(0.5))
+                }
+                
+                if viewModel.isGeneratingSummary {
+                    ProgressView("Generating Summary...")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(Color.secondary.opacity(0.5))
+                }
+                
+                if let errorMessage = viewModel.errorMessage {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                        .padding()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(Color.secondary.opacity(0.5))
+                }
                 
                 if viewModel.isGeneratingSummary {
                     ProgressView("Generating Summary...")
@@ -125,8 +204,7 @@ struct SummaryView: View {
                         .background(Color.secondary.opacity(0.5))
                 }
             }
-            .frame(height: 300)
-            
+
             HStack {
                 Button(action: {
                     viewModel.generateSummary(from: appState.transcriptionManager.transcriptionResult)
@@ -156,13 +234,6 @@ struct SummaryView: View {
                     Slider(value: $viewModel.fontSize, in: 12...24, step: 1) {
                         Text("Font Size: \(Int(viewModel.fontSize))")
                     }
-                    
-                    Picker("Text Alignment", selection: $viewModel.textAlignment) {
-                        Text("Left").tag(TextAlignment.leading)
-                        Text("Center").tag(TextAlignment.center)
-                        Text("Right").tag(TextAlignment.trailing)
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
                 }
                 .padding()
                 .background(Color.secondary.opacity(0.1))
@@ -175,6 +246,8 @@ struct SummaryView: View {
             ExportOptionsView(
                 content: appState.summary,
                 fileName: "Summary",
+                selectedPrompt: viewModel.getSelectedPrompt(),
+                source: .summary,
                 fontSize: $viewModel.fontSize,
                 textAlignment: $viewModel.textAlignment
             )
@@ -185,3 +258,4 @@ struct SummaryView: View {
         }
     }
 }
+

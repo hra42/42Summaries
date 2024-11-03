@@ -3,6 +3,7 @@ import AppKit
 import OllamaKit
 import LLMChatOpenAI
 import LLMChatAnthropic
+import AIModelRetriever
 
 struct SettingsView: View {
     @EnvironmentObject var appState: AppState
@@ -10,6 +11,8 @@ struct SettingsView: View {
     @AppStorage("prompts") private var storedPrompts: Data = try! JSONEncoder().encode(defaultPrompts)
     @AppStorage("powerMode") private var powerMode = "fast"
     @AppStorage("selectedModel") private var selectedModel: String = ""
+    @AppStorage("teamsClientId") private var teamsClientId = ""
+    @AppStorage("teamsTenantId") private var teamsTenantId = ""
     
     @State private var prompts: [Prompt] = []
     @State private var editedPromptName = ""
@@ -19,6 +22,7 @@ struct SettingsView: View {
     @State private var modelLoadError: String?
     @State private var showingResetAlert = false
     @State private var showingDeleteAlert = false
+    
     private let ollama = OllamaKit(baseURL: URL(string: "http://127.0.0.1:11434")!)
     
     static let defaultPrompts: [Prompt] = [
@@ -93,6 +97,23 @@ struct SettingsView: View {
                     Button("Refresh Models") {
                         loadAvailableModels()
                     }
+                }
+                
+                settingsSection("Microsoft Teams Settings") {
+                    TextField("Client ID", text: $appState.teamsClientId)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    
+                    TextField("Tenant ID", text: $appState.teamsTenantId)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    
+                    Link("Register your application in Azure Portal",
+                         destination: URL(string: "https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade")!)
+                        .font(.caption)
+                        .foregroundColor(.blue)
+                    
+                    Text("Required for exporting summaries to Teams")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
                 }
                 
                 settingsSection("Prompt Library") {
@@ -243,26 +264,32 @@ struct SettingsView: View {
         modelLoadError = nil
         availableModels = []
         
+        let modelRetriever = AIModelRetriever()
+        
         Task {
             do {
                 switch appState.llmProvider {
                 case .ollama:
-                    let modelResponse = try await ollama.models()
+                    let models = try await modelRetriever.ollama()
                     await MainActor.run {
-                        self.availableModels = modelResponse.models.map { $0.name }
+                        self.availableModels = models.map { $0.name }
                     }
+                    
                 case .openAI:
-                    let openAI = LLMChatOpenAI(apiKey: appState.openAIApiKey)
-                    let models = try await openAI.models()
+                    let models = try await modelRetriever.openAI(apiKey: appState.openAIApiKey)
                     await MainActor.run {
-                        self.availableModels = models.data
-                            .map { $0.id }
+                        self.availableModels = models
+                            .map { $0.name }
                             .filter { $0.lowercased().starts(with: "gpt") || $0.lowercased().starts(with: "chatgpt") }
                             .sorted()
                     }
+                    
                 case .anthropic:
-                    await MainActor.run {
-                        self.availableModels = ["claude-3-5-sonnet-latest", "claude-3-opus-latest", "claude-3-haiku-20240307"]
+                    do {
+                        let models = modelRetriever.anthropic()
+                        await MainActor.run {
+                            self.availableModels = models.map { $0.id }
+                        }
                     }
                 }
                 
@@ -280,6 +307,7 @@ struct SettingsView: View {
             }
         }
     }
+
 
     private func settingsSection<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 10) {

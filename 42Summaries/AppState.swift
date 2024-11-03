@@ -25,6 +25,17 @@ class AppState: ObservableObject {
             }
         }
     }
+    @Published var teamsClientId: String = "" {
+        didSet {
+            UserDefaults.standard.set(teamsClientId, forKey: "teamsClientId")
+        }
+    }
+    
+    @Published var teamsTenantId: String = "" {
+        didSet {
+            UserDefaults.standard.set(teamsTenantId, forKey: "teamsTenantId")
+        }
+    }
     @Published var errorMessage: String?
     @Published var transcription: String = "" {
         didSet {
@@ -79,6 +90,8 @@ class AppState: ObservableObject {
         self.anthropicApiKey = UserDefaults.standard.string(forKey: "anthropicApiKey") ?? ""
         self.openAIApiKey = UserDefaults.standard.string(forKey: "openAIApiKey") ?? ""
         self.selectedModel = UserDefaults.standard.string(forKey: "selectedModel") ?? ""
+        self.teamsClientId = UserDefaults.standard.string(forKey: "teamsClientId") ?? ""
+        self.teamsTenantId = UserDefaults.standard.string(forKey: "teamsTenantId") ?? ""
         
         setupSummaryService()
     }
@@ -230,7 +243,6 @@ func copyModelFilesIfNeeded() {
     for (index, targetFolder) in targetFolders.enumerated() {
         do {
             try fileManager.createDirectory(at: targetFolder, withIntermediateDirectories: true, attributes: nil)
-            print("Created target folder successfully: \(targetFolder.path)")
         } catch {
             print("Failed to create target folder: \(error)")
             continue
@@ -242,7 +254,6 @@ func copyModelFilesIfNeeded() {
             let destinationURL = targetFolder.appendingPathComponent(fileInfo.destinationName)
             
             if fileManager.fileExists(atPath: destinationURL.path) {
-                print("\(fileInfo.destinationName) already exists in the target location")
                 continue
             }
             
@@ -257,21 +268,11 @@ func copyModelFilesIfNeeded() {
                 } else {
                     try fileManager.copyItem(at: sourceURL, to: destinationURL)
                 }
-                print("Copied \(fileInfo.sourceName) successfully to \(targetFolder.lastPathComponent) as \(fileInfo.destinationName)")
             } catch {
                 print("Failed to copy \(fileInfo.sourceName): \(error)")
             }
         }
         
-        print("Contents of target folder \(targetFolder.lastPathComponent):")
-        do {
-            let contents = try fileManager.contentsOfDirectory(at: targetFolder, includingPropertiesForKeys: nil, options: [])
-            for item in contents {
-                print(" - \(item.lastPathComponent)")
-            }
-        } catch {
-            print("Failed to list contents of target folder: \(error)")
-        }
     }
 }
 
