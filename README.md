@@ -2,9 +2,6 @@
 
 42Summaries is a macOS application that transcribes audio and video files, then generates concise summaries using various LLM providers including Ollama, OpenAI, and Anthropic.
 
->NOTE: This project is currently undergoing a major refactoring effort.
->Stay tuned for significant code structure and architecture improvements.
-
 ## Testflight
 [![Join Beta](https://img.shields.io/badge/Join-TestFlight_Beta-orange.svg)](https://testflight.apple.com/join/yP2NuC4V)
 
